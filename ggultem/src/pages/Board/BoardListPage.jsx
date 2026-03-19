@@ -1,5 +1,5 @@
 import "./BoardListPage.css"; // CSS 파일 임포트
-import BoardList from "../../components/Board/BoardListComponenet";
+import BoardList from "../../components/Board/BoardListComponent";
 import Header from "../../include/Header";
 import Footer from "../../include/Footer";
 

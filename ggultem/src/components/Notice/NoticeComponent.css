@@ -1,0 +1,142 @@
+/* 전체 배경 및 래퍼 */
+.board-list-wrapper {
+  background-color: #fcfcfc;
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 게시판 컨테이너 */
+.board-list-container {
+  width: 100%;
+  max-width: 1100px;
+  background: white;
+  padding: 50px;
+  border-radius: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+/* 상단 헤더 섹션 */
+.board-header {
+  margin-bottom: 40px;
+}
+
+.board-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #222;
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+
+.board-subtitle {
+  color: #888;
+  font-size: 1.1rem;
+}
+
+/* 액션 바 (전체 개수만 남김) */
+.board-actions {
+  display: flex;
+  justify-content: flex-start; /* 중앙정렬 → 왼쪽 정렬로 자연스럽게 */
+  align-items: flex-end;
+  margin-top: 40px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #fff9e6;
+}
+
+.total-count {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* 테이블 스타일 */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.board-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 헤더 셀 */
+.board-table th {
+  padding: 22px 10px;
+  background-color: #fafafa;
+  color: #444;
+  font-weight: 700;
+  font-size: 1rem;
+  border-bottom: 1.5px solid #eee;
+}
+
+/* 데이터 셀 */
+.board-table td {
+  padding: 24px 10px;
+  border-bottom: 1px solid #f5f5f5;
+  color: #555;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+/* 행 호버 효과 */
+.board-row {
+  cursor: pointer;
+}
+
+.board-row:hover td {
+  background-color: #fffdf2;
+  color: #000;
+}
+
+/* 제목 컬럼 */
+.td-title {
+  text-align: left !important;
+  padding-left: 20px !important;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-text {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #333;
+}
+
+.img-icon {
+  font-size: 1.1rem;
+}
+
+/* 빈 목록 */
+.empty-row {
+  padding: 120px 0 !important;
+  color: #bbb;
+  font-size: 1.1rem;
+}
+
+/* 컬럼 너비 */
+.th-no {
+  width: 80px;
+}
+.th-writer {
+  width: 140px;
+}
+.th-date {
+  width: 140px;
+}
+.th-views {
+  width: 90px;
+}
+
+/* 페이지네이션 */
+.pagination-wrapper {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
