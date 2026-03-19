@@ -1,10 +1,10 @@
 /* 1. 전체 배경 및 레이아웃 */
-.mypage-wrapper {
+.mp-mypage-wrapper {
   min-height: 100vh;
   padding: 50px 20px;
 }
 
-.mypage-container {
+.mp-mypage-container {
   max-width: 1200px; /* 전체 가로폭 확장 */
   margin: 0 auto;
   display: grid;
@@ -15,13 +15,13 @@
 }
 
 /* 2. 왼쪽 콘텐츠 섹션 (중고거래, 장바구니) */
-.left-content {
+.mp-left-content {
   display: flex;
   flex-direction: column;
   gap: 30px; /* 박스 간 위아래 간격 */
 }
 
-.content-box {
+.mp-content-box {
   background: #ffffff;
   border-radius: 16px;
   padding: 35px; /* 내부 여백을 늘려 가로로 더 길어 보이게 함 */
@@ -31,7 +31,7 @@
 }
 
 /* 박스 헤더 영역 (제목 + 버튼) */
-.section-header {
+.mp-section-header {
   display: flex;
   justify-content: space-between; /* 제목은 왼쪽, 버튼은 오른쪽 */
   align-items: center; /* 세로 중앙 정렬 */
@@ -39,7 +39,7 @@
 }
 
 /* 기존 section-title에서 margin-bottom 제거 (header에서 관리함) */
-.section-title {
+.mp-section-title {
   font-size: 1.2rem;
   font-weight: 800;
   color: #1a1a1a;
@@ -50,7 +50,7 @@
 }
 
 /* 중고거래 등록하기 버튼 스타일 */
-.add-item-btn {
+.mp-add-item-btn {
   background-color: #ffd900;
   color: #222;
   border: none;
@@ -63,12 +63,12 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.add-item-btn:hover {
+.mp-add-item-btn:hover {
   background-color: #ffc400; /* 호버 시 약간 진하게 */
   transform: translateY(-1px);
 }
 
-.empty-placeholder {
+.mp-empty-placeholder {
   height: 160px;
   display: flex;
   align-items: center;
@@ -81,29 +81,29 @@
 }
 
 /* 3. 오른쪽 사이드바 (프로필 카드) */
-.right-sidebar {
+.mp-right-sidebar {
   position: sticky;
   top: 40px; /* 스크롤 시 상단에 고정되는 위치 */
 }
 
-.profile-summary-card {
+.mp-profile-summary-card {
   background: #ffffff;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-.card-header-gradient {
+.mp-card-header-gradient {
   height: 100px;
   background: linear-gradient(135deg, #ffd900 0%, #ffb400 100%);
 }
 
-.profile-info-content {
+.mp-profile-info-content {
   padding: 0 25px 35px;
   text-align: center;
 }
 
-.mini-profile-img {
+.mp-mini-profile-img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -114,43 +114,43 @@
   background-color: #eee;
 }
 
-.name-group {
+.mp-name-group {
   margin: 18px 0 25px;
 }
 
-.name-group .user-nickname {
+.mp-name-group .user-nickname {
   font-size: 1.4rem;
   font-weight: 800;
   color: #222;
   margin-bottom: 4px;
 }
 
-.user-email {
+.mp-user-email {
   font-size: 0.9rem;
   color: #777;
 }
 
 /* 정보 요약 리스트 */
-.info-mini-list {
+.mp-info-mini-list {
   background: #f8f9fa;
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 30px;
 }
 
-.mini-item {
+.mp-mini-item {
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
   font-size: 0.9rem;
 }
 
-.mini-item:last-child { margin-bottom: 0; }
+.mp-mini-item:last-child { margin-bottom: 0; }
 
-.label { color: #888; }
-.value { font-weight: 700; color: #333; }
+.mp-label { color: #888; }
+.mp-value { font-weight: 700; color: #333; }
 
-.badge {
+.mp-badge {
   color: #ff8c00;
   background: #fff4e0;
   padding: 3px 10px;
@@ -159,7 +159,7 @@
 }
 
 /* 수정 버튼 */
-.btn-modify-nav {
+.mp-btn-modify-nav {
   width: 100%;
   padding: 15px;
   background: #222;
@@ -172,7 +172,7 @@
   transition: all 0.2s ease;
 }
 
-.btn-modify-nav:hover {
+.mp-btn-modify-nav:hover {
   background: #000;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -180,10 +180,10 @@
 
 /* 반응형 처리 (화면이 작아지면 한 줄로) */
 @media (max-width: 900px) {
-  .mypage-container {
+  .mp-mypage-container {
     grid-template-columns: 1fr;
   }
-  .right-sidebar {
+  .mp-right-sidebar {
     position: static;
     order: -1; /* 모바일에서는 프로필이 위로 */
   }

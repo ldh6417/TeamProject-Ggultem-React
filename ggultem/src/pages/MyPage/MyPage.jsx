@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 const MyPage = () => {
   const email = useSelector((state) => state.loginSlice.email);
   return (
-    <div className="mypage-page-wrapper">
+    <div className="mp-mypage-page-wrapper">
       <Header />
-      <main className="mypage-main-content">
+      <main className="mp-mypage-main-content">
         <MyPageMain email={email} />
       </main>
       <Footer />

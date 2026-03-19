@@ -40,79 +40,85 @@ const MyPageMain = ({ email }) => {
   const imageSrc = `${host}/mypage/view/${thumbnailFile}`;
 
   return (
-    <div className="mypage-wrapper">
-      <div className="mypage-container">
+    <div className="mp-mypage-wrapper">
+      <div className="mp-mypage-container">
         {/* 1. 왼쪽 섹션 (판매내역, 장바구니) */}
-        <div className="left-content">
-          <section className="content-box">
-            <div className="section-header">
-              <h3 className="section-title">내가 올린 중고거래</h3>
+        <div className="mp-left-content">
+          <section className="mp-content-box">
+            <div className="mp-section-header">
+              <h3 className="mp-section-title">내가 올린 중고거래</h3>
               {/* 우측 상단 버튼 추가 */}
               <button
-                className="add-item-btn"
+                className="mp-add-item-btn"
                 onClick={() => navigate("/itemboard/register")}
               >
                 중고거래 등록하기
               </button>
             </div>
-            <div className="empty-placeholder">
+            <div className="mp-empty-placeholder">
               등록된 상품이 없습니다. 첫 상품을 올려보세요!
             </div>
           </section>
 
-          <section className="content-box">
-            <div className="section-header">
-              <h3 className="section-title">장바구니</h3>
+          <section className="mp-content-box">
+            <div className="mp-section-header">
+              <h3 className="mp-section-title">장바구니</h3>
               <button
-                className="add-item-btn"
+                className="mp-add-item-btn"
                 onClick={() => navigate("/cart/list")}
               >
                 장바구니 바로가기
               </button>
             </div>
-            <div className="empty-placeholder">장바구니가 비어 있습니다.</div>
+            <div className="mp-empty-placeholder">
+              장바구니가 비어 있습니다.
+            </div>
           </section>
         </div>
 
         {/* 2. 오른쪽 섹션 (회원 정보 카드) - 왼쪽 섹션 밖으로 꺼내야 합니다! */}
-        <aside className="right-sidebar">
-          <div className="profile-summary-card">
-            <div className="card-header-gradient"></div>
+        <aside className="mp-right-sidebar">
+          <div className="mp-profile-summary-card">
+            <div className="mp-card-header-gradient"></div>
 
-            <div className="profile-info-content">
+            <div className="mp-profile-info-content">
               <img
                 src={`${host}/mypage/view/${member.uploadFileNames}`}
                 alt="Profile"
-                className="mini-profile-img"
+                className="mp-mini-profile-img"
               />
 
-              <div className="name-group">
+              <div className="mp-name-group">
                 {/* 닉네임이 안 나왔다면 member.nickname 확인 */}
-                <h2 className="user-nickname">
+                <h2 className="mp-user-nickname">
                   {member.nickname || "꿀템유저"}
                 </h2>
-                <span className="user-email">{member.email}</span>
+                <span className="mp-user-email">{member.email}</span>
               </div>
 
-              <div className="info-mini-list">
-                <div className="mini-item">
-                  <span className="label">가입일</span>
-                  <span className="value">
+              <div className="mp-info-mini-list">
+                <div className="mp-mini-item">
+                  <span className="mp-label">가입일</span>
+                  <span className="mp-value">
                     {member.regDate
                       ? member.regDate.substring(0, 10)
                       : "2026-03-18"}
                   </span>
                 </div>
-                <div className="mini-item">
-                  <span className="label">계정유형</span>
-                  <span className="value badge">
-                    {member.social ? `${email.split("_")[0]}` : "일반"}
+                <div className="mp-mini-item">
+                  <span className="mp-label">계정유형</span>
+                  <span className="mp-value badge">
+                    {member.email === "admin@honey.com"
+                      ? "관리자"
+                      : member.social
+                        ? `${email.split("_")[0]}`
+                        : "일반"}
                   </span>
                 </div>
               </div>
 
               <button
-                className="btn-modify-nav"
+                className="mp-btn-modify-nav"
                 type="button"
                 onClick={() => moveToMyPageModify()}
               >

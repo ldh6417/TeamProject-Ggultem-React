@@ -1,12 +1,12 @@
 /* 1. 페이지 전체 레이아웃 (MyPage.jsx용) */
-.mypage-page-wrapper {
+.mp-mypage-page-wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* 화면 꽉 차게 */
     background-color: #f8f9fa; /* 연한 회색 배경 */
 }
 
-.mypage-main-content {
+.mp-mypage-main-content {
     flex: 1; /* 헤더/푸터 제외한 나머지 공간 차지 */
     padding: 40px 0;
     display: flex;
@@ -15,7 +15,7 @@
 }
 
 /* 2. 대시보드 컨테이너 (MyPageMain.jsx용) */
-.mypage-container {
+.mp-mypage-container {
     display: flex; /* 가로 배치 */
     width: 100%;
     max-width: 1100px;
@@ -25,17 +25,17 @@
 }
 
 /* 왼쪽 (중고거래, 장바구니) */
-.left-content {
+.mp-left-content {
     flex: 1; /* 남은 공간 다 차지 */
 }
 
 /* 오른쪽 (프로필 카드) */
-.right-sidebar {
+.mp-right-sidebar {
     width: 320px; /* 고정 너비 */
 }
 
 /* 개별 섹션 박스 */
-.content-box {
+.mp-content-box {
     background: #fff;
     border-radius: 15px;
     padding: 25px;
@@ -43,7 +43,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.section-title {
+.mp-section-title {
     font-size: 1.1rem;
     font-weight: 700;
     border-left: 4px solid #ffd900;

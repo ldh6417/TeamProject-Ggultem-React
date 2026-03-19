@@ -84,43 +84,59 @@
   color: var(--honey-color);
 }
 
-/* ✅ 와이드 카드 메뉴 */
+/* ✅ 1. 부모 컨테이너: 카드들을 가로로 예쁘게 정렬 */
 .main-container .content-wrapper-wide {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4열로 넓게 배치 */
-  gap: 40px;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.main-container .content-card-wide {
-  text-decoration: none;
-  background-color: var(--bg-white);
-  border: 2px solid #f1f1f1;
-  border-radius: 20px;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center;     /* 수직 중앙 정렬 */
+  flex-wrap: nowrap;       /* 한 줄에 강제 고정 (깨짐 방지) */
+  gap: 30px;               /* 카드 사이 간격 */
+  width: 90%;
+  max-width: 1400px;
+  margin: 50px auto;       /* 상하 여백 */
+  padding: 20px;
 }
 
+/* ✅ 2. 카드 링크 (A 태그): 크기 고정 및 정렬 */
+.main-container .content-card-wide {
+  flex: 1;                 /* 4개 카드가 동일한 너비 점유 */
+  min-width: 220px;        /* 최소 너비 확보 */
+  height: 220px;           /* 높이 고정 (정사각형 느낌) */
+  
+  text-decoration: none;
+  background-color: #ffffff;
+  border: 2px solid #f1f1f1;
+  border-radius: 30px;
+  
+  display: flex;           /* 👈 중요: 내부 요소를 정렬하기 위해 flex 사용 */
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  position: relative;
+  overflow: hidden;        /* 내부 박스가 삐져나오지 않게 */
+}
+
+/* ✅ 3. 내부 텍스트 박스: 카드 정중앙에 고정 */
+.main-container .content-box {
+  width: 100%;             /* 부모 카드 너비에 맞춤 */
+  height: 100%;            /* 부모 카드 높이에 맞춤 */
+  display: flex;           /* 텍스트 중앙 정렬을 위해 다시 flex */
+  justify-content: center;
+  align-items: center;
+  
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--bee-brown);
+  z-index: 2;
+}
+
+/* ✅ 4. 호버 효과 보강 */
 .main-container .content-card-wide:hover {
   border-color: var(--honey-color);
   background-color: var(--soft-yellow);
   transform: translateY(-10px);
-}
-
-.main-container .content-icon {
-  font-size: 60px;
-}
-
-.main-container .content-box {
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--bee-brown);
+  box-shadow: 0 15px 35px rgba(255, 183, 0, 0.2);
 }
 
 /* ✅ 메인 히어로 섹션 로고 스타일 */
