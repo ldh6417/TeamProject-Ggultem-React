@@ -129,17 +129,25 @@
   transition: all 0.2s;
 }
 
-/* 카카오 브랜드 컬러 적용 */
 .social-btn.kakao {
-  background-color: #fee500;
-  color: #3c1e1e;
+  background: none;    /* 기존 배경색 제거 */
+  border: none;        /* 테두리 제거 */
+  padding: 0;          /* 내부 여백 제거 */
+  display: flex;       /* 중앙 정렬 */
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;         /* 부모 너비에 맞춤 */
+  transition: transform 0.2s;
+}
+
+.kakao-login-img {
+  width: 100%;         /* 버튼 너비에 꽉 채우기 */
+  height: auto;        /* 비율 유지 */
+  border-radius: 12px; /* 꿀템 테마에 맞춰 살짝 둥글게 (이미 자체 포함이면 제외) */
 }
 
 .social-btn.kakao:hover {
-  background-color: #fada00;
-  transform: translateY(-2px);
-}
-
-.social-icon {
-  font-size: 1.2rem;
+  transform: scale(1.02); /* 살짝 커지는 효과로 클릭 유도 */
+  background: none;       /* 호버 시 배경색 변하지 않게 고정 */
 }

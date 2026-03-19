@@ -1,7 +1,8 @@
 /* 전체 배경 및 래퍼 */
 .board-list-wrapper {
-  background-color: #fcfcfc;
+  width: 1480px;
   min-height: 100vh;
+  margin: 0 auto;
   padding: 60px 20px;
   display: flex;
   justify-content: center;
@@ -9,8 +10,7 @@
 
 /* 게시판 컨테이너: 시원하게 너비 확보 */
 .board-list-container {
-  width: 100%;
-  max-width: 1100px; /* 너무 좁지 않게 충분한 너비 */
+  width: 1280px;
   background: white;
   padding: 50px;
   border-radius: 30px;
@@ -140,10 +140,18 @@
 }
 
 /* 컬럼 너비 조정 (비율 유지) */
-.th-no { width: 80px; }
-.th-writer { width: 140px; }
-.th-date { width: 140px; }
-.th-views { width: 90px; }
+.th-no {
+  width: 80px;
+}
+.th-writer {
+  width: 140px;
+}
+.th-date {
+  width: 140px;
+}
+.th-views {
+  width: 90px;
+}
 
 /* 페이지네이션 래퍼 */
 .pagination-wrapper {

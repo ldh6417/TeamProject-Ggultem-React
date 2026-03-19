@@ -77,7 +77,11 @@ const LoginComponent = () => {
           <p className="social-text">간편하게 시작하기</p>
           <div className="social-buttons">
             <button onClick={handleKakaoLogin} className="social-btn kakao">
-              <span className="social-icon">💬</span> 카카오 로그인
+              <img
+                src="/kakao_login_large_wide.png"
+                alt="카카오 로그인"
+                className="kakao-login-img"
+              />
             </button>
           </div>
         </div>
