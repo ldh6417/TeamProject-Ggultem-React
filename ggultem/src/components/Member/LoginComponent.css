@@ -101,53 +101,60 @@
   box-shadow: 0 10px 20px rgba(255, 217, 0, 0.3);
 }
 
-/* 소셜 로그인 섹션 */
+/* 소셜 로그인 섹션 공통 */
 .social-login-container {
   margin-top: 40px;
   border-top: 1px solid #f0f0f0;
   padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 버튼 사이 간격 */
 }
 
-.social-text {
-  font-size: 0.85rem;
-  color: #aaa;
-  margin-bottom: 20px;
+/* 버튼들을 감싸는 박스 */
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 버튼 사이 간격 */
+  width: 100%;
 }
 
+/* 모든 소셜 버튼 공통 스타일 */
 .social-btn {
   width: 100%;
+  height: 52px;          /* 높이 통일 */
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 16px;
-  border: none;
-  border-radius: 15px;
+  gap: 10px;             /* 아이콘과 텍스트 사이 간격 */
+  border-radius: 12px;   /* 둥근 모서리 */
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  border: none;          /* 기본 테두리 제거 */
 }
 
+/* 카카오 스타일 */
 .social-btn.kakao {
-  background: none;    /* 기존 배경색 제거 */
-  border: none;        /* 테두리 제거 */
-  padding: 0;          /* 내부 여백 제거 */
-  display: flex;       /* 중앙 정렬 */
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  width: 100%;         /* 부모 너비에 맞춤 */
-  transition: transform 0.2s;
-}
-
-.kakao-login-img {
-  width: 100%;         /* 버튼 너비에 꽉 채우기 */
-  height: auto;        /* 비율 유지 */
-  border-radius: 12px; /* 꿀템 테마에 맞춰 살짝 둥글게 (이미 자체 포함이면 제외) */
+  background-color: #fee500; /* 카카오 공식 노란색 */
+  color: #191919;
 }
 
 .social-btn.kakao:hover {
-  transform: scale(1.02); /* 살짝 커지는 효과로 클릭 유도 */
-  background: none;       /* 호버 시 배경색 변하지 않게 고정 */
+  background-color: #fada00;
+  transform: translateY(-2px);
+}
+
+/* 구글 스타일 */
+.social-btn.google {
+  background-color: #ffffff;
+  color: #3c4043;
+  border: 1px solid #dadce0; /* 구글은 흰색이라 테두리 필수 */
+}
+
+.social-btn.google:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

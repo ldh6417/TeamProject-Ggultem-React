@@ -3,6 +3,8 @@ import "./ModifyComponent.css";
 import { getMyInfo, API_SERVER_HOST, putOne } from "../../api/MemberApi";
 import InfoModal from "../../common/InfoModal";
 import { useNavigate } from "react-router";
+import { login } from "../../slice/loginSlice";
+import { useDispatch } from "react-redux";
 
 const host = API_SERVER_HOST;
 
@@ -17,7 +19,7 @@ const initState = {
 };
 
 const ModifyComponent = ({ email }) => {
-  const [member, setMember] = useState(initState);
+  const [member, setMember] = useState({ ...initState });
   const uploadRef = useRef();
   const [result, setResult] = useState(null);
   const [infoModal, setInfoModal] = useState(false);
@@ -43,7 +45,16 @@ const ModifyComponent = ({ email }) => {
 
     formData.append("phone", member.phone);
     formData.append("nickname", member.nickname);
-    formData.append("pw", member.pw);
+    // 2. 비밀번호 처리 (중요!)
+    // 만약 소셜 사용자이고, 비밀번호 입력창이 비어있다면 아예 보내지 않거나
+    // 서버가 '수정 안 함'으로 인식할 수 있는 처리를 해야 합니다.
+    if (member.social) {
+      // 소셜 유저는 보통 비밀번호를 직접 수정하지 않으므로
+      // 기존의 암호화된 값을 그대로 보내지 않도록 주의하세요.
+      // formData.append("pw", ""); // 서버에서 빈 값일 때 수정을 안 하도록 로직이 짜여있어야 함
+    } else {
+      formData.append("pw", member.pw);
+    }
 
     for (let i = 0; i < member.uploadFileNames.length; i++) {
       formData.append("uploadFileNames", member.uploadFileNames[i]);
@@ -61,7 +72,7 @@ const ModifyComponent = ({ email }) => {
 
   const closeModal = () => {
     if (result === "Modified") {
-      navigate(`/mypage/${email}`); // 조회 화면으로 이동
+      navigate(`/mypage`); // 조회 화면으로 이동
     }
     setResult(null);
   };

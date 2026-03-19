@@ -26,8 +26,10 @@ const loginSlice = createSlice({
   initialState: loadMemberCookie() || initState,
   reducers: {
     login: (state, action) => {
-      const data = action.payload;
-      return { email: data.email };
+      if (action.payload && !action.payload.error) {
+        setCookie("member", JSON.stringify(action.payload), 1);
+      }
+      return action.payload;
     },
     logout: (state, action) => {
       removeCookie("member");

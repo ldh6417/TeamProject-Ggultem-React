@@ -1,0 +1,74 @@
+/* 전체 컨테이너: 화면 중앙 정렬 */
+.signup-container {
+  min-height: 100vh;
+  display: flex;
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 로딩 박스 */
+.signup-box {
+  background: white;
+  padding: 50px 40px;
+  border-radius: 30px;
+  box-shadow: 0 15px 35px rgba(255, 217, 0, 0.15);
+  border: 2px solid #fff5b1;
+}
+
+/* 제목 스타일 */
+.signup-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 15px;
+}
+
+/* 서브텍스트 */
+.signup-subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+/* 꿀벌 로딩 스피너 애니메이션 */
+.loading-spinner {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffb400;
+  display: inline-block;
+  padding: 15px 25px;
+  background: #fff9e6;
+  border-radius: 50px;
+  
+  /* 비행하는 듯한 애니메이션 */
+  animation: bee-flight 1.5s infinite ease-in-out;
+}
+
+/* 비행(둥둥 뜨는) 효과 애니메이션 */
+@keyframes bee-flight {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* 반응형 처리 */
+@media (max-width: 480px) {
+  .signup-box {
+    width: 85%;
+    padding: 40px 20px;
+  }
+  .signup-title {
+    font-size: 1.5rem;
+  }
+}

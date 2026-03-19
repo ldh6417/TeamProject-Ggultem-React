@@ -21,6 +21,18 @@ const LoginComponent = () => {
     window.location.href = getKakaoLoginLink();
   };
 
+  // 1. 구글 클라이언트 ID와 리디렉션 URI를 변수로 따로 빼두면 관리가 편해요!
+  const Google_Client_ID =
+    "609985158917-cv8r77jfiqs9p5fejnmpprq6ktn8vr7c.apps.googleusercontent.com";
+  const Google_Redirect_URI = "http://localhost:5173/member/google";
+
+  // 2. 주소 구성 (문자열 안에 변수를 넣을 때는 `(백틱)과 ${}를 사용합니다)
+  const googleAddr = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${Google_Client_ID}&redirect_uri=${Google_Redirect_URI}&response_type=code&scope=email%20profile`;
+
+  const handleGoogleLogin = () => {
+    window.location.href = googleAddr;
+  };
+
   const handleClickLogin = (e) => {
     e.preventDefault();
 
@@ -76,12 +88,14 @@ const LoginComponent = () => {
         <div className="social-login-container">
           <p className="social-text">간편하게 시작하기</p>
           <div className="social-buttons">
+            {/* 카카오 버튼 */}
             <button onClick={handleKakaoLogin} className="social-btn kakao">
-              <img
-                src="/kakao_login_large_wide.png"
-                alt="카카오 로그인"
-                className="kakao-login-img"
-              />
+              <span className="social-btn-text">카카오로 계속하기</span>
+            </button>
+
+            {/* 구글 버튼 */}
+            <button onClick={handleGoogleLogin} className="social-btn google">
+              <span className="social-btn-text">Google로 계속하기</span>
             </button>
           </div>
         </div>

@@ -52,6 +52,10 @@ export const getMyInfo = async (email) => {
 };
 
 export const putOne = async (email, formData) => {
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}: ${value}`);
+  }
+
   const res = await axios.put(
     `${host}/mypage/${encodeURIComponent(email)}`,
     formData,

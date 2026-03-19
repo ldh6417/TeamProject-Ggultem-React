@@ -11,7 +11,8 @@ const AdminLogin = lazy(() => import("../pages/admin/LoginPage"));
 const Main = lazy(() => import("../pages/MainPage"));
 const Login = lazy(() => import("../pages/LoginPage"));
 const Business = lazy(() => import("../pages/Business/MainPage"));
-const KakaoRedirect = lazy(() => import("../pages/KakaoRedirectPage")); // 경로 확인!
+const KakaoRedirect = lazy(() => import("../pages/KakaoRedirectPage"));
+const GoogleRedirect = lazy(() => import("../pages/GoogleRedirectPage"));
 //* 마이페이지 lazy */
 const MyPage = lazy(() => import("../pages/MyPage/MyPage"));
 const Modify = lazy(() => import("../pages/MyPage/ModifyPage"));
@@ -64,6 +65,14 @@ const root = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <KakaoRedirect />
+          </Suspense>
+        ),
+      },
+      {
+        path: "google",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <GoogleRedirect />
           </Suspense>
         ),
       },
