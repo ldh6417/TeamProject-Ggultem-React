@@ -1,48 +1,54 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getOne, API_SERVER_HOST } from "../../api/BoardApi";
+import BoardReplyComponent from "./BoardReplyComponent";
+import "./BoardReadComponent.css";
+
 
 const host = API_SERVER_HOST;
 
-const ReadPage = ({ boardNo }) => {
+const BoardReadComponent = ({ boardNo }) => {
   const navigate = useNavigate();
-
   const [board, setBoard] = useState(null);
 
   useEffect(() => {
-    getOne(boardNo).then((data) => {
-      console.log(data);
-      setBoard(data);
-    });
+    if (boardNo) {
+      getOne(Number(boardNo)).then((data) => {
+        console.log(data);
+        setBoard(data);
+      });
+    }
   }, [boardNo]);
 
+  // 로딩 처리
   if (!board) return <div>Loading...</div>;
 
   return (
     <div className="board-read-wrapper">
       <div className="board-read-container">
-        {/* 상단 제목 섹션 */}
+
+        {/* 상단 제목 */}
         <div className="read-header">
           <h2 className="read-title">{board.title}</h2>
           <div className="read-info">
-            <span className="read-writer">
+            <span>
               작성자: <strong>{board.writer}</strong>
             </span>
-            <span className="read-views">조회수: {board.viewCount}</span>
+            <span>조회수: {board.viewCount}</span>
           </div>
         </div>
 
-        {/* 본문 내용 섹션 */}
+        {/* 본문 */}
         <div className="read-content-area">
           <p className="read-text">{board.content}</p>
 
-          {/* 이미지 영역 */}
+          {/* 이미지 */}
           <div className="read-image-gallery">
             {board.uploadFileNames?.map((file) => (
-              <div className="read-image-box" key={file}>
+              <div key={file}>
                 <img
                   src={`${host}/board/view/${file}`}
-                  alt="게시글 이미지"
+                  alt="img"
                   className="read-main-img"
                 />
               </div>
@@ -50,22 +56,27 @@ const ReadPage = ({ boardNo }) => {
           </div>
         </div>
 
-        {/* 하단 버튼 섹션 */}
+        {/* 댓글 */}
+        <BoardReplyComponent boardNo={boardNo} />
+
+        {/* 버튼 */}
         <div className="read-actions">
-          <button className="btn-list" onClick={() => navigate("/board/list")}>
-            목록으로 돌아가기
+          <button onClick={() => navigate("/board/list")}>
+            목록으로
           </button>
 
           <button
-            className="btn-modify"
-            onClick={() => navigate(`/board/modify/${board.boardNo}`)}
+            onClick={() =>
+              navigate(`/board/modify/${board.boardNo}`)
+            }
           >
-            수정하기 ✍️
+            수정
           </button>
         </div>
+
       </div>
     </div>
   );
 };
 
-export default ReadPage;
+export default BoardReadComponent;
