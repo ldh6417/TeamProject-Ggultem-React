@@ -1,0 +1,24 @@
+/* 전체 페이지 래퍼 */
+.itemBoardList-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 화면 전체 높이 확보 */
+  background-color: #f9f9f9; /* 연한 회색 배경으로 깔끔하게 */
+}
+
+/* 메인 컨텐츠 영역 */
+.itemBoardList-main-content {
+  flex: 1; /* 푸터를 하단으로 밀어냄 */
+  width: 100%;
+  max-width: 1200px; /* 최대 너비 제한 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 40px 20px;
+}
+
+/* (참고) 제목 영역이 있다면 */
+.itemBoardList-main-content h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+}
