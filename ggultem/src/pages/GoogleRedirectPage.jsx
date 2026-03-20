@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../slice/loginSlice"; // 기존 로그인 액션 활용
 import { getAccessToken } from "../api/GoogleApi"; // 새로 만들 API
 import useCustomLogin from "../hooks/useCustomLogin";
+import "./GoogleRedirectPage.css";
 
 const GoogleRedirectPage = () => {
   const [searchParams] = useSearchParams();

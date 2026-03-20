@@ -24,6 +24,10 @@ const MyPageMain = ({ email }) => {
   const { moveToMyPageModify } = useCustomMove();
 
   useEffect(() => {
+    if (!email) {
+      console.error("이메일 값이 없어서 요청을 보낼 수 없습니다!");
+      return;
+    }
     // 백엔드에서 데이터 가져오기
     getMyInfo(email).then((data) => {
       setMember(data);

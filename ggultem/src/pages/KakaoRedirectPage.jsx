@@ -2,11 +2,15 @@ import React, { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { getAccessToken } from "../api/MemberApi"; // 아직 안 만든 함수
 import { setCookie } from "../util/cookieUtil";
+import "./KakaoRedirectPage.css";
+import { useDispatch } from "react-redux";
+import { login } from "../slice/loginSlice";
 
 const KakaoRedirectPage = () => {
   const [searchParams] = useSearchParams();
   const authCode = searchParams.get("code"); // URL에서 code 추출
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (authCode) {
@@ -15,10 +19,10 @@ const KakaoRedirectPage = () => {
 
       // 예시 로직 (백엔드 컨트롤러 구현 후 주석 해제)
       getAccessToken(authCode)
-        .then((data) => {
-          console.log("로그인 성공 데이터:", data);
-          setCookie("member", JSON.stringify(data), 1); // 쿠키 저장
-          navigate("/"); // 메인으로 이동
+        .then((memberInfo) => {
+          console.log("로그인 성공 데이터:", memberInfo);
+          dispatch(login(memberInfo));
+          navigate("/");
         })
         .catch((err) => {
           console.error("로그인 실패:", err);
@@ -26,7 +30,7 @@ const KakaoRedirectPage = () => {
           navigate("/login");
         });
     }
-  }, [authCode, navigate]);
+  }, [authCode, dispatch, navigate]);
 
   return (
     <div

@@ -47,7 +47,8 @@ export const loginPost = async (loginParam) => {
 //*************************** 마이페이지 ******************************* */
 // 마이페이지 정보 가져오기
 export const getMyInfo = async (email) => {
-  const res = await axios.get(`${host}/mypage/${email}`);
+  const res = await axios.get(`${host}/mypage/${encodeURIComponent(email)}`);
+  console.log(res.data);
   return res.data;
 };
 

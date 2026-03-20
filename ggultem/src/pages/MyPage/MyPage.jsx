@@ -6,12 +6,13 @@ import Footer from "../../include/Footer";
 import { useSelector } from "react-redux";
 
 const MyPage = () => {
-  const email = useSelector((state) => state.loginSlice.email);
+  const loginState = useSelector((state) => state.loginSlice);
+  console.log("현재 로그인 상태:", loginState);
   return (
     <div className="mp-mypage-page-wrapper">
       <Header />
       <main className="mp-mypage-main-content">
-        <MyPageMain email={email} />
+        <MyPageMain email={loginState.email} />
       </main>
       <Footer />
     </div>
