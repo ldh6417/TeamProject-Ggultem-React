@@ -8,6 +8,10 @@ const AdminMain = lazy(() => import("../pages/admin/MainPage"));
 const AdminLogin = lazy(() => import("../pages/admin/LoginPage"));
 //* 회원관리 페이지 */
 const AdminMemberList = lazy(() => import("../pages/admin/Member/ListPage"));
+const AdminMemberRead = lazy(() => import("../pages/admin/Member/ReadPage"));
+const AdminMemberModify = lazy(
+  () => import("../pages/admin/Member/ModifyPage"),
+);
 
 //* 사용자 페이지 */
 const Main = lazy(() => import("../pages/MainPage"));
@@ -47,6 +51,22 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <AdminMemberList />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/admin/member/:email",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminMemberRead />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/admin/member/modify/:email",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminMemberModify />
       </Suspense>
     ),
   },

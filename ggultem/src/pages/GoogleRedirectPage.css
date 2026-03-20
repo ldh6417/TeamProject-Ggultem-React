@@ -1,74 +1,61 @@
-/* 전체 컨테이너: 화면 중앙 정렬 */
-.signup-container {
-  min-height: 100vh;
-  display: flex;
-  font-family: 'Pretendard', sans-serif;
+/* 전체 배경: 화면 중앙 정렬 */
+.google-loading-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fffdf5; /* 아주 연한 노란색 배경 */
 }
 
-/* 로딩 박스 */
-.signup-box {
-  background: white;
-  padding: 50px 40px;
-  border-radius: 30px;
-  box-shadow: 0 15px 35px rgba(255, 217, 0, 0.15);
-  border: 2px solid #fff5b1;
+/* 컨테이너 */
+.google-loading-container {
+    text-align: center;
+    padding: 40px;
 }
 
-/* 제목 스타일 */
-.signup-title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #222;
-  margin-bottom: 15px;
+/* 🍯 이모지 애니메이션: 통통 튀는 효과 */
+.google-loading-honey {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: bounce 1.2s infinite;
 }
 
-/* 서브텍스트 */
-.signup-subtitle {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 40px;
-}
-
-/* 꿀벌 로딩 스피너 애니메이션 */
-.loading-spinner {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #ffb400;
-  display: inline-block;
-  padding: 15px 25px;
-  background: #fff9e6;
-  border-radius: 50px;
-  
-  /* 비행하는 듯한 애니메이션 */
-  animation: bee-flight 1.5s infinite ease-in-out;
-}
-
-/* 비행(둥둥 뜨는) 효과 애니메이션 */
-@keyframes bee-flight {
-  0% {
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-10px) rotate(-5deg);
-  }
-  50% {
-    transform: translateY(0) rotate(0deg);
-  }
-  75% {
-    transform: translateY(-5px) rotate(5deg);
-  }
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-}
-
-/* 반응형 처리 */
-@media (max-width: 480px) {
-  .signup-box {
-    width: 85%;
-    padding: 40px 20px;
-  }
-  .signup-title {
+/* 텍스트 스타일 */
+.google-loading-text {
     font-size: 1.5rem;
-  }
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+/* 프로그레스 바 바깥쪽 */
+.google-loading-bar {
+    width: 200px;
+    height: 6px;
+    background-color: #eee;
+    border-radius: 10px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* 프로그레스 바 안쪽: 움직이는 애니메이션 */
+.google-loading-progress {
+    width: 50%;
+    height: 100%;
+    background-color: #ffc107; /* 꿀템 메인 색상 */
+    border-radius: 10px;
+    animation: loadingMove 1.5s infinite ease-in-out;
+}
+
+/* 키프레임: 통통 튀기 */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* 키프레임: 바 이동 */
+@keyframes loadingMove {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
 }

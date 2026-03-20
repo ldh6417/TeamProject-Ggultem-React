@@ -1,0 +1,161 @@
+/* 1. 기본 컨테이너 레이아웃 */
+.memberinfo-wrapper {
+    padding: 30px;
+    min-height: 100vh;
+}
+
+.memberinfo-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+}
+
+/* 2. 상단 헤더 */
+.memberinfo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ffc107;
+    padding-bottom: 15px;
+}
+
+/* 3. 메인 컨텐츠 (좌우 분리 핵심) */
+.memberinfo-content {
+    display: flex;
+    gap: 50px; /* 좌우 간격 확실히 확보 */
+    align-items: flex-start;
+}
+
+/* --- 왼쪽: 프로필 영역 (고정 너비) --- */
+.memberinfo-profile-section {
+    flex: 0 0 200px; /* 절대 줄어들거나 늘어나지 않는 200px 고정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.memberinfo-image-box {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #eee;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+
+.memberinfo-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 사진 변경 버튼 스타일 */
+.file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.file-label:hover {
+    background-color: #000;
+}
+
+/* 숨겨진 input이 자리를 차지하지 못하게 차단 */
+.file-upload-thumbnail {
+    display: none !important;
+}
+
+/* --- 오른쪽: 상세 정보 영역 (유동 너비) --- */
+.memberinfo-details {
+    flex: 1; /* 남은 공간을 다 쓰도록 설정 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0; /* 자식이 부모를 뚫고 나가는 현상 방지 */
+}
+
+.memberinfo-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.memberinfo-row label {
+    flex: 0 0 120px; /* 라벨 너비 고정 */
+    font-weight: 700;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* 우측 입력창들만 스타일 적용 */
+.memberinfo-details input, 
+.memberinfo-details select {
+    flex: 1; /* 라벨을 제외한 나머지 가로를 꽉 채움 */
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box; /* 패딩이 너비를 키우지 않게 설정 */
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.memberinfo-details input:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+/* 읽기 전용 및 비활성 상태 */
+.readonly-input, .disabled-input {
+    background-color: #f1f3f5 !important;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* 권한 배지 */
+.memberinfo-role-badge {
+    padding: 4px 10px;
+    background: #e9ecef;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-right: 5px;
+}
+
+.role-notice {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* 버튼 스타일 */
+.memberinfo-btn {
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.memberinfo-btn.save { background-color: #ffc107; color: #333; }
+.memberinfo-btn.cancel { background-color: #adb5bd; color: #fff; margin-left: 10px; }
+
+/* 반응형 모바일 */
+@media (max-width: 768px) {
+    .memberinfo-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .memberinfo-profile-section {
+        flex: 0 0 auto;
+        margin-bottom: 30px;
+    }
+}

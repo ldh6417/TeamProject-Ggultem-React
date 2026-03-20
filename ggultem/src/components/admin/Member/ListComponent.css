@@ -1,4 +1,6 @@
 .member-list-wrapper {
+    width: 1280px;
+    margin: 0 auto;
     padding: 20px;
     min-height: 100vh;
 }
@@ -7,7 +9,6 @@
     background: #fff;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* 헤더 스타일 */
@@ -91,6 +92,7 @@
     padding: 15px;
     color: #444;
     vertical-align: middle;
+    text-align: center;
 }
 
 /* 배지 및 상태 표시 */

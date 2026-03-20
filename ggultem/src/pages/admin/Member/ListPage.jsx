@@ -11,11 +11,10 @@ const MainPage = () => {
   }
 
   return (
-    <div className="main-container">
+    <div className="memberinfo-page-wrapper">
       <Menu />
-
-      <main className="content-area">
-        <div className="hero-section">
+      <main className="memberinfo-main-content">
+        <div className="memberinfo-hero-section">
           <ListMember />
         </div>
       </main>

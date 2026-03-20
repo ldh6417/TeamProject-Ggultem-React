@@ -42,8 +42,15 @@ const GoogleRedirectPage = () => {
   }, [authCode, dispatch, moveToPath]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="text-2xl font-bold">구글 로그인 중입니다... 🍯</div>
+    <div className="google-loading-wrapper">
+      <div className="google-loading-container">
+        {/* 꿀단지 애니메이션 효과를 위한 아이콘 공간 */}
+        <div className="google-loading-honey">🍯</div>
+        <div className="google-loading-text">구글 로그인 중입니다...</div>
+        <div className="google-loading-bar">
+          <div className="google-loading-progress"></div>
+        </div>
+      </div>
     </div>
   );
 };

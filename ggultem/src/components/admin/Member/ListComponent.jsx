@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getList, API_SERVER_HOST } from "../../../api/MemberApi";
+import { getList, API_SERVER_HOST } from "../../../api/admin/MemberApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import PageComponent from "../../common/PageComponent";
 import { useNavigate } from "react-router-dom";
@@ -86,9 +86,7 @@ const ListComponent = () => {
                   <tr
                     key={member.email}
                     className="member-tr"
-                    onClick={() =>
-                      navigate(`/admin/member/read/${member.email}`)
-                    }
+                    onClick={() => navigate(`/admin/member/${member.email}`)}
                   >
                     <td className="member-td-email">{member.email}</td>
                     <td className="member-td-nickname">
@@ -106,9 +104,9 @@ const ListComponent = () => {
                     </td>
                     <td className="member-td-status">
                       <span
-                        className={`status-dot ${member.del ? "inactive" : "active"}`}
+                        className={`status-dot ${member.enabled === 0 ? "inactive" : "active"}`}
                       ></span>
-                      {member.del ? "탈퇴/비활성" : "활성"}
+                      {member.enabled === 0 ? "비활성" : "활성"}
                     </td>
                   </tr>
                 ))
