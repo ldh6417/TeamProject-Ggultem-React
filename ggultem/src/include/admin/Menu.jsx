@@ -26,28 +26,28 @@ export default function Header() {
 
         {/* 메뉴 영역 */}
         <div className="nav-center">
-          <Link to="/itemBoard" className="nav-link">
+          <Link to="/admin/member/list" className="nav-link">
             회원정보관리
           </Link>
-          <Link to="/report" className="nav-link">
+          <Link to="/admin/itemboard/list" className="nav-link">
             중고거래 게시판 관리
           </Link>
-          <Link to="/board/list" className="nav-link">
+          <Link to="/admin/report/list" className="nav-link">
             신고 게시판 관리
           </Link>
-          <Link to="/board/list" className="nav-link">
+          <Link to="/admin/board/list" className="nav-link">
             커뮤니티 관리
           </Link>
-          <Link to="/notice" className="nav-link">
+          <Link to="/admin/notice/list" className="nav-link">
             공지사항 관리
           </Link>
-          <Link to="/business" className="nav-link">
+          <Link to="/admin/blacklist/list" className="nav-link">
             블랙리스트
           </Link>
-          <Link to="/business" className="nav-link">
+          <Link to="/admin/searchrank/list" className="nav-link">
             인기검색어
           </Link>
-          <Link to="/business" className="nav-link">
+          <Link to="/admin/code/list" className="nav-link">
             코드관리
           </Link>
         </div>

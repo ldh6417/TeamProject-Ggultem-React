@@ -52,6 +52,19 @@ export const getMyInfo = async (email) => {
   return res.data;
 };
 
+export const getList = async (pageParam) => {
+  const { page, size, keyword, searchType } = pageParam;
+  const res = await axios.get(`${host}/admin/member/list`, {
+    params: {
+      page: page,
+      size: size,
+      keyword: keyword,
+      searchType: searchType,
+    },
+  });
+  return res.data;
+};
+
 export const putOne = async (email, formData) => {
   for (let [key, value] of formData.entries()) {
     console.log(`${key}: ${value}`);

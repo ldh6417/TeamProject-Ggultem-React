@@ -6,6 +6,8 @@ import Loading from "../pages/Loading";
 //* 관리자 페이지 */
 const AdminMain = lazy(() => import("../pages/admin/MainPage"));
 const AdminLogin = lazy(() => import("../pages/admin/LoginPage"));
+//* 회원관리 페이지 */
+const AdminMemberList = lazy(() => import("../pages/admin/Member/ListPage"));
 
 //* 사용자 페이지 */
 const Main = lazy(() => import("../pages/MainPage"));
@@ -36,6 +38,15 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <AdminLogin />
+      </Suspense>
+    ),
+  },
+  /* ===== 회원관리 영역 ===== */
+  {
+    path: "/admin/member/list",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminMemberList />
       </Suspense>
     ),
   },
