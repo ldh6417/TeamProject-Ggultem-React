@@ -32,3 +32,19 @@ export const postAdd = async (formData) => {
 
   return res.data;
 };
+
+export const deleteOne = async (id) => {
+  const res = await axios.get(`${prefix}/delete/${id}`);
+
+  return res.data;
+};
+
+export const putOne = async (id, formData) => {
+  const header = {
+    headers: { "Content-Type": "multipart/form-data" },
+  };
+
+  const res = await axios.put(`${prefix}/${id}`, formData, header);
+
+  return res.data;
+};

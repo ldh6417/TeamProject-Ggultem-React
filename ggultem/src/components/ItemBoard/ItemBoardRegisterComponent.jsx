@@ -135,6 +135,9 @@ const ItemBoardRegister = () => {
             <option value="">선택하세요</option>
             <option value="electronics">전자제품</option>
             <option value="clothing">의류</option>
+            <option value="furniture">스포츠</option>
+            <option value="furniture">도서</option>
+            <option value="furniture">건강식품</option>
             <option value="furniture">가구</option>
           </select>
         </div>
@@ -202,6 +205,14 @@ const ItemBoardRegister = () => {
             disabled={fetching}
           >
             {fetching ? "등록 중..." : "상품 등록하기"}
+          </button>
+          <button
+            className="submit-btn"
+            type="button"
+            onClick={() => navigate(-1)}
+            disabled={fetching}
+          >
+            취소하기
           </button>
         </div>
       </div>

@@ -1,0 +1,144 @@
+.read-container {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.read-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.back-btn {
+  background: #f1f3f5;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.read-content {
+  display: flex;
+  gap: 50px;
+}
+
+.image-section {
+  flex: 1;
+  max-width: 450px;
+}
+
+.detail-img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+}
+
+.info-section {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-category {
+  color: #4a90e2;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.info-title {
+  font-size: 28px;
+  margin: 10px 0;
+  color: #222;
+}
+
+.info-price {
+  font-size: 24px;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.detail-row .label {
+  width: 80px;
+  color: #999;
+}
+
+.info-content-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  min-height: 150px;
+}
+
+.info-content {
+  margin-top: 10px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* 버튼 스타일 */
+.read-footer-btns {
+  margin-top: 30px;
+}
+
+.owner-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn,
+.chat-btn {
+  flex: 1;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.edit-btn {
+  background: #333;
+  color: white;
+}
+.delete-btn {
+  background: #ff4d4f;
+  color: white;
+}
+.chat-btn {
+  background: #4a90e2;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #555;
+}
+.delete-btn:hover {
+  background: #ff7875;
+}
+.chat-btn:hover {
+  background: #357abd;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 18px;
+  color: #666;
+}

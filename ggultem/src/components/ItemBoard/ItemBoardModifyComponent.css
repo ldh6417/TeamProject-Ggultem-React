@@ -1,0 +1,108 @@
+.modify-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+  background-color: #f8f9fa;
+}
+
+.modify-form {
+  width: 100%;
+  max-width: 650px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modify-form h2 {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.modify-image-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.modify-image-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.modify-image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.delete-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 0, 0, 0.5);
+  color: white;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.modify-image-item:hover .delete-overlay {
+  display: flex;
+}
+
+.modify-btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.modify-submit-btn {
+  flex: 2;
+  padding: 15px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modify-cancel-btn {
+  flex: 1;
+  padding: 15px;
+  background: #eee;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
