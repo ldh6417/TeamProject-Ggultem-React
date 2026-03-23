@@ -27,6 +27,29 @@ const BoardList = () => {
   const [serverData, setServerData] = useState(initState);
   const navigate = useNavigate();
 
+  const [localKeyword, setLocalKeyword] = useState(keyword || "");
+  const [localType, setLocalType] = useState(searchType || "tc");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (!localKeyword.trim()) {
+      alert("검색어를 입력해주세요.");
+      return;
+    }
+
+    moveToBoardList({
+      page: 1,
+      keyword: localKeyword,
+      searchType: localType,
+    });
+  };
+
+
+
+
+
+
   useEffect(() => {
     getList({
       page,
@@ -48,6 +71,27 @@ const BoardList = () => {
           <p className="board-subtitle">
             유용한 정보와 일상을 공유하는 공간입니다.
           </p>
+          <form className="search-form" onSubmit={handleSearch}>
+            <select
+              value={localType}
+              onChange={(e) => setLocalType(e.target.value)}
+            >
+              <option value="t">제목</option>
+              <option value="c">내용</option>
+              <option value="w">작성자</option>
+              <option value="tc">제목+내용</option>
+            </select>
+
+            <input
+              type="text"
+              value={localKeyword}
+              onChange={(e) => setLocalKeyword(e.target.value)}
+              placeholder="검색어 입력해주세요."
+            />
+
+            <button type="submit">검색</button>
+          </form>
+
 
           <div className="board-actions">
             <span className="total-count">
