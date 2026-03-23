@@ -40,7 +40,10 @@ const BoardReadComponent = ({ boardNo }) => {
 
         {/* 본문 */}
         <div className="read-content-area">
-          <p className="read-text">{board.content}</p>
+          <div
+            className="read-text"
+            dangerouslySetInnerHTML={{ __html: board.content }}
+          />
 
           {/* 이미지 */}
           <div className="read-image-gallery">
