@@ -4,6 +4,7 @@ import { getOne, deleteOne, API_SERVER_HOST } from "../../api/ItemBoardApi"; // 
 import useCustomLogin from "../../hooks/useCustomLogin";
 import ItemBoardReplyComponent from "./ItemBoardReplyComponent";
 import "./ItemBoardReadComponent.css";
+import { postAdd } from "../../api/CartApi";
 
 const host = API_SERVER_HOST;
 
@@ -53,6 +54,24 @@ const ItemBoardReadComponent = () => {
     return <div className="loading">데이터를 불러오는 중...</div>;
   if (!item) return null;
 
+  //장바구니 담기
+  const handleClickAddCart = () => {
+    const cartObj = {
+      itemId: Number(id), // 숫자로 확실히 변환
+      email: loginState.email,
+    };
+
+    console.log("전송 데이터:", cartObj); // 전송 직전 로그 확인
+
+    postAdd(cartObj)
+      .then((data) => {
+        alert("장바구니 담기 성공!");
+        navigate("/cart/list");
+      })
+      .catch((err) => {
+        console.error("에러 발생:", err.response); // 여기서 상세 에러 확인 가능
+      });
+  };
   return (
     <div className="read-container">
       <div className="read-header">
@@ -144,7 +163,9 @@ const ItemBoardReadComponent = () => {
             ) : (
               <>
                 <button className="chat-btn">판매자와 채팅하기</button>
-                <button className="chat-btn">장바구니 담기</button>
+                <button className="chat-btn" onClick={handleClickAddCart}>
+                  장바구니 담기
+                </button>
               </>
             )}
           </div>
