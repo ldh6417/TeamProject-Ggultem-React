@@ -1,0 +1,42 @@
+.admin-reply-list {
+  padding: 10px;
+}
+
+.admin-reply-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.admin-reply-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-reply-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.admin-reply-item.deleted {
+  opacity: 0.5;
+}
+
+.admin-reply-left {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-reply-content {
+  font-weight: 500;
+}
+
+.admin-reply-writer {
+  font-size: 12px;
+  color: gray;
+}

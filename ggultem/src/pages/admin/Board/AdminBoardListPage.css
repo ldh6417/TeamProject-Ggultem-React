@@ -1,0 +1,15 @@
+.admin-board-page-wrapper {
+  display: flex;
+}
+
+.admin-board-main-content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 250px; /* Menu width 맞춰 */
+}
+
+.admin-board-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}

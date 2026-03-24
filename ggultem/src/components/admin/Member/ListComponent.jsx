@@ -39,7 +39,7 @@ const ListComponent = () => {
         <div className="member-header">
           <div className="title-group">
             <h2 className="member-title">
-              <sapn className="member-title-point">꿀템</sapn> 회원정보 관리
+              <span className="member-title-point">꿀템</span> 회원정보 관리
             </h2>
             <p className="member-subtitle">
               서비스에 가입된 전체 회원 목록입니다.
