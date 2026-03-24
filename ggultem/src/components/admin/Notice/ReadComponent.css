@@ -1,0 +1,114 @@
+/* 전체 레이아웃 (List와 통일) */
+.notice-read-wrapper {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.notice-read-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 헤더 스타일 (List와 통일) */
+.notice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+}
+
+.notice-title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.notice-info-group {
+  color: #777;
+  font-size: 0.95rem;
+  display: flex;
+  gap: 15px;
+}
+
+/* 본문 영역 */
+.notice-content-section {
+  padding: 40px 20px;
+  min-height: 300px;
+  border-bottom: 1px solid #eee;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  color: #444;
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+}
+
+/* 이미지 영역 */
+.notice-image-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.notice-image-item {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 하단 버튼 바 */
+.notice-read-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* 버튼 스타일 (List의 admin-btn 상속) */
+.admin-btn {
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.list-btn {
+  background-color: #f8f9fa;
+  color: #555;
+  border: 1px solid #ddd;
+}
+.modify-btn {
+  background-color: #ffc107;
+  color: #333;
+}
+.delete-btn {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.admin-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.9);
+}
+
+.notice-image-item {
+  width: 100%; /* 박스 너비에 꽉 차게 */
+  max-width: 800px; /* 너무 커지지 않게 제한 */
+  display: block;
+  margin: 20px auto; /* 이미지 위아래 간격 주고 가운데 정렬 */
+  border-radius: 8px;
+}
+
+.notice-content-section {
+  white-space: pre-wrap; /* 줄바꿈 그대로 적용 */
+  line-height: 1.8; /* 줄 간격을 넓혀서 읽기 편하게 */
+  font-size: 1.1rem;
+}

@@ -1,12 +1,12 @@
 /* 전체 레이아웃: 좌측 메뉴와 우측 본문 가로 배치 */
-.memberinfo-page-wrapper {
+.noticeinfo-page-wrapper {
   display: flex;
   min-height: 100vh;
 }
 
 /* 좌측 메뉴 영역 (Menu 컴포넌트 크기 고정) */
-.memberinfo-page-wrapper > nav,
-.memberinfo-page-wrapper .admin-sidebar {
+.noticeinfo-page-wrapper > nav,
+.noticeinfo-page-wrapper .admin-sidebar {
   width: 260px;
   flex-shrink: 0;
   position: sticky;
@@ -16,7 +16,7 @@
 }
 
 /* 우측 메인 영역 */
-.memberinfo-main-content {
+.noticeinfo-main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
 }
 
 /* 상세 정보가 담기는 섹션 */
-.memberinfo-hero-section {
+.noticeinfo-hero-section {
   padding: 40px;
   width: 100%;
   max-width: 1400px; /* 상세 정보가 너무 퍼지지 않게 제한 */
@@ -34,7 +34,7 @@
 }
 
 /* 상단 애니메이션 효과 (선택 사항) */
-.memberinfo-hero-section {
+.noticeinfo-hero-section {
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -51,17 +51,17 @@
 
 /* 반응형 처리: 태블릿 이하에서는 여백 축소 */
 @media (max-width: 1024px) {
-  .memberinfo-hero-section {
+  .noticeinfo-hero-section {
     padding: 20px;
   }
 }
 
 /* 모바일 환경 고려 (필요시 메뉴 숨김 처리는 Menu 컴포넌트에서 담당) */
 @media (max-width: 768px) {
-  .memberinfo-page-wrapper {
+  .noticeinfo-page-wrapper {
     flex-direction: column;
   }
-  .memberinfo-page-wrapper > nav {
+  .noticeinfo-page-wrapper > nav {
     width: 100%;
     height: auto;
     position: static;

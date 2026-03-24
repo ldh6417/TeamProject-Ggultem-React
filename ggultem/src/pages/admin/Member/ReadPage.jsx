@@ -1,11 +1,11 @@
 import React from "react";
 import "./ReadPage.css";
-import ReadComponent from "../../../components/admin/Member/ReadComponent";
+import ReadComponent from "../../../components/admin/Notice/ReadComponent";
 import Menu from "../../../include/admin/Menu"; // Menu 임포트 확인!
 import { useParams } from "react-router-dom";
 
 const ReadPage = () => {
-  const { email } = useParams();
+  const { noticeId } = useParams();
 
   return (
     <div className="memberinfo-page-wrapper">
@@ -13,7 +13,7 @@ const ReadPage = () => {
       <main className="memberinfo-main-content">
         <div className="memberinfo-hero-section">
           {/* 상세 컴포넌트에 이메일 전달 */}
-          <ReadComponent email={email} />
+          <ReadComponent noticeId={noticeId} />
         </div>
       </main>
     </div>

@@ -17,7 +17,7 @@ const GoogleRedirectPage = () => {
     if (authCode) {
       if (isProcessing.current || !authCode) return;
       isProcessing.current = true;
-      // 1. 이미 백엔드에서 모든 처리를 끝내고 MemberDTO를 보내주고 있습니다!
+      // 1. 백엔드에서 모든 처리를 끝내고 MemberDTO를 보내주고 있는 상태.
       getAccessToken(authCode)
         .then((memberInfo) => {
           console.log("백엔드에서 받은 회원 정보:", memberInfo);
@@ -36,7 +36,7 @@ const GoogleRedirectPage = () => {
           alert("로그인에 실패했습니다.");
         })
         .finally(() => {
-          // 처리가 끝나도 깃발은 내리지 않습니다. (두 번 실행 방지)
+          // 두 번 실행 방지
         });
     }
   }, [authCode, dispatch, moveToPath]);
