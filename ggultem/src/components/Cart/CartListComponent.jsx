@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import { getList, deleteOne, API_SERVER_HOST } from "../../api/CartApi";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import PageComponent from "../common/PageComponent";
 import "./CartListComponent.css"; // CSS 파일 임포트
 
 const host = API_SERVER_HOST;
@@ -23,9 +24,21 @@ const CartList = () => {
     word: keyword,
   });
 
+  const moveToList = (pageParam) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageParam.page);
+    params.set("searchType", searchType);
+    params.set("keyword", keyword);
+
+    navigate(`/cart/list?${params.toString()}`);
+  };
+
   const [serverData, setServerData] = useState({
     dtoList: [],
     totalCount: 0,
+    pageNumList: [],
+    prev: false,
+    next: false,
   });
 
   const fetchCartList = () => {
@@ -226,6 +239,7 @@ const CartList = () => {
             </button>
           </div>
         )}
+        <PageComponent serverData={serverData} moveToList={moveToList} />
       </div>
     </div>
   );

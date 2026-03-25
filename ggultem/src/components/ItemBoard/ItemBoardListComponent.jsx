@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getList, API_SERVER_HOST } from "../../api/ItemBoardApi";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import PageComponent from "../common/PageComponent";
 import "./ItemBoardListComponent.css";
 
 const host = API_SERVER_HOST;
@@ -21,9 +22,21 @@ const ItemBoardList = () => {
   const searchType = searchParams.get("searchType") || "all";
   const keyword = searchParams.get("keyword") || "";
 
+  const moveToList = (pageParam) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageParam.page);
+    params.set("searchType", searchType);
+    params.set("keyword", keyword);
+
+    navigate(`/itemBoard/list?${params.toString()}`);
+  };
+
   const [serverData, setServerData] = useState({
     dtoList: [],
     totalCount: 0,
+    pageNumList: [],
+    prev: false,
+    next: false,
   });
 
   const [searchState, setSearchState] = useState({
@@ -221,6 +234,7 @@ const ItemBoardList = () => {
           <div className="no-data">조건에 맞는 상품이 없습니다.</div>
         )}
       </div>
+      <PageComponent serverData={serverData} moveToList={moveToList} />
     </div>
   );
 };
