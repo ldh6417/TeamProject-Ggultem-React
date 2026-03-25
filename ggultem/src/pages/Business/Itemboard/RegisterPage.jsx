@@ -1,12 +1,12 @@
-import ListBusiness from "../../components/Business/ListComponent";
-import Footer from "../../include/business/Footer";
-import Header from "../../include/business/Header";
-import "./ListPage.css";
-import useCustomLogin from "../../hooks/useCustomLogin";
-import { getCookie, removeCookie } from "../../util/cookieUtil";
+import RegisterComponent from "../../../components/Business/Itemboard/RegisterComponent";
+import Footer from "../../../include/business/Footer";
+import Header from "../../../include/business/Header";
+import "./RegisterPage.css";
+import useCustomLogin from "../../../hooks/useCustomLogin";
+import { getCookie, removeCookie } from "../../../util/cookieUtil";
 import { useNavigate } from "react-router";
 
-const ListPage = () => {
+const RegisterPage = () => {
   const { isLogin, moveToLoginReturn } = useCustomLogin();
   const nav = useNavigate();
   const memberInfo = getCookie("member");
@@ -26,11 +26,11 @@ const ListPage = () => {
   }
 
   return (
-    <div className="business-page-wrapper">
+    <div className="businessboard-page-wrapper">
       <Header />
-      <main className="business-main-content">
-        <div className="business-hero-section">
-          <ListBusiness />
+      <main className="businessboard-main-content">
+        <div className="businessboard-hero-section">
+          <RegisterComponent />
         </div>
       </main>
       <Footer />
@@ -38,4 +38,4 @@ const ListPage = () => {
   );
 };
 
-export default ListPage;
+export default RegisterPage;

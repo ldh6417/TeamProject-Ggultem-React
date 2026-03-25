@@ -2,27 +2,23 @@ import { Link, useNavigate } from "react-router";
 import "./Header.css";
 // 로고 이미지 경로를 프로젝트 구조에 맞게 수정하세요 (예: src/assets/logo.png)
 import logoImg from "../assets/logo.png";
-import { getCookie, removeCookie } from "../util/cookieUtil";
+import { useSelector } from "react-redux";
+import useCustomLogin from "../hooks/useCustomLogin";
 
 export default function Header() {
   const navigate = useNavigate();
+  const { doLogout } = useCustomLogin();
 
-  const memberInfo = getCookie("member");
+  // ✨ 리덕스 스토어에서 유저 정보를 실시간으로 감시!
+  const loginState = useSelector((state) => state.loginSlice);
 
-  // 1. memberInfo가 이미 객체인지, 아니면 파싱이 필요한 문자열인지 체크
-  let loginState = null;
-
-  if (memberInfo) {
-    // 만약 데이터 타입이 string(문자열)이면 JSON.parse를 실행하고, 아니면 그대로 사용
-    loginState =
-      typeof memberInfo === "string" ? JSON.parse(memberInfo) : memberInfo;
-  }
+  // 🐝 지훈님, 콘솔에 뭐라고 찍히는지 꼭 확인해 보세요!
+  console.log("현재 리덕스 로그인 상태:", loginState);
 
   const handleLogout = () => {
-    removeCookie("member");
+    doLogout();
     alert("로그아웃 되었습니다. 다음에 또 만나요! 🐝");
     navigate("/");
-    window.location.reload(); // 상태 반영을 위해 새로고침
   };
 
   return (
@@ -55,14 +51,10 @@ export default function Header() {
         </div>
 
         <div className="header-nav-right">
-          {loginState ? (
+          {loginState && loginState.email ? (
             // ✅ 로그인 성공 시: 닉네임과 로그아웃 버튼
             <div className="header-user-menu">
-              <Link
-                //to={`/mypage/${loginState.email}`}
-                to={`/mypage`}
-                className="header-user-nickname"
-              >
+              <Link to={`/mypage`} className="header-user-nickname">
                 🍯 {loginState.nickname}님
               </Link>
               <button
@@ -74,7 +66,7 @@ export default function Header() {
             </div>
           ) : (
             // ✅ 로그아웃 상태 시: 로그인 버튼
-            <Link to="/login" className="header-nav-auth-btn">
+            <Link to="/login" className="header-nav-auth-btn login">
               로그인
             </Link>
           )}

@@ -86,9 +86,9 @@ const DetailListComponent = ({ groupCode, refresh, changeRefresh }) => {
     });
   };
 
-  const handleDelete = (detailCode) => {
+  const handleDelete = (codeValue) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      deleteDetailOne(groupCode, detailCode).then(() => {
+      deleteDetailOne(groupCode, codeValue).then(() => {
         alert("삭제 완료");
         changeRefresh();
       });
@@ -166,7 +166,7 @@ const DetailListComponent = ({ groupCode, refresh, changeRefresh }) => {
                       </button>
                       <button
                         className="detail-btn btn-delete"
-                        onClick={() => handleDelete(d.detailCode)}
+                        onClick={() => handleDelete(d.codeValue)}
                       >
                         삭제
                       </button>

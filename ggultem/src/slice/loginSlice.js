@@ -35,6 +35,14 @@ const loginSlice = createSlice({
       removeCookie("member");
       return { ...initState };
     },
+    // ✨ 추가: 회원 정보 수정 시 리덕스 상태와 쿠키를 동시에 바꾸는 액션
+    update: (state, action) => {
+      const payload = action.payload; // 서버에서 받은 '수정된' 회원 정보
+      // 1. 쿠키를 새 정보로 덮어씁니다.
+      setCookie("member", JSON.stringify(payload), 1);
+      // 2. 리덕스 상태를 새 정보로 리턴합니다.
+      return payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginPostAsync.fulfilled, (state, action) => {

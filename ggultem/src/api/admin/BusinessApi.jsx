@@ -11,13 +11,14 @@ export const getOne = async (email) => {
 };
 
 export const getList = async (pageParam) => {
-  const { page, size, keyword, searchType } = pageParam;
+  const { page, size, keyword, searchType, businessVerified } = pageParam;
   const res = await axios.get(`${host}/businessmember/list`, {
     params: {
       page: page,
       size: size,
       keyword: keyword,
       searchType: searchType,
+      businessVerified: businessVerified,
     },
   });
   return res.data;

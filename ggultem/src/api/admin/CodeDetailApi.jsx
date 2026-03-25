@@ -39,7 +39,7 @@ export const putDetailOne = async (detailObj) => {
 };
 
 // 상세 코드 삭제
-export const deleteDetailOne = async (groupCode, detailCode) => {
-  const res = await axios.delete(`${prefix}/${groupCode}/${detailCode}`);
+export const deleteDetailOne = async (groupCode, codeValue) => {
+  const res = await axios.delete(`${prefix}/remove/${groupCode}/${codeValue}`);
   return res.data;
 };

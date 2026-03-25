@@ -24,6 +24,11 @@ const useCustomMove = () => {
   const size = getNum(queryParams.get("size"), 10);
   const keyword = getString(queryParams.get("keyword"), "");
   const searchType = getString(queryParams.get("searchType"), "all");
+  const enabled = getString(queryParams.get("enabled"), "all");
+  const businessVerified = getString(
+    queryParams.get("businessVerified"),
+    "all",
+  );
   const queryDefault = createSearchParams({
     page,
     size,
@@ -33,6 +38,63 @@ const useCustomMove = () => {
 
   const [refresh, setRefresh] = useState(false);
 
+  //********************************** Admin Member 영역 *************************************
+  const moveToMemberList = (pageParam) => {
+    let queryStr = "";
+    if (pageParam) {
+      const pageNum = getNum(pageParam.page, page);
+      const sizeNum = getNum(pageParam.size, size);
+      const keywordStr = getString(pageParam.keyword, keyword);
+      const typeStr = getString(pageParam.searchType, searchType);
+      const enabledStr = getString(pageParam.enabled, enabled);
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+        keyword: keywordStr,
+        searchType: typeStr,
+        enabled: enabledStr,
+      }).toString();
+    } else {
+      queryStr = queryDefault;
+    }
+
+    navigate({
+      pathname: `../admin/member/list`,
+      search: queryStr,
+    });
+
+    setRefresh(!refresh);
+  };
+  //********************************** Admin BusinessMember 영역 *************************************
+  const moveToBusinessMemberList = (pageParam) => {
+    let queryStr = "";
+    if (pageParam) {
+      const pageNum = getNum(pageParam.page, page);
+      const sizeNum = getNum(pageParam.size, size);
+      const keywordStr = getString(pageParam.keyword, keyword);
+      const typeStr = getString(pageParam.searchType, searchType);
+      const businessVerifiedStr = getString(
+        pageParam.businessVerified,
+        businessVerified,
+      );
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+        keyword: keywordStr,
+        searchType: typeStr,
+        businessVerified: businessVerifiedStr,
+      }).toString();
+    } else {
+      queryStr = queryDefault;
+    }
+
+    navigate({
+      pathname: `../admin/businessmember/list`,
+      search: queryStr,
+    });
+
+    setRefresh(!refresh);
+  };
   //********************************** MyPage 영역 *************************************
 
   const moveToMyPageModify = () => {
@@ -269,12 +331,16 @@ const useCustomMove = () => {
     moveToBusinessBoardList,
     moveToBusinessBoardRead,
     moveToBusinessBoardModify,
+    moveToMemberList,
+    moveToBusinessMemberList,
     moveToMyPageModify,
     moveToBoardList,
     page,
     size,
     keyword,
     searchType,
+    enabled,
+    businessVerified,
     refresh,
   };
 };

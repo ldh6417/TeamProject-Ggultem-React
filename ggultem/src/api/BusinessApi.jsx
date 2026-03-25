@@ -5,6 +5,13 @@ export const API_SERVER_HOST = "http://localhost:8080";
 const host = `${API_SERVER_HOST}`;
 
 //비즈니스 광고 게시글
+export const postItemBoardAdd = async (formData) => {
+  const res = await axios.post(`${host}/business/board/register`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
+
 export const getOne = async (no) => {
   const res = await axios.get(`${host}/business/board/${no}`);
   return res.data;
@@ -26,6 +33,12 @@ export const getList = async (pageParam) => {
 //비즈니스 회원 등록
 export const postAdd = async (businessData) => {
   const res = await axios.post(`${host}/businessmember/`, businessData);
+  return res.data;
+};
+
+//비즈니스 회원 정보
+export const getMyPage = async (email) => {
+  const res = await axios.get(`${host}/businessmember/${email}`);
   return res.data;
 };
 

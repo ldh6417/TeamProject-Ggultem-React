@@ -8,6 +8,8 @@ import {
 } from "../../api/MemberApi";
 import InfoModal from "../../common/InfoModal";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { login } from "../../slice/loginSlice";
 
 const host = API_SERVER_HOST;
 
@@ -23,6 +25,7 @@ const initState = {
 
 const ModifyComponent = ({ email }) => {
   const [member, setMember] = useState({ ...initState });
+  const dispatch = useDispatch();
   const uploadRef = useRef();
   const [result, setResult] = useState(null);
   const [infoModal, setInfoModal] = useState(false);
@@ -64,6 +67,7 @@ const ModifyComponent = ({ email }) => {
     }
     putOne(email, formData)
       .then((data) => {
+        dispatch(login(member));
         setResult("Modified");
         setInfoModal(true);
       })

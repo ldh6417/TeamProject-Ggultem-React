@@ -5,13 +5,14 @@ export const API_SERVER_HOST = "http://localhost:8080";
 const host = `${API_SERVER_HOST}`;
 
 export const getList = async (pageParam) => {
-  const { page, size, keyword, searchType } = pageParam;
+  const { page, size, keyword, searchType, enabled } = pageParam;
   const res = await axios.get(`${host}/admin/member/list`, {
     params: {
       page: page,
       size: size,
       keyword: keyword,
       searchType: searchType,
+      enabled: enabled,
     },
   });
   return res.data;

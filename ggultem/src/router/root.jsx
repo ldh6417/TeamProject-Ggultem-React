@@ -40,6 +40,16 @@ const CodeGroupList = lazy(() => import("../pages/CodeGroup/ListPage"));
 const CodeGroupAdd = lazy(() => import("../pages/CodeGroup/AddPage"));
 const CodeGroupRead = lazy(() => import("../pages/CodeGroup/ReadPage"));
 const CodeGroupModify = lazy(() => import("../pages/CodeGroup/ModifyPage"));
+//* Admin Item Board 관리 페이지 */
+const AdminItemBoardList = lazy(
+  () => import("../pages/admin/ItemBoard/AdminListPage"),
+);
+const AdminItemBoardRead = lazy(
+  () => import("../pages/admin/ItemBoard/AdminReadPage"),
+);
+const AdminItemBoardRegister = lazy(
+  () => import("../pages/admin/ItemBoard/AdminRegisterPage"),
+);
 
 //* 사용자 페이지 */
 const Main = lazy(() => import("../pages/MainPage"));
@@ -53,6 +63,9 @@ const Modify = lazy(() => import("../pages/MyPage/ModifyPage"));
 const BusinessMain = lazy(() => import("../pages/Business/MainPage"));
 const BusinessList = lazy(() => import("../pages/Business/ListPage"));
 const BusinessRegister = lazy(() => import("../pages/Business/RegisterPage"));
+const BusinessBoardRegister = lazy(
+  () => import("../pages/Business/Itemboard/RegisterPage"),
+);
 //* 공지사항 lazy */
 const NoticeList = lazy(() => import("../pages/Notice/NoticePage"));
 const NoticeRead = lazy(() => import("../pages/Notice/NoticeRead"));
@@ -146,11 +159,49 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
+  //* Admin 상품게시판 관리자 영역 */
+  {
+    path: "/admin/itemBoard/list",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminItemBoardList />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/admin/itemBoard/read/:id",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminItemBoardRead />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/admin/itemBoard/register",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminItemBoardRegister />
+      </Suspense>
+    ),
+  },
+
   // 커뮤니티 관리자 영역
   /* ===== 관리자 영역 ===== */
   {
     path: "/admin/board/list",
-    element: <AdminBoardListPage />,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminBoardListPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/admin/reply/list",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminReplyListPage />
+      </Suspense>
+    ),
   },
   // ✅ 관리자 공지사항
   {
@@ -394,6 +445,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <BusinessRegister />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/board/register",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BusinessBoardRegister />
       </Suspense>
     ),
   },

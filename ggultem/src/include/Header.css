@@ -60,7 +60,7 @@
 }
 
 /* 우측 버튼 (로그인 등) */
-.header-nav-auth-btn {
+.header-nav-auth-btn.login {
   text-decoration: none;
   font-size: 16px;
   font-weight: 800;
@@ -96,20 +96,26 @@
   align-items: center;
 }
 .header-user-menu {
+  width: 250px;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .header-user-nickname {
+  width: 60%;
   font-weight: 800;
   color: var(--bee-brown);
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .header-nav-auth-btn.logout {
+  width: 30%;
+  height: 30px;
   background-color: #f1f1f1;
   border-color: #ddd;
+  font-size: 12px;
+  padding: 0px;
 }
 
 .header-nav-auth-btn.logout:hover {

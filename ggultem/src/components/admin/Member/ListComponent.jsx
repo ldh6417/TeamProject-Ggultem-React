@@ -21,16 +21,45 @@ const initState = {
 const host = API_SERVER_HOST;
 
 const ListComponent = () => {
-  const { page, size, keyword, searchType, refresh, moveToBoardList } =
-    useCustomMove();
+  const {
+    page,
+    size,
+    keyword,
+    searchType,
+    refresh,
+    enabled,
+    moveToMemberList,
+  } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
+  const [codeSearchType, setCodeSearchType] = useState("all");
+  const [codeKeyword, setCodeKeyword] = useState("");
+  const [enabledFilter, setEnabledFilter] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
-    getList({ page, size, keyword, searchType }).then((data) => {
+    getList({ page, size, keyword, searchType, enabled }).then((data) => {
+      console.log(data);
       setServerData(data);
     });
-  }, [page, size, keyword, searchType, refresh]);
+  }, [page, size, keyword, searchType, refresh, enabled]);
+
+  const handleReset = () => {
+    setCodeKeyword(""); // 입력창 비우기
+    setCodeSearchType("all");
+
+    navigate("/admin/member/list");
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    moveToMemberList({
+      page: 1, // 검색 시에는 1페이지로 이동하는 게 좋습니다
+      size,
+      keyword: codeKeyword,
+      searchType: codeSearchType,
+      enabled: enabledFilter === "all" ? null : enabledFilter,
+    });
+  };
 
   return (
     <div className="member-list-wrapper">
@@ -45,6 +74,42 @@ const ListComponent = () => {
               서비스에 가입된 전체 회원 목록입니다.
             </p>
           </div>
+          <form className="codegroup-search-form" onSubmit={handleSearch}>
+            <div className="codegroup-actions">
+              <select
+                className="admin-search status-filter"
+                value={enabledFilter}
+                onChange={(e) => setEnabledFilter(e.target.value)}
+              >
+                <option value="all">계정상태</option>
+                <option value="1">활성 계정</option>
+                <option value="0">비활성 계정</option>
+              </select>
+              <select
+                className="admin-search"
+                value={codeSearchType}
+                onChange={(e) => setCodeSearchType(e.target.value)}
+              >
+                <option value="all">전체</option>
+                <option value="nickname">닉네임</option>
+                <option value="email">이메일</option>
+              </select>
+              <input
+                type="text"
+                value={codeKeyword}
+                onChange={(e) => setCodeKeyword(e.target.value)}
+                placeholder="검색어를 입력하세요"
+              />
+              <button type="submit" className="search-btn-wide">
+                🍯 검색
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className="admin-btn-group">
+          <button className="admin-btn reset-btn" onClick={handleReset}>
+            목록 초기화
+          </button>
 
           <div className="member-actions">
             <button
@@ -106,9 +171,9 @@ const ListComponent = () => {
                     </td>
                     <td className="member-td-status">
                       <span
-                        className={`status-dot ${member.enabled === 0 ? "inactive" : "active"}`}
+                        className={`status-dot ${member.claims.enabled === 0 ? "inactive" : "active"}`}
                       ></span>
-                      {member.enabled === 0 ? "비활성" : "활성"}
+                      {member.claims.enabled === 0 ? "비활성" : "활성"}
                     </td>
                   </tr>
                 ))
@@ -124,7 +189,10 @@ const ListComponent = () => {
 
           {/* 페이징 */}
           <div className="member-pagination-wrapper">
-            <PageComponent serverData={serverData} movePage={moveToBoardList} />
+            <PageComponent
+              serverData={serverData}
+              moveToList={moveToMemberList}
+            />
           </div>
         </div>
       </div>
