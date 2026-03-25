@@ -95,6 +95,43 @@ const useCustomMove = () => {
 
     setRefresh(!refresh);
   };
+
+  // ** Admin BlackList 영역 (추가됨) **
+
+  // 1. 블랙리스트 목록으로 이동
+  const moveToBlackListList = (pageParam) => {
+    let queryStr = "";
+    if (pageParam) {
+      const pageNum = getNum(pageParam.page, page);
+      const sizeNum = getNum(pageParam.size, size);
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+      }).toString();
+    } else {
+      queryStr = queryDefault;
+    }
+
+    navigate({
+      pathname: "../blacklist/list",
+      search: queryStr,
+    });
+
+    setRefresh(!refresh);
+  };
+
+  // 2. 블랙리스트 등록 화면으로 이동
+  const moveToAdd = () => {
+    navigate({
+      pathname: "../blacklist/add",
+    });
+  };
+
+  // 3. 페이징 처리를 위한 단순 이동 함수
+  const movePage = (pageParam) => {
+    moveToBlackListList(pageParam);
+  };
+
   //********************************** MyPage 영역 *************************************
 
   const moveToMyPageModify = () => {
@@ -335,6 +372,9 @@ const useCustomMove = () => {
     moveToBusinessMemberList,
     moveToMyPageModify,
     moveToBoardList,
+    moveToBlackListList,
+    moveToAdd,
+    movePage,
     page,
     size,
     keyword,

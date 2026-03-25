@@ -50,6 +50,10 @@ const AdminItemBoardRead = lazy(
 const AdminItemBoardRegister = lazy(
   () => import("../pages/admin/ItemBoard/AdminRegisterPage"),
 );
+// ✅ 블랙리스트 관리 페이지 (추가됨)
+const BlackListIndex = lazy(() => import("../pages/admin/BlackList/IndexPage"));
+const BlackListAdd = lazy(() => import("../pages/admin/BlackList/AddPage"));
+const BlackListRead = lazy(() => import("../pages/admin/BlackList/ReadPage"));
 
 //* 사용자 페이지 */
 const Main = lazy(() => import("../pages/MainPage"));
@@ -271,6 +275,31 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <CodeGroupModify />
+      </Suspense>
+    ),
+  },
+  /* ===== 블랙리스트 관리 영역 ===== */
+  {
+    path: "admin/blacklist/list",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BlackListIndex />
+      </Suspense>
+    ),
+  },
+  {
+    path: "admin/blacklist/add",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BlackListAdd />
+      </Suspense>
+    ),
+  },
+  {
+    path: "admin/blacklist/read/:blId",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BlackListRead />
       </Suspense>
     ),
   },
