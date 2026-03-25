@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-// 1. 관리자 전용 API 경로로 수정하고, 이미지 경로용 API_SERVER_HOST를 함께 가져옵니다.
 import { getOne, API_SERVER_HOST } from "../../../api/admin/NoticeApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import "./ReadComponent.css";
 import RemoveComponent from "./RemoveComponent";
-//분리한 삭제 컴포넌트
 
 const initState = {
   noticeId: 0,
@@ -14,6 +12,7 @@ const initState = {
   regDate: "",
   visitCount: 0,
   uploadFileNames: [],
+  isPinned: 0,
 };
 
 const ReadComponent = ({ noticeId }) => {
@@ -21,7 +20,6 @@ const ReadComponent = ({ noticeId }) => {
   const { moveToAdminNoticeList, moveToAdminNoticeModify } = useCustomMove();
 
   useEffect(() => {
-    // 자바 Service의 get(noticeId) 호출 -> 조회수 자동 증가됨
     getOne(noticeId).then((data) => {
       setNotice(data);
     });
@@ -33,6 +31,11 @@ const ReadComponent = ({ noticeId }) => {
         {/* 상단 헤더: 제목 및 정보 */}
         <div className="notice-header">
           <div className="title-group">
+            {/* 📌 상단 고정 뱃지 */}
+            {notice.isPinned === 1 && (
+              <span className="pinned-badge">상단 고정 공지</span>
+            )}
+
             <h2 className="notice-title">
               {notice.title || "제목을 불러오는 중..."}
             </h2>
@@ -51,18 +54,25 @@ const ReadComponent = ({ noticeId }) => {
 
         {/* 이미지 출력 영역 */}
         <div className="notice-image-list">
-          {/* 이미지 */}
-          {notice.uploadFileNames &&
-            notice.uploadFileNames.map((fileName, i) => (
-              <div key={i} className="notice-image-box">
-                <img
-                  className="notice-image-item"
-                  // 상단에서 import한 API_SERVER_HOST를 사용하여 경로 완성
-                  src={`${API_SERVER_HOST}/admin/notice/view/${fileName}`}
-                  alt={`공지이미지-${i}`}
-                />
-              </div>
-            ))}
+          {/* 1. 배열이 있는지 먼저 확인 */}
+          {notice.uploadFileNames && notice.uploadFileNames.length > 0
+            ? notice.uploadFileNames
+                // 2. 유효하지 않은 파일명(빈값, null 문자열, 공백 등)을 걸러냄
+                .filter(
+                  (fileName) =>
+                    fileName && fileName.trim() !== "" && fileName !== "null",
+                )
+                // 3. 필터링된 결과가 있을 때만 map 실행
+                .map((fileName, i) => (
+                  <div key={i} className="notice-image-box">
+                    <img
+                      className="notice-image-item"
+                      src={`${API_SERVER_HOST}/admin/notice/view/${fileName}`}
+                      alt={`공지이미지-${i}`}
+                    />
+                  </div>
+                ))
+            : null}
         </div>
 
         {/* 하단 버튼 그룹 */}
@@ -79,7 +89,6 @@ const ReadComponent = ({ noticeId }) => {
           >
             수정하기
           </button>
-          {/* 삭제 컴포넌트 */}
           <RemoveComponent noticeId={noticeId} />
         </div>
       </div>

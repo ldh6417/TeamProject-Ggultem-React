@@ -157,3 +157,40 @@
   display: flex;
   justify-content: center;
 }
+
+/* --- 상단 고정(Pinned) 스타일 --- */
+
+/* 1. 고정글 행 배경색 강조 (꿀템 컨셉에 맞춘 연한 노란색) */
+.notice-tr.pinned-row {
+  background-color: #fffbe6 !important; /* 일반 hover보다 살짝 더 진한 느낌 */
+}
+
+/* 2. 고정글 행 hover 시 조금 더 진하게 */
+.notice-tr.pinned-row:hover {
+  background-color: #fff5cc !important;
+}
+
+/* 3. 고정글 내부 텍스트 강조 */
+.notice-tr.pinned-row .notice-table-td-title {
+  font-weight: 700;
+  color: #333;
+}
+
+/* 4. [공지] 뱃지 스타일 (선택사항: 텍스트 대신 뱃지 형태를 원할 경우) */
+.pinned-badge {
+  display: inline-block;
+  background-color: #ffc107;
+  color: #333;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* 5. 📌 아이콘 강조 */
+.pinned-icon {
+  font-size: 1.1rem;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.1));
+}

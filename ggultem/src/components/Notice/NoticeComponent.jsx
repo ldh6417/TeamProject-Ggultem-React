@@ -49,7 +49,6 @@ const NoticeComponent = () => {
             <span className="total-count">
               전체 게시글 {serverData.totalCount}개
             </span>
-            {/* 공지사항은 글쓰기 없음 → 버튼 제거 */}
           </div>
         </div>
 
@@ -70,16 +69,22 @@ const NoticeComponent = () => {
                 serverData.dtoList.map((notice) => (
                   <tr
                     key={notice.noticeId}
-                    className="board-row"
+                    className={`board-row ${notice.isPinned === 1 ? "pinned-row" : ""}`}
                     onClick={() => moveToNoticeRead(notice.noticeId)}
                   >
-                    <td className="td-no">{notice.noticeId}</td>
+                    <td className="td-no">
+                      {notice.isPinned === 1 ? (
+                        <span className="pinned-badge">공지</span>
+                      ) : (
+                        notice.noticeId
+                      )}
+                    </td>
                     <td className="td-title">
                       <div className="title-wrapper">
-                        {notice.uploadFileNames &&
-                          notice.uploadFileNames.length > 0 && (
-                            <span className="img-icon">🖼️</span>
-                          )}
+                        {/* 고정 공지 핀 아이콘만 남기고 이미지 아이콘은 제거 */}
+                        {notice.isPinned === 1 && (
+                          <span className="pinned-icon">📌</span>
+                        )}
                         <span className="title-text">{notice.title}</span>
                       </div>
                     </td>

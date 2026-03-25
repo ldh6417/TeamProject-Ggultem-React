@@ -5,13 +5,13 @@ export const API_SERVER_HOST = "http://localhost:8080";
 
 const prefix = `${API_SERVER_HOST}/admin/notice`;
 
-// 상세 조회
+// 1. 상세 조회
 export const getOne = async (noticeId) => {
   const res = await axios.get(`${prefix}/${noticeId}`);
   return res.data;
 };
 
-// 리스트 조회 (검색 포함)
+// 2. 리스트 조회 (검색 포함)
 export const getList = async (pageParam) => {
   const { page, size, keyword, searchType } = pageParam;
 
@@ -24,5 +24,15 @@ export const getList = async (pageParam) => {
     },
   });
 
+  return res.data;
+};
+
+// 3. 공지사항 등록 (POST 요청)
+export const postAdd = async (formData) => {
+  const header = {
+    headers: { "Content-Type": "multipart/form-data" },
+  };
+
+  const res = await axios.post(`${prefix}/`, formData, header);
   return res.data;
 };

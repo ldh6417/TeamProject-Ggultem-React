@@ -77,11 +77,25 @@ const AdminNoticeListComponent = () => {
               serverData.dtoList.map((notice) => (
                 <tr
                   key={notice.noticeId}
-                  className="notice-tr"
+                  // 고정 여부에 따라 pinned-row 클래스 동적 적용
+                  className={`notice-tr ${notice.isPinned === 1 ? "pinned-row" : ""}`}
                   onClick={() => moveToAdminNoticeRead(notice.noticeId)}
                 >
-                  <td className="notice-table-td-no">{notice.noticeId}</td>
-                  <td className="notice-table-td-title">{notice.title}</td>
+                  <td className="notice-table-td-no">
+                    {/* 고정글은 아이콘 표시, 일반글은 번호 표시 */}
+                    {notice.isPinned === 1 ? (
+                      <span className="pinned-icon">📌</span>
+                    ) : (
+                      notice.noticeId
+                    )}
+                  </td>
+                  <td className="notice-table-td-title">
+                    {/* 인라인 스타일 대신 CSS 클래스(pinned-badge) 사용 */}
+                    {notice.isPinned === 1 && (
+                      <span className="pinned-badge">공지</span>
+                    )}
+                    <span className="notice-text">{notice.title}</span>
+                  </td>
                   <td className="notice-table-td-regDate">{notice.regDate}</td>
                 </tr>
               ))
