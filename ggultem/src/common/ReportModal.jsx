@@ -4,7 +4,7 @@ import "./InfoModal.css"; // 기존 스타일 재활용
 const ReportModal = ({ show, targetData, callbackFn, submitFn }) => {
   // targetData: { targetType, targetNo, targetMemberId } 정보를 부모로부터 받음
 
-  // usetState는 아무 것도 주지 않은 상태(체크 없는 상태)로 두고 실수로 제출을 누를 시 무엇이든 선택해야 한다는 문구 넣기.
+  // usetState 초기값은 빈 문자열로 두어 사용자가 반드시 선택하도록 세팅.
   const [reportType, setReportType] = useState("");
   const [reason, setReason] = useState("");
   const [files, setFiles] = useState([]);
@@ -18,22 +18,33 @@ const ReportModal = ({ show, targetData, callbackFn, submitFn }) => {
   };
 
   const handleSubmit = () => {
-    // 반드시 선택
-    if (!reportType) {
+    // 유효성 검사 1: 유형 선택 여부
+    if (!reportType || reportType === "" || reportType === "선택해 주세요") {
       alert("신고 유형을 반드시 선택해 주세요.");
       return;
     }
 
-    // 기타 선택 시 사유 체크
+    // 유효성 검사 2: 기타 선택 시 상세 사유 기재 필수
     if (reportType === "기타" && !reason.trim()) {
-      alert("상세 사유를 입력해 주세요.");
+      alert("기타 사유를 구체적으로 입력해 주세요.");
       return;
     }
 
-    // 부모 컴포넌트에서 전달받은 전송 로직 실행
-    submitFn({ reportType, reason, files, ...targetData });
+    // 최종 데이터 전송(이미지파일 포함을 위해 객체 구성하기)
+    submitFn({
+      reportType,
+      reason: reportType === "기타" ? reason : reportType, // '기타'가 아니면 유형 자체를 사유로 저장
+      files,
+      ...targetData,
+    });
+
+    // 제출 후 상태 초기화
+    setReportType("");
+    setReason("");
+    setFiles([]);
   };
 
+  // 실제 렌더링 부분 (handleSubmit 함수 외부로 이동)
   return (
     <div className="modal-overlay" onClick={callbackFn}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -66,6 +77,7 @@ const ReportModal = ({ show, targetData, callbackFn, submitFn }) => {
                 }
               }}
             >
+              <option value="">선택해 주세요</option>
               <option>혐오/차별적/욕설 표현</option>
               <option>스팸홍보/도배</option>
               <option>음란물/청소년에게 유해한 내용</option>
