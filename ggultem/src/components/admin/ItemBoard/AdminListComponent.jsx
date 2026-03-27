@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { getList } from "../../../api/admin/ItemBoardApi";
 import PageComponent from "../../common/PageComponent";
+import axios from "axios";
+import { getListByGroup } from "../../../api/admin/CodeDetailApi";
 import "./AdminListComponent.css";
+import { API_SERVER_HOST } from "../../../api/ItemBoardApi";
+
+const host = API_SERVER_HOST;
 
 const AdminListComponent = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [categories, setCategories] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [serverData, setServerData] = useState({
     dtoList: [],
     totalCount: 0,
@@ -35,6 +42,16 @@ const AdminListComponent = () => {
     // 입력창 비우기
     inputElement.value = "";
   };
+
+  // 코드값을 넣으면 한글명을 찾아주는 마법의 함수
+  const getCodeName = (codeList, codeValue) => {
+    if (!codeList || codeList.length === 0) return codeValue;
+    const found = codeList.find(
+      (c) => String(c.codeValue) === String(codeValue),
+    );
+    return found ? found.codeName : codeValue;
+  };
+
   const moveToList = (pageParam) => {
     const params = new URLSearchParams();
     params.set("page", pageParam.page);
@@ -65,6 +82,31 @@ const AdminListComponent = () => {
     }
 
     getList(params).then((data) => setServerData(data));
+
+    const pageParam = { page: 1, size: 100 };
+
+    // 공통 코드 그룹 전체 조회
+    axios
+      .get(`${host}/api/codegroup/list`, { params: pageParam })
+      .then((res) => {
+        const allGroups = res.data.dtoList || [];
+        allGroups.forEach((group) => {
+          const gCode = group.groupCode.toUpperCase();
+
+          // 카테고리 데이터 가져오기
+          if (gCode.includes("ITEM_CATEGORY") || gCode.includes("ITEM_CAT")) {
+            getListByGroup(pageParam, group.groupCode).then((data) =>
+              setCategories(data.dtoList),
+            );
+          }
+          // 지역 데이터 가져오기
+          if (gCode.includes("ITEM_LOCATION") || gCode.includes("ITEM_LOC")) {
+            getListByGroup(pageParam, group.groupCode).then((data) =>
+              setLocations(data.dtoList),
+            );
+          }
+        });
+      });
   }, [page, size, enabled, searchType, keyword]);
 
   return (
@@ -151,7 +193,9 @@ const AdminListComponent = () => {
               >
                 <td>{item.id}</td>
                 <td>
-                  <span className="cat-badge">{item.category}</span>
+                  <span className="cat-badge">
+                    {getCodeName(categories, item.category)}
+                  </span>
                 </td>
                 <td className="text-left">
                   <strong>{item.title}</strong>

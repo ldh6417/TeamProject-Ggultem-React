@@ -1,15 +1,55 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getOne, deleteOne, API_SERVER_HOST } from "../../../api/ItemBoardApi";
+import { getListByGroup } from "../../../api/admin/CodeDetailApi";
+import axios from "axios";
 import "./AdminReadComponent.css";
+
+const host = API_SERVER_HOST;
 
 const AdminReadComponent = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [item, setItem] = useState(null);
+
+  // 코드값을 넣으면 한글명을 찾아주는 마법의 함수
+  const getCodeName = (codeList, codeValue) => {
+    if (!codeList || codeList.length === 0) return codeValue;
+    const found = codeList.find(
+      (c) => String(c.codeValue) === String(codeValue),
+    );
+    return found ? found.codeName : codeValue;
+  };
 
   useEffect(() => {
     getOne(id).then((data) => setItem(data));
+
+    const pageParam = { page: 1, size: 100 };
+
+    // 공통 코드 그룹 전체 조회
+    axios
+      .get(`${host}/api/codegroup/list`, { params: pageParam })
+      .then((res) => {
+        const allGroups = res.data.dtoList || [];
+        allGroups.forEach((group) => {
+          const gCode = group.groupCode.toUpperCase();
+
+          // 카테고리 데이터 가져오기
+          if (gCode.includes("ITEM_CATEGORY") || gCode.includes("ITEM_CAT")) {
+            getListByGroup(pageParam, group.groupCode).then((data) =>
+              setCategories(data.dtoList),
+            );
+          }
+          // 지역 데이터 가져오기
+          if (gCode.includes("ITEM_LOCATION") || gCode.includes("ITEM_LOC")) {
+            getListByGroup(pageParam, group.groupCode).then((data) =>
+              setLocations(data.dtoList),
+            );
+          }
+        });
+      });
   }, [id]);
 
   if (!item) return <div className="admin-main-wrapper">로딩 중...</div>;
@@ -59,9 +99,11 @@ const AdminReadComponent = () => {
 
           <div className="product-info-area">
             <div className="info-label-group">
-              <span className="cat-badge">{item.category}</span>
+              <span className="cat-badge">
+                {getCodeName(categories, item.category)}
+              </span>
               <span className="location-text">
-                📍 {item.location || "지역 정보 없음"}
+                <td>{getCodeName(locations, item.location)}</td>
               </span>
             </div>
             <h2 className="item-title">{item.title}</h2>
