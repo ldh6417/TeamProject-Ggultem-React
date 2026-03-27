@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // 👈 회원 페이지 이동을 위해 추가
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
@@ -20,23 +21,22 @@ const initState = {
 };
 
 const BlackListDashboard = () => {
-  // 💡 refresh 상태를 추가하여 검색 시 강제로 useEffect를 트리거합니다.
   const { page, size, refresh, keyword, searchType, moveToAdd, movePage } =
     useCustomMove();
+  const navigate = useNavigate(); // 👈 네비게이트 훅 선언
+
   const [serverData, setServerData] = useState(initState);
   const [showModal, setShowModal] = useState(false);
   const [currentBlId, setCurrentBlId] = useState(null);
+  const [filterStatus, setFilterStatus] = useState("ALL");
 
   const selectRef = useRef(null);
   const inputRef = useRef(null);
 
-  // 데이터 로딩 로직
   useEffect(() => {
-    // 💡 검색 타입이 없으면 기본값 'e'(email) 설정
     const querySearchType = searchType || "e";
     const queryKeyword = keyword || "";
 
-    // URL 파라미터와 입력창 동기화
     if (selectRef.current) selectRef.current.value = querySearchType;
     if (inputRef.current) inputRef.current.value = queryKeyword;
 
@@ -47,31 +47,23 @@ const BlackListDashboard = () => {
       keyword: queryKeyword,
     })
       .then((data) => {
-        console.log("검색 결과 데이터:", data);
         setServerData(data || initState);
       })
       .catch((err) => {
         console.error("데이터 로딩 실패:", err);
       });
-  }, [page, size, refresh, keyword, searchType]); // 💡 의존성 배열 확인
+  }, [page, size, refresh, keyword, searchType]);
 
-  // --- 💡 [수정] 검색 버튼 클릭 핸들러 ---
+  const filteredList =
+    serverData.dtoList?.filter((item) => {
+      if (filterStatus === "ALL") return true;
+      return item.status === filterStatus;
+    }) || [];
+
   const handleSearch = () => {
     const type = selectRef.current.value;
     const word = inputRef.current.value.trim();
-
-    console.log("검색 실행:", { type, word });
-
-    // 1. 검색어가 없어도 검색(전체목록)이 가능하게 하려면 word가 빈 값이어도 진행합니다.
-    // 2. movePage가 정상 작동하지 않을 경우를 대비해 파라미터를 명확히 전달합니다.
-    movePage({
-      page: 1,
-      searchType: type,
-      keyword: word,
-    });
-
-    // 💡 추가 조치: 만약 위 movePage가 반응이 없다면 아래 코드를 주석 해제하여 테스트해보세요.
-    // window.location.href = `/admin/blacklist/list?page=1&searchType=${type}&keyword=${word}`;
+    movePage({ page: 1, searchType: type, keyword: word });
   };
 
   const handleMoveToAddWithCheck = () => {
@@ -81,9 +73,7 @@ const BlackListDashboard = () => {
         (item) => item.email === inputEmail && item.status === "Y",
       );
       if (isAlreadyActive) {
-        alert(
-          `[${inputEmail}]님은 이미 차단(Y) 상태입니다.\n중복 등록할 수 없습니다.`,
-        );
+        alert(`[${inputEmail}]님은 이미 차단(Y) 상태입니다.`);
         return;
       }
     }
@@ -123,6 +113,11 @@ const BlackListDashboard = () => {
   const handleClickRead = (blId) => {
     setCurrentBlId(blId);
     setShowModal(true);
+  };
+
+  // 🚀 이메일 클릭 시 회원 상세 정보로 이동하는 함수
+  const handleClickMember = (email) => {
+    navigate(`/admin/member/${email}`);
   };
 
   return (
@@ -175,7 +170,33 @@ const BlackListDashboard = () => {
         </div>
       </div>
 
-      {/* 💡 검색 바 영역 */}
+      {/* 카테고리 탭 영역 */}
+      <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
+        {[
+          { id: "ALL", label: "전체 목록" },
+          { id: "Y", label: "차단 중(Y)" },
+          { id: "N", label: "차단 해제(N)" },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setFilterStatus(tab.id)}
+            style={{
+              padding: "10px 20px",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "bold",
+              border: "1px solid #ddd",
+              backgroundColor: filterStatus === tab.id ? "#333" : "#fff",
+              color: filterStatus === tab.id ? "#fff" : "#333",
+              transition: "0.2s",
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 검색 바 영역 */}
       <div
         style={{
           display: "flex",
@@ -271,91 +292,92 @@ const BlackListDashboard = () => {
           </tr>
         </thead>
         <tbody>
-          {serverData.dtoList && serverData.dtoList.length > 0 ? (
-            [...serverData.dtoList]
-              .sort((a, b) =>
-                a.status !== b.status
-                  ? a.status === "Y"
-                    ? -1
-                    : 1
-                  : b.blId - a.blId,
-              )
-              .map((item) => {
-                const isActive = item.status === "Y";
-                return (
-                  <tr
-                    key={item.blId}
+          {filteredList.length > 0 ? (
+            filteredList.map((item) => {
+              const isActive = item.status === "Y";
+              return (
+                <tr
+                  key={item.blId}
+                  style={{
+                    backgroundColor: isActive ? "#FFF5F5" : "white",
+                    height: "45px",
+                  }}
+                >
+                  <td
                     style={{
-                      backgroundColor: isActive ? "#FFF5F5" : "white",
-                      height: "45px",
+                      backgroundColor: isActive ? "#E03131" : "#f8f9fa",
+                      color: isActive ? "white" : "#666",
+                      fontWeight: isActive ? "bold" : "normal",
+                      borderBottom: "1px solid #eee",
                     }}
                   >
-                    <td
+                    {item.blId}
+                  </td>
+
+                  {/* 🚀 이메일 클릭 시 회원 상세로 이동 (스타일 추가) */}
+                  <td
+                    onClick={() => handleClickMember(item.email)}
+                    style={{
+                      textAlign: "left",
+                      paddingLeft: "15px",
+                      borderBottom: "1px solid #eee",
+                      cursor: "pointer",
+                      color: "#1c7ed6", // 파란색 링크 톤
+                      textDecoration: "underline",
+                      fontWeight: "bold",
+                    }}
+                    title="클릭 시 회원 상세정보로 이동합니다"
+                  >
+                    {item.email}
+                  </td>
+
+                  <td style={{ borderBottom: "1px solid #eee" }}>
+                    {item.reason}
+                  </td>
+                  <td style={{ borderBottom: "1px solid #eee" }}>
+                    {item.adminId || "관리자"}
+                  </td>
+                  <td style={{ borderBottom: "1px solid #eee" }}>
+                    {item.startDate?.split("T")[0]}
+                  </td>
+                  <td style={{ borderBottom: "1px solid #eee" }}>
+                    {isActive
+                      ? item.endDate
+                        ? item.endDate.split("T")[0]
+                        : "영구(차단중)"
+                      : item.endDate
+                        ? item.endDate.split("T")[0]
+                        : "-"}
+                  </td>
+                  <td
+                    style={{
+                      color: isActive ? "#E03131" : "#adb5bd",
+                      fontWeight: "bold",
+                      borderBottom: "1px solid #eee",
+                    }}
+                  >
+                    {isActive ? "차단(Y)" : "해제(N)"}
+                  </td>
+                  <td style={{ borderBottom: "1px solid #eee" }}>
+                    <button
+                      onClick={() => handleClickRead(item.blId)}
                       style={{
-                        backgroundColor: isActive ? "#E03131" : "#f8f9fa",
-                        color: isActive ? "white" : "#666",
-                        fontWeight: isActive ? "bold" : "normal",
-                        borderBottom: "1px solid #eee",
+                        padding: "6px 12px",
+                        cursor: "pointer",
+                        backgroundColor: isActive ? "#495057" : "#e9ecef",
+                        color: isActive ? "white" : "#495057",
+                        border: "1px solid #ced4da",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                        fontWeight: "500",
                       }}
                     >
-                      {item.blId}
-                    </td>
-                    <td
-                      style={{
-                        textAlign: "left",
-                        paddingLeft: "15px",
-                        borderBottom: "1px solid #eee",
-                      }}
-                    >
-                      {item.email}
-                    </td>
-                    <td style={{ borderBottom: "1px solid #eee" }}>
-                      {item.reason}
-                    </td>
-                    <td style={{ borderBottom: "1px solid #eee" }}>
-                      {item.adminId || "관리자"}
-                    </td>
-                    <td style={{ borderBottom: "1px solid #eee" }}>
-                      {item.startDate?.split("T")[0]}
-                    </td>
-                    <td style={{ borderBottom: "1px solid #eee" }}>
-                      {isActive
-                        ? item.endDate
-                          ? item.endDate.split("T")[0]
-                          : "영구(차단중)"
-                        : item.endDate
-                          ? item.endDate.split("T")[0]
-                          : "-"}
-                    </td>
-                    <td
-                      style={{
-                        color: isActive ? "#E03131" : "#adb5bd",
-                        fontWeight: "bold",
-                        borderBottom: "1px solid #eee",
-                      }}
-                    >
-                      {isActive ? "차단(Y)" : "해제(N)"}
-                    </td>
-                    <td style={{ borderBottom: "1px solid #eee" }}>
-                      <button
-                        onClick={() => handleClickRead(item.blId)}
-                        style={{
-                          padding: "6px 12px",
-                          cursor: "pointer",
-                          backgroundColor: isActive ? "#495057" : "#e9ecef",
-                          color: isActive ? "white" : "#495057",
-                          border: "1px solid #ced4da",
-                          borderRadius: "4px",
-                          fontSize: "12px",
-                          fontWeight: "500",
-                        }}
-                      >
-                        상세보기
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
+                      상세보기
+                    </button>
+                  </td>
+                </tr>
+              );
+            })
           ) : (
             <tr>
               <td
