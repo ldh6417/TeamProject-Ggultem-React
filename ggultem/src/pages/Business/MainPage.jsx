@@ -1,25 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../include/Header";
 import "./MainPage.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../include/Footer";
 import logoImg from "../../assets/logo.png";
 import AD from "../../include/business/AD";
+import useCustomLogin from "../../hooks/useCustomLogin";
 
 const MainPage = () => {
-  const [keyword, setKeyword] = useState("");
-  const [searchType, setSearchType] = useState("all"); // 카테고리 상태
-  const navigate = useNavigate();
+  const { isLogin, moveToPath } = useCustomLogin();
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!keyword.trim()) {
-      alert("검색어를 입력해주세요!");
+  useEffect(() => {
+    if (!isLogin) {
+      alert("로그인 후 이용해 주세요.");
+      moveToPath("/login");
       return;
     }
-    // 선택한 카테고리와 키워드를 가지고 이동
-    navigate(`/${searchType}/list?page=1&size=10&keyword=${keyword}`);
-  };
+  }, [isLogin, moveToPath]);
 
   return (
     <div className="main-container">

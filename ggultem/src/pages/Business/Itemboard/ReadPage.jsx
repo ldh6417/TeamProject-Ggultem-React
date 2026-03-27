@@ -1,17 +1,15 @@
-import ListBusiness from "../../components/Business/ListComponent";
-import Footer from "../../include/business/Footer";
-import Header from "../../include/business/Header";
+import ReadBusiness from "../../../components/Business/Itemboard/ReadComponent";
+import Footer from "../../../include/business/Footer";
+import Header from "../../../include/business/Header";
 import "./ListPage.css";
-import useCustomLogin from "../../hooks/useCustomLogin";
-import { getCookie, removeCookie } from "../../util/cookieUtil";
-import { useNavigate } from "react-router";
+import useCustomLogin from "../../../hooks/useCustomLogin";
+import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import MyInfoComponent from "../../components/Business/MyInfoComponent";
 
 const ListPage = () => {
-  const { isLogin, moveToLoginReturn, moveToPath } = useCustomLogin();
-  const nav = useNavigate();
+  const { no } = useParams();
+  const { moveToPath } = useCustomLogin();
   const loginState = useSelector((state) => state.loginSlice);
 
   // 2. 권한 체크: 'BUSINESS' 권한이 없는 경우 차단
@@ -34,8 +32,7 @@ const ListPage = () => {
       <Header />
       <main className="business-main-content">
         <div className="business-hero-section">
-          <MyInfoComponent />
-          <ListBusiness />
+          <ReadBusiness no={no} />
         </div>
       </main>
       <Footer />

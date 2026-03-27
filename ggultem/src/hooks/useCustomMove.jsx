@@ -150,6 +150,92 @@ const useCustomMove = () => {
   };
 
   //********************************** BusinessBoard 영역 *************************************
+  const moveToBusinessList = (pageParam) => {
+    let queryStr = "";
+    if (pageParam) {
+      const pageNum = getNum(pageParam.page, page);
+      const sizeNum = getNum(pageParam.size, size);
+      const keywordStr = getString(pageParam.keyword, keyword);
+      const typeStr = getString(pageParam.searchType, searchType);
+      const signStr = getString(pageParam.sign, sign);
+      const categoryStr = getString(pageParam.category, category);
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+        keyword: keywordStr,
+        searchType: typeStr,
+        sign: signStr,
+        category: categoryStr,
+      }).toString();
+    } else {
+      queryStr = queryDefault;
+    }
+
+    navigate({
+      pathname: `../business/list`,
+      search: queryStr,
+    });
+
+    setRefresh(!refresh);
+  };
+
+  const moveToBusinessBoardL = (pageParam) => {
+    let queryStr = "";
+    if (pageParam) {
+      const pageNum = getNum(pageParam.page, page);
+      const sizeNum = getNum(pageParam.size, size);
+      const keywordStr = getString(pageParam.keyword, keyword);
+      const typeStr = getString(pageParam.searchType, searchType);
+      const signStr = getString(pageParam.sign, sign);
+      const categoryStr = getString(pageParam.category, category);
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+        keyword: keywordStr,
+        searchType: typeStr,
+        sign: signStr,
+        category: categoryStr,
+      }).toString();
+    } else {
+      queryStr = queryDefault;
+    }
+
+    navigate({
+      pathname: `../business/board/list`,
+      search: queryStr,
+    });
+
+    setRefresh(!refresh);
+  };
+
+  const moveToBusinessBoardDL = (pageParam) => {
+    let queryStr = "";
+    if (pageParam) {
+      const pageNum = getNum(pageParam.page, page);
+      const sizeNum = getNum(pageParam.size, size);
+      const keywordStr = getString(pageParam.keyword, keyword);
+      const typeStr = getString(pageParam.searchType, searchType);
+      const signStr = getString(pageParam.sign, sign);
+      const categoryStr = getString(pageParam.category, category);
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+        keyword: keywordStr,
+        searchType: typeStr,
+        sign: signStr,
+        category: categoryStr,
+      }).toString();
+    } else {
+      queryStr = queryDefault;
+    }
+
+    navigate({
+      pathname: `../business/board/deletelist`,
+      search: queryStr,
+    });
+
+    setRefresh(!refresh);
+  };
 
   const moveToBusinessBoardList = (pageParam) => {
     let queryStr = "";
@@ -187,10 +273,17 @@ const useCustomMove = () => {
     });
   };
 
+  const moveToBusinessBoardR = (no) => {
+    navigate({
+      pathname: `../business/board/${no}`,
+      search: queryDefault, //수정시에 기존의 쿼리 스트링 유지를 위해
+    });
+  };
+
   const moveToBusinessBoardModify = (no) => {
     console.log(queryDefault);
     navigate({
-      pathname: `../admin/businessboard/modify/${no}`,
+      pathname: `../business/board/modify/${no}`,
       search: queryDefault, //수정시에 기존의 쿼리 스트링 유지를 위해
     });
   };
@@ -376,6 +469,10 @@ const useCustomMove = () => {
     moveToAdminNoticeRegister,
     moveToNoticeRead,
     moveToNoticeList,
+    moveToBusinessList,
+    moveToBusinessBoardL,
+    moveToBusinessBoardDL,
+    moveToBusinessBoardR,
     moveToBusinessBoardList,
     moveToBusinessBoardRead,
     moveToBusinessBoardModify,

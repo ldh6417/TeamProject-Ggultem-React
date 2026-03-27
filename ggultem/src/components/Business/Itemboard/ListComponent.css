@@ -1,16 +1,8 @@
 /* ListComponent.css */
-.biz-list-wrapper {
-    width: 1200px;
-  padding: 20px;
-  border-radius: 12px;
-  margin: 0 auto;
-}
-
 .biz-item-list-section {
   background: #fff;
   padding: 25px;
   border-radius: 15px;
-  
 }
 
 .businessboard-header {
@@ -28,7 +20,6 @@
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  background: #f8f9fa;
   padding: 15px;
   border-radius: 8px;
 }
@@ -44,7 +35,7 @@
 .codegroup-actions input[type="text"] {
   flex: 1;
   min-width: 200px;
-  padding: 8px 12px;
+  padding: 8px 12px; 
   border: 1px solid #ddd;
   border-radius: 5px;
 }

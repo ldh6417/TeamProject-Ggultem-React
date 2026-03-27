@@ -12,19 +12,49 @@ export const postItemBoardAdd = async (formData) => {
   return res.data;
 };
 
+//비즈니스 광고 게시글 수정
+export const postItemBoardModify = async (no, formData) => {
+  const res = await axios.put(`${host}/business/board/modify/${no}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
+
+export const postItemBoardRemove = async (no) => {
+  const res = await axios.get(`${host}/business/board/remove/${no}`);
+  return res.data;
+};
+
 export const getOne = async (no) => {
   const res = await axios.get(`${host}/business/board/${no}`);
   return res.data;
 };
 
 export const getList = async (pageParam) => {
-  const { page, size, keyword, searchType } = pageParam;
+  const { page, size, keyword, searchType, sign, category } = pageParam;
   const res = await axios.get(`${host}/business/board/list`, {
     params: {
       page: page,
       size: size,
       keyword: keyword,
       searchType: searchType,
+      sign: sign,
+      category: category,
+    },
+  });
+  return res.data;
+};
+
+export const getDeleteList = async (pageParam) => {
+  const { page, size, keyword, searchType, sign, category } = pageParam;
+  const res = await axios.get(`${host}/business/board/deletelist`, {
+    params: {
+      page: page,
+      size: size,
+      keyword: keyword,
+      searchType: searchType,
+      sign: sign,
+      category: category,
     },
   });
   return res.data;
@@ -43,8 +73,10 @@ export const getADPLList = async () => {
 };
 
 //광고 클릭시 조회수 증가
-export const viewCountAdd = async (no) => {
-  const res = await axios.put(`${host}/business/board/viewcount/${no}`);
+export const viewCountAdd = async (no, email) => {
+  const res = await axios.put(
+    `${host}/business/board/viewcount/${no}/${email}`,
+  );
   return res.data;
 };
 
@@ -67,4 +99,28 @@ export const verifyBusinessApi = async (businessNumber) => {
     businessNumber,
   });
   return res.data; // { isValid: true/false } 형태라고 가정
+};
+
+//비즈니스 상품 광고 데이터 통계
+export const getBusinessStats = async (email, start, end) => {
+  try {
+    const res = await axios.get(`${API_SERVER_HOST}/business/board/stats`, {
+      params: {
+        email: email,
+        start: start,
+        end: end,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("통계 데이터를 가져오는 중 오류 발생:", error);
+    // 에러 발생 시 빈 데이터 구조를 반환하여 컴포넌트 터짐 방지
+    return {
+      totalPowerLinkClicks: 0,
+      totalPowerLinkCount: 0,
+      totalPowerShoppingClicks: 0,
+      totalPowerShoppingCount: 0,
+      DailyStats: [],
+    };
+  }
 };

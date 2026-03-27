@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getList, API_SERVER_HOST } from "../../../api/admin/BusinessBoardApi";
+import { getList, API_SERVER_HOST } from "../../../api/BusinessApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import PageComponent from "../../common/PageComponent";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,8 @@ const ListComponent = () => {
     refresh,
     sign,
     category,
-    moveToBusinessBoardList,
+    moveToBusinessBoardL,
+    moveToBusinessBoardR,
   } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
   const [codeSearchType, setCodeSearchType] = useState("all");
@@ -38,6 +39,7 @@ const ListComponent = () => {
   const [adCategory, setAdCategory] = useState("all");
   const navigate = useNavigate();
 
+  //내가 등록한 businessBoard 리스트
   useEffect(() => {
     getList({ page, size, keyword, searchType, sign, category }).then(
       (data) => {
@@ -52,12 +54,12 @@ const ListComponent = () => {
     setCodeSearchType("all");
     setAdSign("all");
     setAdCategory("all");
-    navigate("/admin/businessboard/list");
+    navigate("/business/board/list");
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    moveToBusinessBoardList({
+    moveToBusinessBoardL({
       page: 1, // 검색 시에는 1페이지로 이동하는 게 좋습니다
       size,
       keyword: codeKeyword,
@@ -68,18 +70,12 @@ const ListComponent = () => {
   };
 
   return (
-    <div className="businessboard-list-wrapper">
-      <div className="businessboard-list-container">
-        {/* 헤더 섹션 */}
+    <div className="biz-list-wrapper">
+      {/* 📦 하단 상품 게시판 리스트 */}
+      <section className="biz-item-list-section">
         <div className="businessboard-header">
-          <div className="title-group">
-            <h2 className="businessboard-title">
-              <span className="businessboard-title-point">꿀템</span> 비즈니스
-              광고 관리
-            </h2>
-            <p className="businessboard-subtitle">
-              비즈니스 광고가 등록된 리스트입니다.
-            </p>
+          <div className="list-header">
+            <h3>등록한 상품 {serverData.totalCount}건</h3>
           </div>
           <form className="codegroup-search-form" onSubmit={handleSearch}>
             <div className="codegroup-actions">
@@ -126,83 +122,89 @@ const ListComponent = () => {
             <button className="admin-btn reset-btn" onClick={handleReset}>
               목록 초기화
             </button>
+            <button
+              className="admin-btn add-btn"
+              onClick={() => navigate("/business/board/register")}
+            >
+              새 광고 상품 등록
+            </button>
+            <button
+              className="admin-btn delete-btn"
+              onClick={() => navigate("/business/board/deletelist")}
+            >
+              휴지통
+            </button>
           </div>
         </div>
 
-        {/* 테이블 섹션 - 요청하신 항목들로 구성 */}
-        <div className="businessboard-table-wrapper">
-          <table className="businessboard-table">
-            <thead>
-              <tr>
-                <th>회원 이메일</th>
-                <th>닉네임</th>
-                <th>광고제목</th>
-                <th>광고종류</th>
-                <th>클릭수</th>
-                <th>광고등록일</th>
-                <th>광고종료일</th>
-                <th>광고 승인</th>
-                <th>광고 상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              {serverData.dtoList && serverData.dtoList.length > 0 ? (
-                serverData.dtoList.map((item) => (
-                  <tr
-                    key={item.no}
-                    className="businessboard-tr"
-                    onClick={() => navigate(`/admin/businessboard/${item.no}`)}
+        <table className="biz-table">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>이미지</th>
+              <th>상품명</th>
+              <th>가격</th>
+              <th>클릭수</th>
+              <th>등록일</th>
+              <th>종료일</th>
+              <th>광고 승인</th>
+              <th>광고 상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            {serverData.dtoList.length > 0 ? (
+              serverData.dtoList.map((item) => (
+                <tr
+                  key={item.no}
+                  onClick={() => moveToBusinessBoardR(item.no)}
+                  className="table-row"
+                >
+                  <td>{item.no}</td>
+                  <td>
+                    <img
+                      src={`${host}/business/board/view/s_${item.uploadFileNames?.[0]}`}
+                      alt="thumb"
+                      className="table-thumb"
+                    />
+                  </td>
+                  <td className="table-title">{item.title}</td>
+                  <td>{item.price?.toLocaleString()}원</td>
+                  <td>{item.viewCount?.toLocaleString()}회</td>
+                  <td>{item.regDate?.substring(0, 10)}</td>
+                  <td>{item.endDate?.substring(0, 10)}</td>
+                  <td
+                    className={`businessboard-td-status ${item.sign === false ? "inactive" : "active"}`}
                   >
-                    <td className="businessboard-td-email">{item.email}</td>
-                    <td>{item.writer}</td>
-                    <td className="business-td-title">{item.title}</td>
-                    <td className="business-td-category">{item.category}</td>
-                    <td className="business-td-viewCount">
-                      {item.viewCount} 회
-                    </td>
-                    <td className="businessboard-td-regdate">
-                      {item.regDate ? item.regDate.split("T")[0] : "-"}
-                    </td>
-                    <td className="businessboard-td-enddate">
-                      {item.endDate ? item.endDate.split("T")[0] : "-"}
-                    </td>
-                    <td className="businessboard-td-status">
-                      {/* 활성화 여부에 따라 다른 스타일 적용 */}
-                      <span
-                        className={`businessboard-status-dot ${item.sign === true ? "active" : "inactive"}`}
-                      >
-                        {item.sign === true ? "승인" : "비승인"}
-                      </span>
-                    </td>
-                    <td className="businessboard-td-status">
-                      {/* 활성화 여부에 따라 다른 스타일 적용 */}
-                      <span
-                        className={`businessboard-status-dot ${item.onOff === true ? "active" : "inactive"}`}
-                      >
-                        {item.onOff === true ? "운영중" : "종료"}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="8" className="no-data">
-                    등록된 비즈니스 광고 상품이 없습니다.
+                    <span
+                      className={`status-dot ${item.sign === false ? "inactive" : "active"}`}
+                    ></span>
+                    {item.sign === false ? "비활성" : "활성"}
+                  </td>
+                  <td
+                    className={`businessboard-td-status ${item.onOff === false ? "inactive" : "active"}`}
+                  >
+                    <span
+                      className={`status-dot ${item.onOff === false ? "inactive" : "active"}`}
+                    ></span>
+                    {item.onOff === true ? "운영중" : "종료"}
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="no-data">
+                  등록된 상품이 없습니다. 첫 상품을 등록해 보세요! 🍯
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
 
-        {/* 페이징 */}
-        <div className="businessboard-pagination-wrapper">
-          <PageComponent
-            serverData={serverData}
-            moveToList={moveToBusinessBoardList}
-          />
-        </div>
-      </div>
+        <PageComponent
+          serverData={serverData}
+          moveToList={moveToBusinessBoardL}
+        />
+      </section>
     </div>
   );
 };

@@ -1,16 +1,15 @@
-import ListBusiness from "../../components/Business/ListComponent";
-import Footer from "../../include/business/Footer";
-import Header from "../../include/business/Header";
+import ListBusiness from "../../../components/Business/Itemboard/ListComponent";
+import DataBusiness from "../../../components/Business/Itemboard/DataComponent";
+import Footer from "../../../include/business/Footer";
+import Header from "../../../include/business/Header";
 import "./ListPage.css";
-import useCustomLogin from "../../hooks/useCustomLogin";
-import { getCookie, removeCookie } from "../../util/cookieUtil";
+import useCustomLogin from "../../../hooks/useCustomLogin";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import MyInfoComponent from "../../components/Business/MyInfoComponent";
 
 const ListPage = () => {
-  const { isLogin, moveToLoginReturn, moveToPath } = useCustomLogin();
+  const { moveToPath } = useCustomLogin();
   const nav = useNavigate();
   const loginState = useSelector((state) => state.loginSlice);
 
@@ -34,7 +33,7 @@ const ListPage = () => {
       <Header />
       <main className="business-main-content">
         <div className="business-hero-section">
-          <MyInfoComponent />
+          <DataBusiness />
           <ListBusiness />
         </div>
       </main>

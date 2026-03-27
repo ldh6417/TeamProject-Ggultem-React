@@ -1,74 +1,56 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
-  getOne,
   API_SERVER_HOST,
-  reject,
-  approve,
-} from "../../../api/admin/BusinessBoardApi";
+  getOne,
+  postItemBoardRemove,
+} from "../../../api/BusinessApi";
+import { useNavigate } from "react-router";
+import useCustomLogin from "../../../hooks/useCustomLogin";
 import "./ReadComponent.css";
-
-const host = API_SERVER_HOST;
+import useCustomMove from "../../../hooks/useCustomMove";
 
 const initState = {
-  no: 0,
-  email: "",
   title: "",
-  content: "",
-  sign: false,
-  writer: "",
-  category: "",
   price: 0,
-  viewCount: 0,
+  content: "",
+  category: "",
+  email: "",
+  writer: "",
   moveUrl: "",
+  sign: false,
   enabled: 0,
+  onOff: false,
   regDate: null,
-  endDate: null,
+  endDate: "",
+  files: [],
   uploadFileNames: [],
 };
 
+const host = API_SERVER_HOST;
+
 const ReadComponent = ({ no }) => {
+  const { moveToBusinessBoardModify } = useCustomMove();
   const navigate = useNavigate();
-  const [item, setItem] = useState(initState);
+  const [item, setItem] = useState({ ...initState });
 
   useEffect(() => {
-    if (no) {
-      getOne(no).then((data) => {
-        console.log("광고 상세 데이터:", data);
-        setItem(data);
-      });
-    }
+    getOne(no).then((data) => {
+      setItem(data);
+    });
   }, [no]);
 
-  const approveOnClick = () => {
-    approve(no)
-      .then((data) => {
-        alert("광고 승인이 완료되었습니다.");
-        navigate(`/admin/businessboard/list`);
+  const modifyOnClick = () => {
+    moveToBusinessBoardModify(no);
+  };
+  const removeOnClick = () => {
+    postItemBoardRemove(no)
+      .then(() => {
+        alert("삭제되었습니다.");
       })
       .catch(() => {
-        alert("광고 승인에 실패하였습니다.");
-        navigate(`/admin/businessboard/list`);
+        alert("삭제에 실패하였습니다.");
       });
   };
-  const rejectOnClick = () => {
-    reject(no)
-      .then((data) => {
-        alert("광고 승인이 취소되었습니다.");
-        navigate(`/admin/businessboard/list`);
-      })
-      .catch(() => {
-        alert("광고 승인 취소에 실패하였습니다.");
-        navigate(`/admin/businessboard/list`);
-      });
-  };
-
-  if (!no || !item.no)
-    return (
-      <div className="memberinfo-read-loading">
-        광고 게시판 정보를 불러오는 중입니다...
-      </div>
-    );
 
   return (
     <div className="businessboard-read-wrapper">
@@ -77,25 +59,22 @@ const ReadComponent = ({ no }) => {
         <div className="businessboard-read-header">
           <h2 className="businessboard-read-title">광고 상세 정보</h2>
           <div className="businessboard-read-actions">
-            {item.sign === false ? (
-              <button
-                className="businessboard-read-btn approve"
-                onClick={approveOnClick}
-              >
-                광고 승인
-              </button>
-            ) : (
-              <button
-                className="businessboard-read-btn reject"
-                onClick={rejectOnClick}
-              >
-                광고 승인 취소
-              </button>
-            )}
+            <button
+              className="businessboard-read-btn approve"
+              onClick={modifyOnClick}
+            >
+              수정하기
+            </button>
+            <button
+              className="businessboard-read-btn reject"
+              onClick={removeOnClick}
+            >
+              삭제하기
+            </button>
 
             <button
               className="businessboard-read-btn list"
-              onClick={() => navigate(`/admin/businessboard/list`)}
+              onClick={() => navigate(`/business/board/list`)}
             >
               목록으로
             </button>
@@ -124,6 +103,11 @@ const ReadComponent = ({ no }) => {
               >
                 {item.sign ? "승인 완료" : "승인 대기"}
               </span>
+              <span
+                className={`businessboard-state-badge ${item.onOff ? "on" : "off"}`}
+              >
+                {item.onOff ? "운영중" : "종료"}
+              </span>
             </div>
           </div>
 
@@ -132,15 +116,11 @@ const ReadComponent = ({ no }) => {
             <div className="businessboard-info-group">
               <h3>📋 기본 정보</h3>
               <div className="businessboard-info-row">
-                <span className="info-label">광고 번호</span>
-                <span className="info-value">#{item.no}</span>
-              </div>
-              <div className="businessboard-info-row">
                 <span className="info-label">광고주(이메일)</span>
                 <span className="info-value">{item.email}</span>
               </div>
               <div className="businessboard-info-row">
-                <span className="info-label">작성자 닉네임</span>
+                <span className="info-label">상호명</span>
                 <span className="info-value">{item.writer}</span>
               </div>
             </div>

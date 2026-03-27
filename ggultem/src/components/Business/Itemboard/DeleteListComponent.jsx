@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { getList, API_SERVER_HOST } from "../../api/BusinessApi";
-import useCustomMove from "../../hooks/useCustomMove";
-import PageComponent from "../common/PageComponent";
+import { getDeleteList, API_SERVER_HOST } from "../../../api/BusinessApi";
+import useCustomMove from "../../../hooks/useCustomMove";
+import PageComponent from "../../common/PageComponent";
 import { useNavigate } from "react-router-dom";
-import "./ListComponent.css";
+import "./DeleteListComponent.css";
 
 const initState = {
   dtoList: [],
@@ -20,7 +20,7 @@ const initState = {
 
 const host = API_SERVER_HOST;
 
-const ListComponent = () => {
+const DeleteListComponent = () => {
   const {
     page,
     size,
@@ -29,8 +29,8 @@ const ListComponent = () => {
     refresh,
     sign,
     category,
-    moveToBusinessList,
-    moveToBusinessBoardRead,
+    moveToBusinessBoardDL,
+    moveToBusinessBoardR,
   } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
   const [codeSearchType, setCodeSearchType] = useState("all");
@@ -41,7 +41,7 @@ const ListComponent = () => {
 
   //내가 등록한 businessBoard 리스트
   useEffect(() => {
-    getList({ page, size, keyword, searchType, sign, category }).then(
+    getDeleteList({ page, size, keyword, searchType, sign, category }).then(
       (data) => {
         console.log(data);
         setServerData(data);
@@ -54,12 +54,12 @@ const ListComponent = () => {
     setCodeSearchType("all");
     setAdSign("all");
     setAdCategory("all");
-    navigate("/business/list");
+    navigate("/business/board/deletelist");
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    moveToBusinessList({
+    moveToBusinessBoardDL({
       page: 1, // 검색 시에는 1페이지로 이동하는 게 좋습니다
       size,
       keyword: codeKeyword,
@@ -68,13 +68,14 @@ const ListComponent = () => {
       category: adCategory,
     });
   };
+
   return (
     <div className="biz-list-wrapper">
       {/* 📦 하단 상품 게시판 리스트 */}
       <section className="biz-item-list-section">
         <div className="businessboard-header">
           <div className="list-header">
-            <h3>내가 등록한 상품 ({serverData.totalCount})</h3>
+            <h3>삭제된 상품 {serverData.totalCount}건</h3>
           </div>
           <form className="codegroup-search-form" onSubmit={handleSearch}>
             <div className="codegroup-actions">
@@ -123,15 +124,9 @@ const ListComponent = () => {
             </button>
             <button
               className="admin-btn add-btn"
-              onClick={() => navigate("/business/board/register")}
+              onClick={() => navigate("/business/board/list")}
             >
-              새 광고 상품 등록
-            </button>
-            <button
-              className="admin-btn delete-btn"
-              onClick={() => navigate("/business/board/deletelist")}
-            >
-              휴지통
+              운영중인 광고
             </button>
           </div>
         </div>
@@ -155,7 +150,7 @@ const ListComponent = () => {
               serverData.dtoList.map((item) => (
                 <tr
                   key={item.no}
-                  onClick={() => moveToBusinessBoardRead(item.no)}
+                  onClick={() => moveToBusinessBoardR(item.no)}
                   className="table-row"
                 >
                   <td>{item.no}</td>
@@ -201,11 +196,11 @@ const ListComponent = () => {
 
         <PageComponent
           serverData={serverData}
-          moveToList={moveToBusinessList}
+          moveToList={moveToBusinessBoardDL}
         />
       </section>
     </div>
   );
 };
 
-export default ListComponent;
+export default DeleteListComponent;

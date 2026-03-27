@@ -80,6 +80,18 @@ const BusinessRegister = lazy(() => import("../pages/Business/RegisterPage"));
 const BusinessBoardRegister = lazy(
   () => import("../pages/Business/Itemboard/RegisterPage"),
 );
+const BusinessBoardList = lazy(
+  () => import("../pages/Business/Itemboard/ListPage"),
+);
+const BusinessBoardRead = lazy(
+  () => import("../pages/Business/Itemboard/ReadPage"),
+);
+const BusinessBoardModify = lazy(
+  () => import("../pages/Business/Itemboard/ModifyPage"),
+);
+const BusinessBoardDList = lazy(
+  () => import("../pages/Business/Itemboard/DeleteListPage"),
+);
 //* 공지사항 lazy */
 const NoticeList = lazy(() => import("../pages/Notice/NoticePage"));
 const NoticeRead = lazy(() => import("../pages/Notice/NoticeRead"));
@@ -516,6 +528,38 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <BusinessBoardRegister />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/board/list",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BusinessBoardList />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/board/:no",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BusinessBoardRead />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/board/modify/:no",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BusinessBoardModify />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/board/deletelist",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BusinessBoardDList />
       </Suspense>
     ),
   },

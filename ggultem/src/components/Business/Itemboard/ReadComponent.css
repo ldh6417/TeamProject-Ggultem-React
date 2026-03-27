@@ -1,0 +1,171 @@
+/* 전체 레이아웃 */
+.businessboard-read-wrapper {
+  padding: 30px;
+  min-height: 100vh;
+}
+
+.businessboard-read-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+}
+
+/* 상단 헤더 및 버튼 */
+.businessboard-read-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.businessboard-read-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #222;
+  margin: 0;
+}
+
+.businessboard-read-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.businessboard-read-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.businessboard-read-btn.approve { background-color: #1db46c; color: #fff; }
+.businessboard-read-btn.reject { background-color: #eb5757; color: #fff; }
+.businessboard-read-btn.modify { background-color: #333; color: #fff; }
+.businessboard-read-btn.list { background-color: #eee; color: #666; }
+
+.businessboard-read-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* 컨텐츠 레이아웃 */
+.businessboard-read-content {
+  display: flex;
+  gap: 50px;
+}
+
+/* 왼쪽: 이미지 및 배지 */
+.businessboard-read-profile-section {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.businessboard-read-image-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.businessboard-read-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.businessboard-read-no-image {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  font-weight: 600;
+}
+
+.businessboard-read-category-badges {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.businessboard-role-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.businessboard-state-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.businessboard-role-badge.powershoping { background-color: #fff4db; color: #ffb400; }
+.businessboard-role-badge.powerlink { background-color: #e3f2fd; color: #0087f5; }
+.businessboard-role-badge.verified { background-color: #e3f7ed; color: #1db46c; }
+.businessboard-role-badge.unverified { background-color: #fff0f0; color: #eb5757; }
+.businessboard-state-badge.on { background-color: #e3f7ed; color: #1db46c; }
+.businessboard-state-badge.off { background-color: #fff0f0; color: #eb5757; }
+
+/* 오른쪽: 상세 정보 섹션 */
+.businessboard-read-info-section {
+  flex: 1;
+}
+
+.businessboard-info-group {
+  margin-bottom: 30px;
+}
+
+.businessboard-info-group h3 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  border-left: 4px solid #ffb400; /* 포인트 줄 */
+}
+
+.businessboard-info-row {
+  display: flex;
+  padding: 12px 10px;
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.info-label {
+  width: 120px;
+  color: #888;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.info-value {
+  flex: 1;
+  color: #333;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.font-bold { font-size: 1.1rem; color: #000; }
+.url-text { color: #0087f5; text-decoration: underline; word-break: break-all; }
+.price-text { color: #eb5757; font-size: 1.1rem; }
+.end-date { color: #ffb400; }
+
+/* 로딩 상태 */
+.businessboard-read-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 1.2rem;
+  color: #999;
+}

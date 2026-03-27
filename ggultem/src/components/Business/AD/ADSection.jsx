@@ -17,9 +17,9 @@ export default function ADSection() {
   }, []); // 빈 배열을 넣어야 컴포넌트 마운트 시 한 번만 실행
 
   // 클릭 시 URL로 이동하는 함수
-  const handleClickAd = (linkUrl, no) => {
+  const handleClickAd = (linkUrl, no, email) => {
     if (linkUrl) {
-      viewCountAdd(no).then(() => {});
+      viewCountAdd(no, email).then(() => {});
       const url = linkUrl.startsWith("http") ? linkUrl : `https://${linkUrl}`;
       window.open(url, "_blank", "noopener,noreferrer");
     } else {
@@ -41,7 +41,7 @@ export default function ADSection() {
             <div
               key={dto.no}
               className="AD-card"
-              onClick={() => handleClickAd(dto.moveUrl, dto.no)}
+              onClick={() => handleClickAd(dto.moveUrl, dto.no, dto.email)}
             >
               <div className="AD-card-image-box">
                 {dto.uploadFileNames && dto.uploadFileNames.length > 0 ? (

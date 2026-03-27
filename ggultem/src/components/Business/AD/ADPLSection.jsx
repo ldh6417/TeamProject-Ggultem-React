@@ -18,9 +18,9 @@ export default function ADSection() {
   }, []); // 빈 배열을 넣어야 컴포넌트 마운트 시 한 번만 실행
 
   // 클릭 시 URL로 이동하는 함수
-  const handleClickAd = (moveUrl, no) => {
+  const handleClickAd = (moveUrl, no, email) => {
     if (moveUrl) {
-      viewCountAdd(no).then(() => {});
+      viewCountAdd(no, email).then(() => {});
       const url = moveUrl.startsWith("http") ? moveUrl : `https://${moveUrl}`;
       window.open(url, "_blank", "noopener,noreferrer");
     } else {
@@ -46,7 +46,9 @@ export default function ADSection() {
                   <img
                     src={`${host}/business/board/view/s_${dto.uploadFileNames[0]}`}
                     alt="thumb"
-                    onClick={() => handleClickAd(dto.moveUrl, dto.no)}
+                    onClick={() =>
+                      handleClickAd(dto.moveUrl, dto.no, dto.email)
+                    }
                   />
                 ) : (
                   <div className="no-thumb"></div>
@@ -58,7 +60,7 @@ export default function ADSection() {
                 <div className="AD-info-url">{dto.moveUrl}</div>
                 <div
                   className="AD-info-title"
-                  onClick={() => handleClickAd(dto.moveUrl, dto.no)}
+                  onClick={() => handleClickAd(dto.moveUrl, dto.no, dto.email)}
                 >
                   {dto.title}
                 </div>
