@@ -4,10 +4,13 @@ import "./Header.css";
 import logoImg from "../assets/logo.png";
 import { useSelector } from "react-redux";
 import useCustomLogin from "../hooks/useCustomLogin";
+import { useEffect, useRef } from "react";
 
 export default function Header() {
   const navigate = useNavigate();
   const { doLogout } = useCustomLogin();
+  // useRef를 사용하여 팝업창 객체를 관리. (재렌더링되어도 값이 유지됨)
+  const chatWindowRef = useRef(null);
 
   // ✨ 리덕스 스토어에서 유저 정보를 실시간으로 감시!
   const loginState = useSelector((state) => state.loginSlice);
@@ -20,6 +23,37 @@ export default function Header() {
     alert("로그아웃 되었습니다. 다음에 또 만나요! 🐝");
     navigate("/");
   };
+
+  // 2. 채팅 팝업 열기 함수
+  const openChatPopup = (e) => {
+    e.preventDefault(); // Link 태그의 기본 이동 방지
+
+    const url = "/chat";
+    const name = "ChatPopup";
+    const options =
+      "width=500,height=700,top=100,left=100,scrollbars=no,resizable=no";
+
+    // 팝업창을 열고 ref에 저장
+    chatWindowRef.current = window.open(url, name, options);
+  };
+
+    // 3. useEffect를 사용하여 전역 이벤트 등록 및 해제
+  useEffect(() => {
+    const handleFocus = () => {
+      // 팝업창이 존재하고 닫히지 않았다면 포커스를 줌
+      if (chatWindowRef.current && !chatWindowRef.current.closed) {
+        chatWindowRef.current.focus();
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    // 컴포넌트가 사라질 때 이벤트 리스너 제거 (메모리 누수 방지)
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, []);
+
 
   return (
     <header className="header-custom-header">
@@ -52,10 +86,14 @@ export default function Header() {
 
         <div className="header-nav-right">
           {loginState && loginState.email ? (
-            // ✅ 로그인 성공 시: 닉네임과 로그아웃 버튼
+            
             <div className="header-user-menu">
+                            <Link to={`/chatroom/list`} className="nav-item">
+                Chat
+              </Link>
+
               <Link to={`/mypage`} className="header-user-nickname">
-                🍯마이페이지
+                MyPage
               </Link>
               <button
                 onClick={handleLogout}

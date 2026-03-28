@@ -1,0 +1,86 @@
+.chat-list-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.chat-list-header h2 {
+  font-weight: 800;
+  color: #1a1a1a;
+  border-bottom: 2px solid #FF8C00;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.chat-room-list {
+  list-style: none;
+  padding: 0;
+}
+
+.chat-room-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chat-room-item:hover {
+  background-color: #fff9f0;
+}
+
+.room-avatar {
+  width: 50px;
+  height: 50px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.room-info {
+  flex: 1;
+}
+
+.room-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.opponent-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.reg-date {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.room-name-tag {
+  color: #FF8C00;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.last-msg {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.enter-arrow {
+  color: #ccc;
+  font-size: 1.2rem;
+  margin-left: 10px;
+}

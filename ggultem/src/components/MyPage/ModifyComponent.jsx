@@ -49,7 +49,7 @@ const ModifyComponent = ({ email }) => {
       formData.append("files", files[i]);
     }
 
-    formData.append("phone", member.phone);
+    formData.append("phone", member.phone || "");
     formData.append("nickname", member.nickname);
     // 2. 비밀번호 처리 (중요!)
     // 만약 소셜 사용자이고, 비밀번호 입력창이 비어있다면 아예 보내지 않거나

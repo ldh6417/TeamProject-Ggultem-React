@@ -6,6 +6,7 @@ import useCustomLogin from "../../hooks/useCustomLogin";
 import ItemBoardReplyComponent from "./ItemBoardReplyComponent";
 import "./ItemBoardReadComponent.css";
 import { postAdd } from "../../api/CartApi";
+import { postChatAdd } from "../../api/ChatApi";
 import axios from "axios";
 
 const host = API_SERVER_HOST;
@@ -81,6 +82,16 @@ const ItemBoardReadComponent = () => {
       navigate("/cart/list");
     });
   };
+
+  
+  const handleClickAddChat = () => {
+    const roomName = `${item.email} 님과의 채팅방`;
+    const chatObj = { itemId: Number(id), buyerId: loginState.email, sellerId:item.email, roomName:roomName  };
+    postChatAdd(chatObj).then((data)=>{
+      alert("새로운 채팅방이 개설되었습니다.");
+      navigate(`/chat/${data.roomId}`)
+    })
+  }
 
   if (fetching && !item)
     return <div className="loading">데이터를 불러오는 중...</div>;
@@ -178,7 +189,7 @@ const ItemBoardReadComponent = () => {
               </div>
             ) : (
               <>
-                <button className="chat-btn">판매자와 채팅하기</button>
+                <button className="chat-btn" onClick={handleClickAddChat}>판매자와 채팅하기</button>
                 <button className="chat-btn" onClick={handleClickAddCart}>
                   장바구니 담기
                 </button>

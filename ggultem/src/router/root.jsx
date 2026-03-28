@@ -65,11 +65,14 @@ const BlackListIndex = lazy(() => import("../pages/admin/BlackList/IndexPage"));
 const BlackListAdd = lazy(() => import("../pages/admin/BlackList/AddPage"));
 const BlackListRead = lazy(() => import("../pages/admin/BlackList/ReadPage"));
 
-//* 사용자 페이지 */
+//* 사용자 페이지 ================================================================================================================ */
 const Main = lazy(() => import("../pages/MainPage"));
 const Login = lazy(() => import("../pages/LoginPage"));
 const KakaoRedirect = lazy(() => import("../pages/KakaoRedirectPage"));
 const GoogleRedirect = lazy(() => import("../pages/GoogleRedirectPage"));
+//chat ========================================================
+const Chat = lazy(() => import("../pages/Chat/ChatPage"));
+const ChatRoomList = lazy(() => import("../pages/Chat/ChatRoom/ChatListPage"));
 //* 마이페이지 lazy */
 const MyPage = lazy(() => import("../pages/MyPage/MyPage"));
 const Modify = lazy(() => import("../pages/MyPage/ModifyPage"));
@@ -117,8 +120,8 @@ const ItemBoardModify = lazy(
 const CartList = lazy(() => import("../pages/Cart/CartListPage"));
 
 const root = createBrowserRouter([
-  /* ===== 관리자 영역 ===== */
-  /* ===== 메인페이지 연결 영역 ===== */
+  /* ===== 관리자 영역 ============================================================================================== */
+  /* ===== 메인페이지 연결 영역 ============================================================================================== */
   {
     path: "/admin/",
     element: (
@@ -135,7 +138,7 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  /* ===== 회원관리 영역 ===== */
+  /* ===== 회원관리 영역 ============================================================================================== */
   {
     path: "/admin/member/list",
     element: (
@@ -168,7 +171,7 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  /* ===== 비즈니스 회원관리 영역 ===== */
+  /* ===== 비즈니스 회원관리 영역 ============================================================================================== */
   {
     path: "/admin/businessmember/list",
     element: (
@@ -185,7 +188,7 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  /* ===== 비즈니스 광고 관리 영역 ===== */
+  /* ===== 비즈니스 광고 관리 영역 ============================================================================================== */
   {
     path: "/admin/businessboard/list",
     element: (
@@ -202,7 +205,7 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  //* Admin 상품게시판 관리자 영역 */
+  //* Admin 상품게시판 관리자 영역 ============================================================================================== */
   {
     path: "/admin/itemBoard/list",
     element: (
@@ -235,8 +238,7 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  // 커뮤니티 관리자 영역
-  /* ===== 관리자 영역 ===== */
+  // 커뮤니티 관리자 영역 ==============================================================================================
   {
     path: "/admin/board/list",
     element: (
@@ -253,7 +255,7 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  // ✅ 관리자 공지사항
+  /* =====  공지사항 관리자 영역 ============================================================================================== */
   {
     path: "admin/notice",
     children: [
@@ -291,7 +293,7 @@ const root = createBrowserRouter([
       },
     ],
   },
-  /* ===== 코드그룹 관리 (추가됨) ===== */
+  /* ===== 코드그룹 관리 (추가됨) ============================================================================================== */
   {
     path: "admin/codegroup/list",
     element: (
@@ -324,7 +326,7 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  /* ===== 블랙리스트 관리 영역 ===== */
+  /* ===== 블랙리스트 관리 영역 ============================================================================================== */
   {
     path: "admin/blacklist/list",
     element: (
@@ -349,7 +351,9 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
-  /* ===== 메인페이지 연결 영역 ===== */
+
+  /* 사용자 페이지 영역 ====================================================================================================== */
+  /* ===== 메인페이지 연결 영역 ============================================================================================== */
   {
     path: "/",
     element: (
@@ -388,6 +392,23 @@ const root = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/chat/:roomId",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Chat />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/chatroom/list",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <ChatRoomList />
+      </Suspense>
+    ),
+  },
+
   /* ===== 마이페이지 연결 영역 ===== */
   {
     path: "/mypage",
