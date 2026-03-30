@@ -5,6 +5,7 @@ import PageComponent from "../common/PageComponent";
 import { getListByGroup } from "../../api/admin/CodeDetailApi";
 import "./ItemBoardListComponent.css";
 import axios from "axios";
+import KakaoMap from "./ItemBoardMapComponent";
 
 const host = API_SERVER_HOST;
 
@@ -90,6 +91,7 @@ const ItemBoardList = () => {
 
   return (
     <div className="board-list-container">
+      <KakaoMap />
       <div className="board-header">
         <h2>🍯 꿀템 매물 목록</h2>
         <button

@@ -3,7 +3,9 @@ import { getList, deleteOne, API_SERVER_HOST } from "../../api/CartApi";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import PageComponent from "../common/PageComponent";
-import "./CartListComponent.css"; // CSS 파일 임포트
+import axios from "axios"; // axios 추가
+import { getListByGroup } from "../../api/admin/CodeDetailApi"; // 경로 확인 필요
+import "./CartListComponent.css";
 
 const host = API_SERVER_HOST;
 
@@ -11,6 +13,8 @@ const CartList = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [checkedItems, setCheckedItems] = useState([]);
+  const [categories, setCategories] = useState([]); // 카테고리 상태 추가
+  const [locations, setLocations] = useState([]); // 지역 상태 추가
   const loginState = useSelector((state) => state.loginSlice);
   const email = loginState?.email;
 
@@ -24,15 +28,6 @@ const CartList = () => {
     word: keyword,
   });
 
-  const moveToList = (pageParam) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", pageParam.page);
-    params.set("searchType", searchType);
-    params.set("keyword", keyword);
-
-    navigate(`/cart/list?${params.toString()}`);
-  };
-
   const [serverData, setServerData] = useState({
     dtoList: [],
     totalCount: 0,
@@ -45,27 +40,59 @@ const CartList = () => {
     if (!email) return;
     getList({ page, size, searchType, keyword, email })
       .then((data) => {
-        console.log("서버 원본 데이터:", data);
-
         if (data && data.dtoList) {
-          // 1. enabled가 1(정상)인 항목만 추출 (0인 삭제 데이터 제외)
-          const activeItems = data.dtoList.filter((item) => item.enabled === 0);
-
-          // 2. 필터링된 리스트로 상태 업데이트
+          // enabled가 0인 데이터(정상)만 필터링 (사용자님 로직 유지)
+          const activeItems = data.dtoList.filter((item) => item.enabled === 1);
           setServerData({
             ...data,
             dtoList: activeItems,
-            // 전체 개수 표시도 필터링된 개수에 맞춰서 조정 (선택사항)
-            totalCount: activeItems.length,
+            totalCount: data.totalCount,
           });
         }
       })
       .catch((err) => console.error("데이터 로드 실패:", err));
   };
 
+  // ✅ 통합 useEffect: 목록 로드 및 공통 코드 로드
   useEffect(() => {
     fetchCartList();
+
+    const pageParam = { page: 1, size: 100 };
+    axios
+      .get(`${host}/api/codegroup/list`, { params: pageParam })
+      .then((res) => {
+        const allGroups = res.data.dtoList || [];
+        allGroups.forEach((group) => {
+          const gCode = group.groupCode.toUpperCase();
+          if (gCode.includes("ITEM_CATEGORY") || gCode.includes("ITEM_CAT")) {
+            getListByGroup(pageParam, group.groupCode).then((data) => {
+              if (data?.dtoList) setCategories(data.dtoList);
+            });
+          }
+          if (gCode.includes("ITEM_LOCATION") || gCode.includes("ITEM_LOC")) {
+            getListByGroup(pageParam, group.groupCode).then((data) => {
+              if (data?.dtoList) setLocations(data.dtoList);
+            });
+          }
+        });
+      })
+      .catch((err) => console.error("코드 로드 실패:", err));
   }, [page, size, searchType, keyword, email]);
+
+  const moveToList = (pageParam) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageParam.page);
+    navigate(`/cart/list?${params.toString()}`);
+  };
+
+  // ✅ 코드값 -> 명칭 변환 함수 (문자열 비교 안전하게 처리)
+  const getCodeName = (codeList, codeValue) => {
+    if (!codeList || codeList.length === 0) return codeValue;
+    const found = codeList.find(
+      (c) => String(c.codeValue) === String(codeValue),
+    );
+    return found ? found.codeName : codeValue;
+  };
 
   const handleAllCheck = (checked) => {
     if (checked) {
@@ -88,52 +115,40 @@ const CartList = () => {
     deleteOne(id)
       .then(() => {
         alert("삭제되었습니다.");
-        fetchCartList();
+        navigate("/mypage", { state: { refresh: true } });
       })
       .catch(() => alert("삭제 중 오류가 발생했습니다."));
   };
 
   const handleSelectDelete = async () => {
     if (checkedItems.length === 0) return alert("삭제할 상품을 선택해주세요.");
-
     if (!window.confirm(`${checkedItems.length}개의 상품을 삭제하시겠습니까?`))
       return;
 
     try {
-      // 선택된 모든 ID에 대해 deleteOne 호출
       const deletePromises = checkedItems.map((id) => deleteOne(id));
-
       await Promise.all(deletePromises);
-
       alert("선택한 상품이 모두 삭제되었습니다.");
-      setCheckedItems([]); // 체크박스 초기화
-      fetchCartList(); // 목록 새로고침
+      setCheckedItems([]);
+      navigate("/mypage", { state: { refresh: true } });
     } catch (error) {
-      console.error("선택 삭제 실패:", error);
       alert("일부 상품 삭제에 실패했습니다.");
     }
   };
 
-  // ✅ 검색 input 변경
   const handleChangeSearch = (e) => {
-    setSearchState({
-      ...searchState,
-      [e.target.name]: e.target.value,
-    });
+    setSearchState({ ...searchState, [e.target.name]: e.target.value });
   };
 
-  // ✅ 검색 실행
   const handleSearch = (e) => {
     if (e) e.preventDefault();
-
-    const params = new URLSearchParams(searchParams);
-
+    const params = new URLSearchParams();
     params.set("page", "1");
     params.set("searchType", searchState.type);
     params.set("keyword", searchState.word.trim());
-
     navigate(`/cart/list?${params.toString()}`);
   };
+
   return (
     <div className="cart-container">
       <div className="cart-header">
@@ -143,7 +158,6 @@ const CartList = () => {
         </p>
       </div>
 
-      {/* ✅ 검색 영역 추가 */}
       <div className="cart-search-bar">
         <form onSubmit={handleSearch}>
           <select
@@ -153,10 +167,9 @@ const CartList = () => {
             className="search-select"
           >
             <option value="all">전체</option>
-            <option value="title">제목</option>
+            <option value="title">상품명</option>
             <option value="location">지역</option>
           </select>
-
           <input
             type="text"
             name="word"
@@ -165,7 +178,6 @@ const CartList = () => {
             placeholder="검색어를 입력하세요"
             className="search-input"
           />
-
           <button type="submit" className="search-btn">
             검색
           </button>
@@ -216,7 +228,11 @@ const CartList = () => {
                       {item.itemBoard?.price?.toLocaleString()}원
                     </p>
                     <p className="cart-item-location">
-                      {item.itemBoard?.location}
+                      {/* item.location 또는 item.itemBoard.location 중 실제 데이터가 들어오는 곳을 확인하세요 */}
+                      {getCodeName(
+                        locations,
+                        item.itemBoard?.location || item.location,
+                      )}
                     </p>
                   </div>
                 </div>
