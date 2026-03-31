@@ -1,0 +1,201 @@
+/* 컨테이너 및 레이아웃 */
+.kakao-map-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 검색창 스타일 */
+.search-box {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.search-button {
+  padding: 10px 25px;
+  background-color: #2d8cf0;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.search-button:hover {
+  background-color: #1a73e8;
+}
+.reset-button {
+  padding: 10px 25px;
+  background-color: #f02d2d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.reset-button:hover {
+  background-color: #e81a70;
+}
+
+/* 상태 표시바 */
+.status-display {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.status-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.highlight-text {
+  color: #e74c3c;
+  font-size: 16px;
+}
+
+/* 지도 스타일 */
+.map-wrapper {
+  width: 100%;
+  height: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  position: relative;
+}
+
+.kakao-map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* 상품 섹션 및 헤더 */
+.item-section {
+  margin-top: 30px;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #2d8cf0;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.item-title {
+  margin: 0;
+}
+
+.filter-group {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  outline: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* 상품 그리드 및 카드 */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.item-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+}
+
+.item-image-wrapper {
+  width: 100%;
+  height: 150px;
+  background-color: #f0f0f0;
+  position: relative;
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sold-out-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.item-info {
+  padding: 12px;
+}
+
+.item-location {
+  font-size: 12px;
+  color: #999;
+}
+
+.item-name {
+  font-weight: bold;
+  margin: 5px 0;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-price {
+  color: #2d8cf0;
+  font-weight: bold;
+}
+
+/* 빈 상태 및 페이징 */
+.empty-state {
+  text-align: center;
+  padding: 50px 0;
+  color: #999;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.pagination-wrapper {
+  margin-top: 30px;
+}

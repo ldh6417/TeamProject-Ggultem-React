@@ -13,7 +13,6 @@ const AdminListComponent = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [categories, setCategories] = useState([]);
-  const [locations, setLocations] = useState([]);
   const [serverData, setServerData] = useState({
     dtoList: [],
     totalCount: 0,

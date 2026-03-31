@@ -91,7 +91,6 @@ const ItemBoardList = () => {
 
   return (
     <div className="board-list-container">
-      <KakaoMap />
       <div className="board-header">
         <h2>🍯 꿀템 매물 목록</h2>
         <button
@@ -129,94 +128,19 @@ const ItemBoardList = () => {
             검색
           </button>
         </form>
-
-        <div className="filter-bar">
-          <select
-            className="filter-select"
-            value={status}
-            onChange={(e) => handleFilterChange("status", e.target.value)}
-          >
-            <option value="all">전체 상태</option>
-            <option value="false">판매중</option>
-            <option value="true">판매완료</option>
-          </select>
-          <select
-            className="filter-select"
-            value={category}
-            onChange={(e) => handleFilterChange("category", e.target.value)}
-          >
-            <option value="all">모든 카테고리</option>
-            {categories.map((item) => (
-              <option key={item.codeValue} value={item.codeValue}>
-                {item.codeName}
-              </option>
-            ))}
-          </select>
-          <select
-            className="filter-select"
-            value={location}
-            onChange={(e) => handleFilterChange("location", e.target.value)}
-          >
-            <option value="all">전체 지역</option>
-            {locations.map((item) => (
-              <option key={item.codeValue} value={item.codeValue}>
-                {item.codeName}
-              </option>
-            ))}
-          </select>
-        </div>
+        <KakaoMap
+          currentFilters={{
+            category,
+            status,
+            searchType,
+            keyword,
+          }}
+          status={status}
+          category={category}
+          categories={categories}
+          handleFilterChange={handleFilterChange}
+        />
       </div>
-
-      <div className="item-grid">
-        {serverData.dtoList.length > 0 ? (
-          serverData.dtoList.map((item) => (
-            <div
-              key={item.id}
-              className="item-card"
-              onClick={() =>
-                navigate(
-                  `/itemBoard/read/${item.id}?${searchParams.toString()}`,
-                )
-              }
-            >
-              <div className="item-image">
-                {(item.status === "판매완료" || item.status === "true") && (
-                  <div className="sold-out-overlay">
-                    <span>SOLD OUT</span>
-                  </div>
-                )}
-                <img
-                  src={
-                    item.uploadFileNames?.length > 0
-                      ? `${host}/itemBoard/view/s_${item.uploadFileNames[0]}`
-                      : `${host}/itemBoard/view/default.jpg`
-                  }
-                  alt={item.title}
-                />
-              </div>
-              <div className="item-info">
-                <div className="item-category">
-                  {getCodeName(categories, item.category)}
-                </div>
-                <div className="item-title">{item.title}</div>
-                <div className="item-price">
-                  {item.price?.toLocaleString()}원
-                </div>
-                <div className="item-footer">
-                  <span>{getCodeName(locations, item.location)}</span>
-                  <span>{item.regDate?.split("T")[0]}</span>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="no-data">등록된 상품이 없습니다.</div>
-        )}
-      </div>
-      <PageComponent
-        serverData={serverData}
-        moveToList={(p) => handleFilterChange("page", p.page)}
-      />
     </div>
   );
 };
