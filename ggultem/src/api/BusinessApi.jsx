@@ -86,6 +86,15 @@ export const postAdd = async (businessData) => {
   return res.data;
 };
 
+//비즈니스 회원 비즈머니 충전
+export const chargeBizMoney = async (email, amount) => {
+  // 주소 뒤에 ?amount=10000 형태로 보냅니다.
+  const res = await axios.put(
+    `${host}/businessmember/charge/${email}?amount=${amount}`,
+  );
+  return res.data;
+};
+
 //비즈니스 회원 정보
 export const getMyPage = async (email) => {
   const res = await axios.get(`${host}/businessmember/${email}`);
@@ -123,4 +132,45 @@ export const getBusinessStats = async (email, start, end) => {
       DailyStats: [],
     };
   }
+};
+
+export const spendMoneyByClick = async (email, amount, title) => {
+  const res = await axios.put(
+    `${host}/businessmember/spend/${email}?amount=${amount}&title=${title}`,
+  );
+  return res.data;
+};
+
+export const getBizMoneyHistory = async (pageParam, email) => {
+  const { page, size, keyword, searchType, state } = pageParam;
+  const res = await axios.get(`${host}/businessmember/history/${email}`, {
+    params: {
+      page: page,
+      size: size,
+      keyword: keyword,
+      searchType: searchType,
+      state: state,
+    },
+  });
+  return res.data;
+};
+
+export const getTodaySpend = async (email) => {
+  const res = await axios.get(`${host}/businessmember/todaySpend/${email}`);
+  return res.data;
+};
+
+export const getTotalSpend = async (email) => {
+  const res = await axios.get(`${host}/businessmember/totalSpend/${email}`);
+  return res.data;
+};
+
+export const getTodayClick = async (email) => {
+  const res = await axios.get(`${host}/businessmember/todayClick/${email}`);
+  return res.data;
+};
+
+export const getTotalClick = async (email) => {
+  const res = await axios.get(`${host}/businessmember/totalClick/${email}`);
+  return res.data;
 };

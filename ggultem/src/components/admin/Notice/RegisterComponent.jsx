@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { postAdd } from "../../../api/admin/NoticeApi";
+import { postAdd } from "../../../api/NoticeApi"; // ✅ config.js 대신 noticeApi.js에서 가져오기
 import useCustomMove from "../../../hooks/useCustomMove";
 import "./RegisterComponent.css";
 
@@ -23,16 +23,9 @@ const RegisterComponent = () => {
   };
 
   const handleFileChange = (e) => {
-    // 1. 선택한 파일들을 배열로 변환
     const selectedFiles = Array.from(e.target.files);
-
-    // 2. [수정] 함수형 업데이트를 사용하여 기존 files 배열에 새 파일들을 누적
     setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
-
-    // 3. 동일한 파일을 다시 선택해도 이벤트가 발생하도록 input 값 초기화
-    if (uploadRef.current) {
-      uploadRef.current.value = "";
-    }
+    if (uploadRef.current) uploadRef.current.value = "";
   };
 
   const removeFile = (index) => {
@@ -41,9 +34,7 @@ const RegisterComponent = () => {
 
   const handleClickAdd = () => {
     const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
+    files.forEach((file) => formData.append("files", file));
     formData.append("title", notice.title);
     formData.append("content", notice.content);
     formData.append("memberEmail", "admin@honey.com");
@@ -51,11 +42,11 @@ const RegisterComponent = () => {
     formData.append("isPinned", notice.isPinned);
 
     postAdd(formData)
-      .then((data) => {
+      .then(() => {
         alert("공지사항이 등록되었습니다.");
         moveToAdminNoticeList();
       })
-      .catch((err) => {
+      .catch(() => {
         alert("등록에 실패했습니다.");
       });
   };
@@ -106,14 +97,13 @@ const RegisterComponent = () => {
               ref={uploadRef}
               className="form-file"
               type="file"
-              multiple={true}
+              multiple
               accept="image/*"
               onChange={handleFileChange}
             />
             <div className="image-preview-list">
               {files.map((file, i) => (
                 <div key={i} className="image-preview-item">
-                  {/* ★ 이미지 태그 추가됨 */}
                   <img
                     src={URL.createObjectURL(file)}
                     alt="미리보기"

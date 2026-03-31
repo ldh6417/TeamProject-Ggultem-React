@@ -1,0 +1,282 @@
+.ad-center-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+.ad-center-biz-money-card {
+  width: 1000px;
+  background: #333; /* 다크한 느낌으로 고급스럽게 */
+  color: #fff;
+  padding: 35px;
+  border-radius: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.amount { font-size: 2.2rem; margin: 10px 0 0; color: #fee500; }
+
+.ad-center-charge-btn-main {
+  background-color: #fee500;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.item-amount.plus { color: #2ecc71; font-weight: bold; }
+.item-amount.minus { color: #e74c3c; font-weight: bold; }
+
+.history-table-container {
+  background: #fff;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  margin-top: 30px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.biz-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.biz-history-table th {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid #f8f9fa;
+  color: #888;
+  font-weight: 600;
+  text-align: center;
+}
+
+.biz-history-table td {
+  padding: 18px 15px;
+  border-bottom: 1px solid #f8f9fa;
+  color: #333;
+  text-align: center;
+}
+
+/* 행 호버 효과 */
+.biz-history-table tbody tr:hover {
+  background-color: #fffdf5;
+}
+
+/* 뱃지 스타일 */
+.type-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.type-badge.charge { background: #e8f5e9; color: #2e7d32; } /* 초록빛 충전 */
+.type-badge.spend { background: #fff3e0; color: #ef6c00; }  /* 주황빛 지출 */
+
+/* 금액 색상 */
+.amount-cell.plus { color: #2ecc71; font-weight: 700; }
+.amount-cell.minus { color: #e74c3c; font-weight: 700; }
+
+.balance-cell { color: #999; font-size: 0.85rem; }
+.date-cell { color: #666; }
+
+/* ✅ 모달 오버레이: 화면 전체를 덮는 투명 검정 배경 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* 배경 어둡게 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999 !important; /* 무조건 최상단 */
+}
+
+/* ✅ 모달 컨텐츠 박스 */
+.charge-modal-content {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalShow 0.3s ease-out; /* 등장 애니메이션 */
+}
+
+/* 등장 애니메이션 (선택사항) */
+@keyframes modalShow {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ✅ 닫기 버튼(X) 위치 */
+.close-x {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+/* ✅ 금액 버튼 활성화 스타일 */
+.amount-btn.active {
+  background-color: #fff9e6; /* soft-yellow */
+  border: 2px solid #ffb700; /* honey-color */
+  color: #3f2e1b;
+}
+
+/* 📊 전체 컨테이너 */
+.biz-stats-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 🧱 카드 배치 영역 */
+.stats-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 📊 하단 2개 카드를 감싸는 영역 (Grid 적용) */
+.stats-summary-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 1:1 비율로 나란히 */
+  gap: 20px;
+  width: 100%;
+}
+
+/* ✨ 공통 카드 스타일 */
+.stats-card {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.stats-card h4 {
+  margin: 0 0 20px 0;
+  font-size: 15px;
+  color: #888; /* 제목은 약간 연하게 */
+  font-weight: 700;
+  border-left: 4px solid #ddd;
+  padding-left: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 🎨 상단 All DashBoard 포인트 컬러 */
+.stats-summary > .stats-card > h4 { border-left-color: #ffb700; } 
+/* 🎨 하단 Today Spend 포인트 컬러 */
+.stats-summary-2 > .stats-card:nth-child(1) h4 { border-left-color: #ff8c00; } 
+/* 🎨 하단 Today Click 포인트 컬러 */
+.stats-summary-2 > .stats-card:nth-child(2) h4 { border-left-color: #ff8c00; }
+
+/* 텍스트 및 숫자 정렬 */
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-wrapper span {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.info-wrapper strong {
+  font-size: 26px; /* 숫자 강조 */
+  font-weight: 900;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+/* 상단 큰 카드 내부에서 가로로 배치하고 싶을 때 */
+.stats-summary > .stats-card .info-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 누적 광고비와 누적 클릭수를 가로로 */
+}
+
+.codegroup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.admin-search {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.codegroup-actions input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 12px; 
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.search-btn-wide {
+  background-color: #c7ae4c;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.search-btn-wide:hover {
+  background-color: #473900;
+}
+
+.admin-btn-group {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.admin-btn {
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.reset-btn { background: #6c757d; color: white; }
+.add-btn { background: #28a745; color: white; }
+.delete-btn { background: #a72828; color: white; }

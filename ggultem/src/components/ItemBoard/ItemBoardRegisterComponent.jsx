@@ -3,6 +3,7 @@ import { postAdd, API_SERVER_HOST } from "../../api/ItemBoardApi"; // API_SERVER
 import { useNavigate } from "react-router";
 import { getListByGroup } from "../../api/admin/CodeDetailApi"; // 상세 코드 API 추가
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 import axios from "axios";
 import "./ItemBoardRegisterComponent.css";
 
@@ -14,6 +15,9 @@ const initState = {
   content: "",
   category: "",
   location: "",
+  // 초기값 서울시청
+  lat: 37.5665,
+  lng: 126.978,
 };
 
 const ItemBoardRegister = () => {
@@ -29,6 +33,8 @@ const ItemBoardRegister = () => {
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
 
+  const [searchKey, setSearchKey] = useState("");
+
   // 1️⃣ 로그인 체크 및 공통 코드 데이터 로드
   useEffect(() => {
     if (!isLogin) {
@@ -37,6 +43,7 @@ const ItemBoardRegister = () => {
       return;
     }
 
+    // 필터링 했을때 1페이지에 몰아서 보이게
     const pageParam = { page: 1, size: 100 };
 
     axios
@@ -107,6 +114,8 @@ const ItemBoardRegister = () => {
     formData.append("content", item.content);
     formData.append("category", item.category);
     formData.append("location", item.location);
+    formData.append("lat", item.lat);
+    formData.append("lng", item.lng);
 
     setFetching(true);
     postAdd(formData)
@@ -122,6 +131,37 @@ const ItemBoardRegister = () => {
   };
 
   if (!isLogin) return null;
+
+  // 2. 주소 검색 함수
+  const handleSearchAddress = () => {
+    if (!searchKey.trim()) {
+      alert("검색어를 입력하세요!");
+      return;
+    }
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(searchKey, (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const newLat = result[0].y;
+        const newLng = result[0].x;
+
+        // 검색된 주소에서 '구' 또는 '동' 이름 추출 (DB의 location 규격에 맞게 선택)
+        // address_name 전체를 쓰거나, region_2depth_name(구 단위)을 사용하세요.
+        const regionName =
+          result[0].address.region_2depth_name ||
+          result[0].address.region_3depth_name;
+
+        setItem((prev) => ({
+          ...prev,
+          lat: parseFloat(newLat),
+          lng: parseFloat(newLng),
+          location: regionName, // 검색된 지역명을 location에 자동 할당
+        }));
+      } else {
+        alert("검색 결과가 없습니다.");
+      }
+    });
+  };
 
   return (
     <div className="register-container">
@@ -176,21 +216,79 @@ const ItemBoardRegister = () => {
           </select>
         </div>
 
-        {/* ✅ 거래 지역 셀렉트박스 (DB 연동) */}
         <div className="form-group">
-          <label>거래 지역</label>
-          <select
-            name="location"
-            value={item.location}
-            onChange={handleChangeItem}
-          >
-            <option value="">지역 선택</option>
-            {locations.map((code) => (
-              <option key={code.codeValue} value={code.codeValue}>
-                {code.codeName}
-              </option>
-            ))}
-          </select>
+          <label>거래 희망 장소 (검색 후 마커를 조정하세요)</label>
+
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            <input
+              type="text"
+              value={searchKey}
+              onChange={(e) => setSearchKey(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearchAddress()}
+              placeholder="동네 이름이나 주소 검색 (예: 강남역, 화양동)"
+              style={{
+                flex: 1,
+                padding: "8px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <button
+              type="button"
+              onClick={handleSearchAddress}
+              style={{
+                padding: "8px 15px",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+              }}
+            >
+              검색
+            </button>
+          </div>
+
+          <div style={{ width: "100%", height: "300px", marginBottom: "10px" }}>
+            <Map
+              center={{ lat: item.lat, lng: item.lng }}
+              style={{ width: "100%", height: "100%", borderRadius: "8px" }}
+              level={3}
+            >
+              <MapMarker
+                position={{ lat: item.lat, lng: item.lng }}
+                draggable={true}
+                onDragEnd={(marker) => {
+                  const newLat = marker.getPosition().getLat();
+                  const newLng = marker.getPosition().getLng();
+
+                  // 마커를 직접 옮겼을 때도 해당 위치의 주소를 가져와서 location 업데이트 가능 (역지오코딩)
+                  const geocoder = new window.kakao.maps.services.Geocoder();
+                  geocoder.coord2Address(newLng, newLat, (result, status) => {
+                    if (status === window.kakao.maps.services.Status.OK) {
+                      const regionName = result[0].address.region_2depth_name;
+                      setItem((prev) => ({
+                        ...prev,
+                        lat: newLat,
+                        lng: newLng,
+                        location: regionName,
+                      }));
+                    }
+                  });
+                }}
+              />
+            </Map>
+          </div>
+
+          {/* 현재 선택된 지역 확인용 (수정 가능하게 하려면 input으로 두셔도 됩니다) */}
+          <div style={{ marginTop: "5px" }}>
+            <span
+              style={{ fontSize: "13px", fontWeight: "bold", color: "#2d8cf0" }}
+            >
+              설정된 지역:{" "}
+              {item.location || "지도에서 검색하거나 마커를 옮겨주세요."}
+            </span>
+            <input type="hidden" name="location" value={item.location} />
+          </div>
         </div>
 
         <div className="form-group">

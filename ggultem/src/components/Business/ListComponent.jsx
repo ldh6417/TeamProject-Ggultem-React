@@ -31,7 +31,7 @@ const ListComponent = () => {
     sign,
     category,
     moveToBusinessList,
-    moveToBusinessBoardRead,
+    moveToBusinessBoardR,
   } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
   const [codeSearchType, setCodeSearchType] = useState("all");
@@ -167,7 +167,7 @@ const ListComponent = () => {
               serverData.dtoList.map((item) => (
                 <tr
                   key={item.no}
-                  onClick={() => moveToBusinessBoardRead(item.no)}
+                  onClick={() => moveToBusinessBoardR(item.no)}
                   className="table-row"
                 >
                   <td>{item.no}</td>

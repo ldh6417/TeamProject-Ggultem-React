@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getOne, API_SERVER_HOST } from "../../../api/admin/NoticeApi";
+import { getOne } from "../../../api/NoticeApi";
 import useCustomMove from "../../../hooks/useCustomMove";
+import { API_SERVER_HOST } from "../../../api/config";
 import "./ReadComponent.css";
 import RemoveComponent from "./RemoveComponent";
 

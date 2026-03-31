@@ -9,7 +9,7 @@
   margin: 0 auto;
   display: grid;
   /* 핵심: 왼쪽(1fr)은 유연하게 늘어나고, 오른쪽(sidebar)은 320px로 고정 */
-  grid-template-columns: 1fr 320px; 
+  grid-template-columns: 1fr 320px;
   gap: 35px; /* 박스 사이 간격 확대 */
   align-items: flex-start;
 }
@@ -29,6 +29,71 @@
   width: 800px; /* 가로폭 꽉 채우기 */
   box-sizing: border-box;
 }
+
+/* --- 판매 상품 리스트 스타일 추가 시작 --- */
+.mp-item-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.mp-item-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  gap: 20px;
+}
+
+.mp-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #ffd900;
+}
+
+.mp-item-card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  object-fit: cover;
+  background-color: #f8f9fa;
+  flex-shrink: 0;
+}
+
+.mp-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.mp-item-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mp-item-price {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.mp-pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+/* --- 판매 상품 리스트 스타일 추가 종료 --- */
 
 /* 박스 헤더 영역 (제목 + 버튼) */
 .mp-section-header {
@@ -60,7 +125,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .mp-add-item-btn:hover {
@@ -145,16 +210,20 @@
   font-size: 0.9rem;
 }
 
-.mp-mini-item:last-child { margin-bottom: 0; }
+.mp-mini-item:last-child {
+  margin-bottom: 0;
+}
 
-.mp-label { color: #888; }
-.mp-value-badge{ 
+.mp-label {
+  color: #888;
+}
+.mp-value-badge {
   width: 80px;
   height: 25px;
   border-radius: 10px;
   background-color: #fff1df;
   font-weight: 700;
-  color: #ff8c00; 
+  color: #ff8c00;
 }
 
 .mp-badge {
@@ -182,7 +251,7 @@
 .mp-btn-modify-nav:hover {
   background: #000;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* 반응형 처리 (화면이 작아지면 한 줄로) */

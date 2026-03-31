@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getOne, API_SERVER_HOST } from "../../api/NoticeApi";
+import { getOne } from "../../api/NoticeApi";
+import { API_SERVER_HOST } from "../../api/config";
 import useCustomMove from "../../hooks/useCustomMove";
 import "./NoticeRead.css"; // CSS 파일 연결 확인!
 import useReport from "../../hooks/useReport";

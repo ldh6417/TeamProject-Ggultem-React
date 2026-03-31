@@ -10,12 +10,13 @@ export const getOne = async (id) => {
 };
 
 export const getList = async (pageParam) => {
-  const { page, size, status, category, location, keyword, searchType } =
+  const { page, size, email, status, category, location, keyword, searchType } =
     pageParam;
   const res = await axios.get(`${prefix}/list`, {
     params: {
       page: page,
       size: size,
+      email: email,
       keyword: keyword,
       searchType: searchType,
       status: status || "all",

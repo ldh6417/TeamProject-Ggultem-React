@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getList } from "../../../api/admin/NoticeApi"; // API 호출
+import { getList } from "../../../api/NoticeApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import { useNavigate } from "react-router";
 import PageComponent from "../../common/PageComponent";

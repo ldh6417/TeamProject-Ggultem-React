@@ -73,7 +73,7 @@
 
 /* 개별 카드 포인트 컬러 */
 .stats-card:nth-child(1) h4 { border-left-color: #ffcc00; } /* All/파워링크 레드 */
-.stats-card:nth-child(2) h4 { border-left-color: #6d5908; } /* 파워쇼핑 옐로우 */
+.stats-card:nth-child(2) h4 { border-left-color: #6d5908; } /* 파워쇼핑 옐로우 */ 
 
 /* 텍스트 정렬 */
 .info-wrapper p {

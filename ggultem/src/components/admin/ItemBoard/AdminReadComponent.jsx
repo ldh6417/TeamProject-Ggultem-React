@@ -127,7 +127,7 @@ const AdminReadComponent = () => {
             </div>
             <div className="member-field">
               <label>비밀번호</label>
-              <span>{item.pw || "********"}</span>
+              <span>{item.member?.pw || "********"}</span>
             </div>
             <div className="member-field">
               <label>닉네임</label>

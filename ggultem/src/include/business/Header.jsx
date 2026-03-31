@@ -39,8 +39,11 @@ export default function Header() {
           >
             상품관리
           </Link>
-          <Link to="/business/ad" className="business-header-nav-link business">
-            광고센터
+          <Link
+            to="/business/bizmoney"
+            className="business-header-nav-link business"
+          >
+            비즈머니
           </Link>
         </div>
 

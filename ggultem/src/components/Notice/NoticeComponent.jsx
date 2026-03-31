@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getList, API_SERVER_HOST } from "../../api/NoticeApi";
+// 1. API 함수(getList)는 NoticeApi에서 가져옵니다.
+import { getList } from "../../api/NoticeApi";
+// 2. 주소 변수(API_SERVER_HOST)는 config에서 직접 가져옵니다.
+import { API_SERVER_HOST } from "../../api/config";
+
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
 import "./NoticeComponent.css";

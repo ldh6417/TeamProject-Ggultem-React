@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { getOne, putOne, API_SERVER_HOST } from "../../../api/admin/NoticeApi";
+import { getOne, putOne } from "../../../api/admin/NoticeApi";
+import { API_SERVER_HOST } from "../../../api/config";
 import useCustomMove from "../../../hooks/useCustomMove";
 import "./ModifyComponent.css";
 

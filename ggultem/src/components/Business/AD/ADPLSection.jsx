@@ -1,5 +1,9 @@
 import "./ADPLSection.css";
-import { getADPLList, viewCountAdd } from "../../../api/BusinessApi";
+import {
+  getADPLList,
+  viewCountAdd,
+  spendMoneyByClick,
+} from "../../../api/BusinessApi";
 import { useEffect, useState } from "react";
 import { API_SERVER_HOST } from "../../../api/BusinessApi"; // 이미지 경로용 호스트
 import { useNavigate } from "react-router";
@@ -18,13 +22,27 @@ export default function ADSection() {
   }, []); // 빈 배열을 넣어야 컴포넌트 마운트 시 한 번만 실행
 
   // 클릭 시 URL로 이동하는 함수
-  const handleClickAd = (moveUrl, no, email) => {
-    if (moveUrl) {
-      viewCountAdd(no, email).then(() => {});
-      const url = moveUrl.startsWith("http") ? moveUrl : `https://${moveUrl}`;
-      window.open(url, "_blank", "noopener,noreferrer");
-    } else {
+  const handleClickAd = async (linkUrl, no, email, title) => {
+    if (!linkUrl) {
       alert("연결된 링크가 없습니다.");
+      return;
+    }
+
+    try {
+      // 1. 조회수와 비즈머니 차감을 병렬로 처리 (속도 UP!)
+      const cpcAmount = 100;
+      await Promise.all([
+        viewCountAdd(no, email),
+        spendMoneyByClick(email, cpcAmount, title),
+      ]);
+
+      console.log("정산 및 조회수 증가 완료 🐝");
+
+      // 2. 모든 처리가 끝난 후 안전하게 이동
+      const url = linkUrl.startsWith("http") ? linkUrl : `https://${linkUrl}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      console.error("처리 중 오류 발생:", err);
     }
   };
 
@@ -47,7 +65,7 @@ export default function ADSection() {
                     src={`${host}/business/board/view/s_${dto.uploadFileNames[0]}`}
                     alt="thumb"
                     onClick={() =>
-                      handleClickAd(dto.moveUrl, dto.no, dto.email)
+                      handleClickAd(dto.moveUrl, dto.no, dto.email, dto.title)
                     }
                   />
                 ) : (
@@ -60,7 +78,9 @@ export default function ADSection() {
                 <div className="AD-info-url">{dto.moveUrl}</div>
                 <div
                   className="AD-info-title"
-                  onClick={() => handleClickAd(dto.moveUrl, dto.no, dto.email)}
+                  onClick={() =>
+                    handleClickAd(dto.moveUrl, dto.no, dto.email, dto.title)
+                  }
                 >
                   {dto.title}
                 </div>

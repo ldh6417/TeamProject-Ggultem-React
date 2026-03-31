@@ -25,6 +25,10 @@ const AdminBusinessMemberList = lazy(
 const AdminBusinessMemberRead = lazy(
   () => import("../pages/admin/Business/ReadPage"),
 );
+//* 비즈머니 회원 관리 페이지 */
+const AdminBizMoneyList = lazy(
+  () => import("../pages/admin/BizMoney/ListPage"),
+);
 //* 비즈니스 광고 등록 관리 페이지 */
 const AdminBusinessBoardList = lazy(
   () => import("../pages/admin/BusinessBoard/ListPage"),
@@ -94,6 +98,9 @@ const BusinessBoardModify = lazy(
 );
 const BusinessBoardDList = lazy(
   () => import("../pages/Business/Itemboard/DeleteListPage"),
+);
+const BusinessAdCenter = lazy(
+  () => import("../pages/Business/AdCenter/AdCenterPage"),
 );
 //* 공지사항 lazy */
 const NoticeList = lazy(() => import("../pages/Notice/NoticePage"));
@@ -192,6 +199,15 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <AdminBusinessMemberRead />
+      </Suspense>
+    ),
+  },
+  /* ===== 비즈머니 영역 ============================================================================================== */
+  {
+    path: "/admin/bizmoney/list",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <AdminBizMoneyList />
       </Suspense>
     ),
   },
@@ -588,6 +604,14 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <BusinessBoardDList />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/bizmoney",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <BusinessAdCenter />
       </Suspense>
     ),
   },

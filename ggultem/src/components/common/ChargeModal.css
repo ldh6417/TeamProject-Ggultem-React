@@ -1,0 +1,115 @@
+/* 배경 흐리게 */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.charge-modal-content {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 30px; /* 둥글둥글 포인트 */
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 { margin: 0; font-size: 1.4rem; color: var(--bee-brown); }
+
+.amount-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.amount-btn {
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px solid #f1f1f1;
+  background: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.amount-btn.active {
+  border-color: var(--honey-color);
+  background-color: var(--soft-yellow);
+  color: var(--bee-brown);
+}
+
+.total-display {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.total-display strong { font-size: 1.2rem; color: #ff8c00; }
+
+.modal-footer { display: flex; gap: 10px; }
+
+.confirm-btn {
+  flex: 2;
+  background: var(--honey-color);
+  border: none;
+  padding: 15px;
+  border-radius: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #eee;
+  border: none;
+  padding: 15px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+/* ChargeModal.css */
+.modal-overlay {
+  /* ✨ 핵심: fixed는 브라우저 화면 전체를 기준으로 합니다. */
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6); /* 배경 어둡게 */
+  
+  /* 중앙 정렬 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* 최상단으로 올리기 */
+  z-index: 9999; 
+}
+
+.charge-modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 400px;
+  /* 하단에 나오는 걸 방지하기 위해 relative 제거하거나 확실히 선언 */
+  position: relative; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
