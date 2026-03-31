@@ -2,31 +2,43 @@
 // 차후 다른 컴퍼넌트의 구조와 다른 것에 대해 혼동을 방지하기 위한 주석.
 // 공지사항은 일반적인 CRUD 형태이고, Report쪽은 WorkFlow 중심이라 구조가 다를 수밖에 없음.
 import { useState } from "react";
+import { useSelector } from "react-redux"; // ✅ 추가
 import { completeReportProcess } from "../../../api/admin/ReportApi";
 
 const ProcessComponent = ({ reportId }) => {
-  // 로그인한 관리자 정보 (나중에 세션이나 리덕스에서 가져와야 함)
-  const adminEmail = "admin@test.com";
+  const loginState = useSelector((state) => state.loginSlice); // ✅ 추가
+  const adminEmail = loginState.email; // ✅ 하드코딩 제거
 
   const [processData, setProcessData] = useState({
-    reportId: reportId,
-    adminEmail: adminEmail,
-    actionNote: "", // 백엔드 actionNote와 매칭
-    reportStatus: "처리완료", // 고정값
-    memberStatus: 0, // 0: 일반, 2: 7일, 3: 30일, 4: 영구정지
+    actionNote: "",
+    memberStatus: 0,
   });
 
   const handleClickProcess = () => {
-    if (!processData.actionNote) {
-      alert("조치 내용을 입력해주세요.");
+    if (!processData.actionNote || processData.actionNote.trim() === "") {
+      alert("조치 내용을 상세히 입력해주세요.");
       return;
     }
 
-    // API 호출 (기존 작성하신 completeReportProcess 사용)
-    completeReportProcess(processData).then((data) => {
-      alert("신고 처리가 완료되었습니다.");
-      // moveToList(); // 목록 이동 로직 추가 가능
-    });
+    const finalData = {
+      reportId: Number(reportId),
+      adminEmail: String(adminEmail), // ✅ 실제 로그인한 관리자 이메일
+      actionNote: String(processData.actionNote),
+      reportStatus: "처리완료",
+      memberStatus: Number(processData.memberStatus),
+    };
+
+    console.log("전송 데이터 최종 확인:", finalData);
+
+    completeReportProcess(finalData)
+      .then((data) => {
+        console.log("서버 응답:", data);
+        alert("신고 처리가 완료되었습니다.");
+      })
+      .catch((err) => {
+        console.error("Axios 에러 상세:", err.response?.data);
+        alert("서버 오류가 발생했습니다. 콘솔을 확인하세요.");
+      });
   };
 
   return (

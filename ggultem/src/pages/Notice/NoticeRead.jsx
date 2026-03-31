@@ -29,16 +29,17 @@ const NoticeRead = () => {
       });
   }, [noticeId]);
 
-  //
-  const targetData = {
-    targetType: "NOTICE",
-    targetNo: noticeId,
-    targetMemberId: "admin",
-  };
-
   if (loading) return <div className="loading-container">로딩 중...</div>;
   if (!notice)
     return <div className="error-container">데이터를 찾을 수 없습니다.</div>;
+
+  //
+  // notice 데이터 로드 후 세팅
+  const targetData = {
+    targetType: "NOTICE",
+    targetNo: noticeId,
+    targetMemberId: notice.memberEmail, // 작성자 이메일로 비교
+  };
 
   return (
     <div className="notice-read-wrapper">

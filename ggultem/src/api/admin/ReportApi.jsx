@@ -32,3 +32,8 @@ export const completeReportProcess = async (processedDTO) => {
   const res = await axios.post(`${host}/process`, processedDTO);
   return res.data;
 };
+
+export const getReportProcess = async (reportId) => {
+  const res = await axios.get(`${host}/processed/${reportId}`);
+  return res.data;
+};

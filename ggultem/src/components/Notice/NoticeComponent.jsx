@@ -33,6 +33,7 @@ const NoticeComponent = () => {
 
   useEffect(() => {
     getList({ page, size, keyword, searchType, refresh }).then((data) => {
+      console.log(data);
       setServerData(data);
     });
   }, [page, size, keyword, searchType, refresh]);

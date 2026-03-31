@@ -1,19 +1,19 @@
+// useReport.jsx
 import { useState } from "react";
-import { postReport } from "../api/admin/ReportApi"; // 실제 API 호출 함수
+import { registerReport } from "../api/ReportApi"; // 일반 유저용 API로 교체
 
 const useReport = () => {
   const [showModal, setShowModal] = useState(false);
 
-  // 모달을 열고 닫는 함수
   const toggleModal = () => setShowModal((prev) => !prev);
 
-  // 실제 서버로 신고 데이터를 보내는 공통 로직
   const sendReport = (reportData) => {
-    // reportData에는 {reportType, reason, files, targetType, targetNo, ...}가 들어옴
-    return postReport(reportData)
+    console.log("서버로 보내는 데이터:", reportData);
+
+    return registerReport(reportData)
       .then((result) => {
         alert("신고가 정상적으로 접수되었습니다.");
-        setShowModal(false); // 성공 시 모달 닫기
+        setShowModal(false);
         return result;
       })
       .catch((err) => {
