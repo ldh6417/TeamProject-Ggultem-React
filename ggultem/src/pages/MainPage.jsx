@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../include/Header";
 import "./MainPage.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../include/Footer";
-import logoImg from "../assets/logo.png";
 import AD from "../include/business/AD";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { API_SERVER_HOST } from "../api/config";
+import { getBannerList } from "../api/BannerApi";
+
+// Swiper 스타일 import
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+const host = API_SERVER_HOST;
 
 const MainPage = () => {
   const [keyword, setKeyword] = useState("");
   const [searchType, setSearchType] = useState("all"); // 카테고리 상태
+  const [bannerImages, setBannerImages] = useState([]); // 배너 이미지 상태
   const navigate = useNavigate();
+
+  // 1. 관리자가 등록한 배너 이미지 목록 가져오기 (가상 로직)
+  useEffect(() => {
+    // API 호출을 통해 배너 이미지 리스트를 가져온다고 가정합니다.
+    getBannerList().then((data) => setBannerImages(data));
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -36,6 +53,7 @@ const MainPage = () => {
               value={searchType}
               onChange={(e) => setSearchType(e.target.value)}
             >
+              <option value="">선택</option>
               <option value="itemBoard">중고거래</option>
               <option value="board">커뮤니티</option>
               <option value="notice">공지사항</option>
@@ -52,6 +70,45 @@ const MainPage = () => {
               검색
             </button>
           </form>
+        </div>
+
+        {/* ✅ 중앙 와이드 슬라이드 배너 */}
+        <div className="mainpage-center-banner-wrapper">
+          {/* dtoList에서 enabled가 1인 데이터만 필터링 */}
+          {(() => {
+            const activeBanners =
+              bannerImages.dtoList?.filter((banner) => banner.enabled === 1) ||
+              [];
+
+            return activeBanners.length > 0 ? (
+              <Swiper
+                spaceBetween={30}
+                centeredSlides={true}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                navigation={true}
+                modules={[Autoplay, Pagination, Navigation]}
+                className="mainpage-mySwiper"
+              >
+                {activeBanners.map((banner) => (
+                  <SwiperSlide key={banner.no}>
+                    <Link to={banner.link || "#"}>
+                      <img
+                        src={`${host}/admin/banner/view/${banner.uploadFileNames[0]}`}
+                        alt={`Banner ${banner.no}`}
+                        className="mainpage-banner-img"
+                      />
+                    </Link>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              /* 🍯 활성화된 광고가 없을 때 */
+              <div className="mainpage-no-banner">
+                <p>꿀같은 아이템을 내 손 안에! 꿀템!</p>
+              </div>
+            );
+          })()}
         </div>
 
         {/* 하단 버튼형 메뉴 */}

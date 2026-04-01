@@ -1,4 +1,4 @@
-import React from "react";
+import logoImg from "../assets/header_logo.png";
 import { Link } from "react-router-dom"; // router-dom으로 임포트 확인하세요!
 import "./Footer.css";
 import { useSelector } from "react-redux";
@@ -41,6 +41,9 @@ export default function Footer() {
             <p>
               <strong>팀 :</strong> 꿀템프로젝트
             </p>
+          </div>
+          <div className="footer-info-center">
+            <img src={logoImg} alt="꿀템 로고" className="header-logo-img" />
           </div>
           <div className="footer-info-right">
             <p>

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import "./Header.css";
 // 로고 이미지 경로를 프로젝트 구조에 맞게 수정하세요 (예: src/assets/logo.png)
-import logoImg from "../assets/logo.png";
+import logoImg from "../assets/header_logo.png";
 import { useSelector } from "react-redux";
 import useCustomLogin from "../hooks/useCustomLogin";
 import { useEffect, useRef } from "react";
@@ -54,17 +54,13 @@ export default function Header() {
     };
   }, []);
 
-
   return (
     <header className="header-custom-header">
       <nav className="header-nav-container">
         {/* 로고 영역 */}
         <div className="header-nav-left">
-          <Link to="/" className="header-nav-logo">
-            {/* 이미지 대신 텍스트 로고로 변경 */}
-            <span className="header-logo-text">
-              <span className="logo-g">G</span>꿀템
-            </span>
+          <Link to="/" className="nav-logo">
+            <img src={logoImg} alt="꿀템 로고" className="header-logo-img" />
           </Link>
         </div>
 
@@ -89,7 +85,6 @@ export default function Header() {
 
         <div className="header-nav-right">
           {loginState && loginState.email ? (
-
             <div className="header-user-menu">
               <Link to={`/chatroom/list`} className="nav-item">
                 Chat

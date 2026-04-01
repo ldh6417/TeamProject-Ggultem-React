@@ -1,0 +1,90 @@
+.banner-read-container {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.banner-read-card {
+    width: 100%;
+    max-width: 1200px;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* 이미지 섹션 */
+.banner-read-image-section {
+    position: relative;
+    width: 1200px;
+    height: 210px; /* 상세페이지니까 조금 더 크게 */
+    background-color: #ffffff;
+}
+
+.banner-read-img {
+    width: 1200px;
+    height: auto;
+    object-fit: cover;
+    margin-top: 28px;
+}
+
+.banner-read-status-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.banner-read-status-badge.active { background-color: #2ecc71; }
+.banner-read-status-badge.inactive { background-color: #95a5a6; }
+
+/* 정보 섹션 */
+.banner-read-info-section {
+    padding: 40px;
+}
+
+.info-row {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.info-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.info-value.content-box {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    background: #fdfdfd;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.banner-link-url {
+    color: #3498db;
+    text-decoration: none;
+}
+
+/* 버튼 */
+.banner-read-buttons {
+    padding: 20px 40px 40px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-back { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; }
+.btn-modify { flex: 1; padding: 12px; background: #ffca28; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+.btn-remove { flex: 1; padding: 12px; background: #ff2828; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: #fff }

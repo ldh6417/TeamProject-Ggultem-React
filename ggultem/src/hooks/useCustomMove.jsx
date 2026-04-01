@@ -68,6 +68,33 @@ const useCustomMove = () => {
 
     setRefresh(!refresh);
   };
+  //********************************** Admin Banner 영역 *************************************
+  const moveToBannerList = (pageParam) => {
+    let queryStr = "";
+    if (pageParam) {
+      const pageNum = getNum(pageParam.page, page);
+      const sizeNum = getNum(pageParam.size, size);
+      const keywordStr = getString(pageParam.keyword, keyword);
+      const typeStr = getString(pageParam.searchType, searchType);
+      const enabledStr = getString(pageParam.enabled, enabled);
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+        keyword: keywordStr,
+        searchType: typeStr,
+        enabled: enabledStr,
+      }).toString();
+    } else {
+      queryStr = queryDefault;
+    }
+
+    navigate({
+      pathname: `../admin/banner/list`,
+      search: queryStr,
+    });
+
+    setRefresh(!refresh);
+  };
   //********************************** Admin BusinessMember 영역 *************************************
   const moveToBusinessMemberList = (pageParam) => {
     let queryStr = "";
@@ -553,6 +580,7 @@ const useCustomMove = () => {
     moveToMyPageModify,
     moveToBoardList,
     moveToBlackListList,
+    moveToBannerList,
     moveToAdd,
     movePage,
     moveToRead,

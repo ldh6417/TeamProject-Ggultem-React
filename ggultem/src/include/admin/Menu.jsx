@@ -47,8 +47,8 @@ export default function Header() {
           <Link to="/admin/blacklist/list" className="nav-link">
             블랙리스트
           </Link>
-          <Link to="/admin/searchrank/list" className="nav-link">
-            인기검색어
+          <Link to="/admin/banner/list" className="nav-link">
+            광고 배너 등록
           </Link>
           <Link to="/admin/codegroup/list" className="nav-link">
             코드관리

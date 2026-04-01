@@ -26,6 +26,7 @@
     "recharts": "^3.8.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
+    "swiper": "^12.1.3",
     "toast-ui-editor": "^1.0.0"
   },
   "devDependencies": {
