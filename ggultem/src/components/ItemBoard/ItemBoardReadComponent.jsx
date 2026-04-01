@@ -27,6 +27,7 @@ const ItemBoardReadComponent = () => {
       // 1. 게시글 상세 정보 가져오기
       getOne(id)
         .then((data) => {
+          console.log(data);
           setItem(data);
           setFetching(false);
         })
@@ -83,15 +84,19 @@ const ItemBoardReadComponent = () => {
     });
   };
 
-  
   const handleClickAddChat = () => {
-    const roomName = `${item.email} 님과의 채팅방`;
-    const chatObj = { itemId: Number(id), buyerId: loginState.email, sellerId:item.email, roomName:roomName  };
-    postChatAdd(chatObj).then((data)=>{
+    const roomName = `${item.writer} 님의 [${item.title}]`;
+    const chatObj = {
+      itemId: Number(id),
+      buyerId: loginState.email,
+      sellerId: item.email,
+      roomName: roomName,
+    };
+    postChatAdd(chatObj).then((data) => {
       alert("새로운 채팅방이 개설되었습니다.");
-      navigate(`/chat/${data.roomId}`)
-    })
-  }
+      navigate(`/chat/${data.roomId}`);
+    });
+  };
 
   if (fetching && !item)
     return <div className="loading">데이터를 불러오는 중...</div>;
@@ -189,7 +194,9 @@ const ItemBoardReadComponent = () => {
               </div>
             ) : (
               <>
-                <button className="chat-btn" onClick={handleClickAddChat}>판매자와 채팅하기</button>
+                <button className="chat-btn" onClick={handleClickAddChat}>
+                  판매자와 채팅하기
+                </button>
                 <button className="chat-btn" onClick={handleClickAddCart}>
                   장바구니 담기
                 </button>

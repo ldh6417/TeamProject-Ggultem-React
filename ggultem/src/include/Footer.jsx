@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom"; // router-dom으로 임포트 확인하세요!
 import "./Footer.css";
+import { useSelector } from "react-redux";
 
 export default function Footer() {
+  const loginState = useSelector((state) => state.loginSlice);
+
   return (
     <footer className="footer-custom-footer">
       <div className="footer-container">
@@ -17,6 +20,14 @@ export default function Footer() {
           <Link to="/notice/list">공지사항</Link>
           <span className="footer-divider">|</span>
           <Link to="/business">비즈니스</Link>
+          <span className="footer-divider">|</span>
+          <div className="header-user-menu">
+            {loginState && loginState.email === "admin@honey.com" ? (
+              <Link to="/admin">관리자 페이지</Link>
+            ) : (
+              <Link to="/mypage">마이페이지</Link>
+            )}
+          </div>
         </div>
 
         <hr className="footer-hr" />

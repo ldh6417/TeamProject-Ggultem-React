@@ -69,7 +69,9 @@ const LoginComponent = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <div className="login-logo">🍯 꿀템</div>
+        <span className="header-logo-text">
+          <span className="logo-g">G</span>꿀템
+        </span>
         <h2 className="login-title">로그인</h2>
         <p className="login-subtitle">오늘도 달콤한 득템을 시작해볼까요?</p>
 

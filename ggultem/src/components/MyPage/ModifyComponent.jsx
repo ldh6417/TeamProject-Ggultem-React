@@ -29,6 +29,7 @@ const ModifyComponent = ({ email }) => {
   const uploadRef = useRef();
   const [result, setResult] = useState(null);
   const [infoModal, setInfoModal] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,14 +52,12 @@ const ModifyComponent = ({ email }) => {
 
     formData.append("phone", member.phone || "");
     formData.append("nickname", member.nickname);
-    // 2. 비밀번호 처리 (중요!)
-    // 만약 소셜 사용자이고, 비밀번호 입력창이 비어있다면 아예 보내지 않거나
-    // 서버가 '수정 안 함'으로 인식할 수 있는 처리를 해야 합니다.
-    if (member.social) {
-      // 소셜 유저는 보통 비밀번호를 직접 수정하지 않으므로
-      // 기존의 암호화된 값을 그대로 보내지 않도록 주의하세요.
-      // formData.append("pw", ""); // 서버에서 빈 값일 때 수정을 안 하도록 로직이 짜여있어야 함
-    } else {
+
+    if (!member.social && isChangingPassword) {
+      if (member.pw !== member.confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다. ");
+        return;
+      }
       formData.append("pw", member.pw);
     }
 
@@ -182,27 +181,49 @@ const ModifyComponent = ({ email }) => {
 
           {/* 비밀번호 수정 (소셜 로그인 사용자는 숨김 또는 비활성화) */}
           {!member.social && (
-            <div className="password-section">
-              <div className="input-group">
-                <label>새 비밀번호</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={member.pw || ""}
-                  onChange={handleChange}
-                  placeholder="변경할 비밀번호 입력"
-                />
-              </div>
-              <div className="input-group">
-                <label>비밀번호 확인</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={member.confirmPassword || ""}
-                  onChange={handleChange}
-                  placeholder="비밀번호 재입력"
-                />
-              </div>
+            <div className="password-modify-container">
+              {!isChangingPassword ? (
+                <button
+                  type="button"
+                  className="pw-toggle-btn"
+                  onClick={() => setIsChangingPassword(true)}
+                >
+                  비밀번호 변경하기
+                </button>
+              ) : (
+                <div className="password-section animate-fade-in">
+                  <div className="pw-header">
+                    <label>비밀번호 변경</label>
+                    <button
+                      className="pw-cancel-btn"
+                      onClick={() => {
+                        setIsChangingPassword(false);
+                        setMember({ ...member, pw: "", confirmPassword: "" }); // 입력값 초기화
+                      }}
+                    >
+                      변경 취소
+                    </button>
+                  </div>
+                  <div className="input-group">
+                    <input
+                      type="password"
+                      name="pw" // MemberServiceImpl의 필드명인 pw에 맞춤
+                      value={member.pw || ""}
+                      onChange={handleChange}
+                      placeholder="새 비밀번호 입력"
+                    />
+                  </div>
+                  <div className="input-group">
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={member.confirmPassword || ""}
+                      onChange={handleChange}
+                      placeholder="비밀번호 재입력"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

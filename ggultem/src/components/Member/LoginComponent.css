@@ -170,3 +170,31 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
+/* 전체 로고 텍스트 스타일 */
+.header-logo-text {
+  font-family: 'Pretendard', 'Nanum Square Round', sans-serif; /* 둥근 폰트가 없다면 나눔스퀘어라운드 추천! */
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #333;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* 'G' 부분에 포인트 주기 (둥글둥글한 박스) */
+.logo-g {
+  background-color: #ffb700; /* 카톡 노란색 또는 꿀색 */
+  color: #3f2e1b;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px; /* 둥글둥글한 모서리 */
+  font-size: 1.6rem;
+  margin-right: 2px;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}

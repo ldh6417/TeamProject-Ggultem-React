@@ -5,6 +5,8 @@ import {
   API_SERVER_HOST,
   checkEmail,
   checkNickname,
+  sendVerificationEmail,
+  verifyEmailCode,
 } from "../../api/admin/MemberApi";
 import "./RegisterComponent.css";
 
@@ -32,6 +34,38 @@ const RegisterPage = () => {
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [nicknameStatus, setNicknameStatus] = useState(null);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false); // 최종 인증 여부
+  const [showVerifyInput, setShowVerifyInput] = useState(false); // 입력창 노출 여부
+  const [isEmailSent, setIsEmailSent] = useState(false);
+
+  // 인증번호 발송 핸들러
+  const handleSendEmail = () => {
+    sendVerificationEmail(member.email)
+      .then((data) => {
+        if (data.result === "SUCCESS") {
+          alert("인증번호가 발송되었습니다! 🍯");
+          setIsEmailSent(true); // 입력창 등장!
+        }
+      })
+      .catch((err) =>
+        alert("메일 발송에 실패했습니다. 이메일을 확인해주세요."),
+      );
+  };
+
+  // 인증번호 검증 핸들러
+  const handleVerifyCode = () => {
+    verifyEmailCode(member.email, verificationCode).then((data) => {
+      if (data.result === true) {
+        alert("이메일 인증이 완료되었습니다! 🐝");
+        setIsEmailVerified(true); // 인증 완료 상태로 변경
+        setIsEmailSent(false); // 인증 성공했으니 번호 입력창은 다시 숨김
+      } else {
+        alert(data.message); // "인증번호가 일치하지 않습니다" 등 서버 메시지 출력
+      }
+    });
+  };
 
   // ✨ 비밀번호 유효성 검사 정규식 (영문, 숫자, 특수문자 조합 8~11자)
   const pwRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,11}$/;
@@ -135,6 +169,11 @@ const RegisterPage = () => {
   };
 
   const handleClickAdd = () => {
+    if (!isEmailVerified) {
+      alert("이메일 인증을 통과해야 합니다.");
+      return;
+    }
+
     if (!isEmailChecked) {
       alert("이메일 중복 확인을 통과해야 합니다.");
       return;
@@ -226,29 +265,58 @@ const RegisterPage = () => {
                 value={member.email}
                 onChange={handleChangeMember}
                 placeholder="example@honey.com"
+                disabled={isEmailVerified} // ✨ 인증 완료되면 수정 불가
               />
-              <button
-                type="button"
-                className="btn-check"
-                onClick={handleCheckEmailBtn}
-              >
-                중복 확인
-              </button>
+              {!isEmailChecked ? (
+                <button
+                  type="button"
+                  className="btn-check"
+                  onClick={handleCheckEmailBtn}
+                >
+                  중복 확인
+                </button>
+              ) : !isEmailVerified ? (
+                <button
+                  type="button"
+                  className="btn-verify-send"
+                  onClick={handleSendEmail}
+                >
+                  {isEmailSent ? "재발송" : "인증번호 받기"}
+                </button>
+              ) : (
+                <span className="verify-badge">인증됨 ✅</span>
+              )}
             </div>
 
-            {/* 상태 메시지 - wrapper 밖으로 빼서 아래에 출력 */}
-            {emailStatus && (
+            {/* 중복 확인 상태 메시지 */}
+            {emailStatus && !isEmailVerified && (
               <span
                 className={`pw-message ${isEmailChecked ? "success" : "error"}`}
               >
                 {emailStatus === "available"
-                  ? "사용 가능한 이메일입니다. ✅"
-                  : emailStatus === "duplicate"
-                    ? "이미 등록된 이메일입니다. ❌"
-                    : emailStatus === "checking"
-                      ? "확인 중... 🔍"
-                      : "다시 확인해주세요 ❌"}
+                  ? "사용 가능한 이메일입니다. 이제 인증을 진행해주세요. ✅"
+                  : "이미 등록된 이메일입니다. ❌"}
               </span>
+            )}
+
+            {/* ✨ 인증번호 입력창 (메일 발송 성공 시에만 노출) */}
+            {isEmailSent && !isEmailVerified && (
+              <div className="verify-input-wrapper animate-fade-in">
+                <input
+                  type="text"
+                  placeholder="인증번호 6자리 입력"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  className="verify-input"
+                />
+                <button
+                  type="button"
+                  className="btn-verify-confirm"
+                  onClick={handleVerifyCode}
+                >
+                  번호 확인
+                </button>
+              </div>
             )}
           </div>
 
@@ -340,10 +408,11 @@ const RegisterPage = () => {
               className="btn-submit"
               onClick={handleClickAdd}
               disabled={
-                !isEmailChecked ||
-                !isNicknameChecked ||
-                !isPwValid ||
-                !isPwMatch
+                !isEmailVerified || // 1. 이메일 인증 필수
+                !isEmailChecked || // 2. 이메일 중복 체크 필수
+                !isNicknameChecked || // 3. 닉네임 중복 체크 필수
+                !isPwValid || // 4. 비밀번호 정규식 통과
+                !isPwMatch // 5. 비밀번호 확인 일치
               }
             >
               등록하기

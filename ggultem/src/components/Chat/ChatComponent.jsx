@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
-import { getChatMessages } from "../../api/ChatApi"; // ✨ 과거 내역 API 추가
+import { getChatMessages, getChatRoom } from "../../api/ChatApi"; // ✨ 과거 내역 API 추가
 import useCustomLogin from "../../hooks/useCustomLogin";
 import "./ChatComponent.css";
 
@@ -9,15 +9,22 @@ import "./ChatComponent.css";
 const formatTime = (regDate) => {
   if (!regDate) return "";
   const date = new Date(regDate);
-  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 };
 
 const ChatComponent = ({ roomId }) => {
+  const [chatRoom, setChatRoom] = useState([]);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const { loginState, moveToLogin } = useCustomLogin();
   const stompClient = useRef(null);
   const scrollRef = useRef();
+
+  useEffect(() => {
+    getChatRoom(roomId).then((data) => {
+      setChatRoom(data);
+    });
+  });
 
   // 스크롤 하단 이동 로직
   useEffect(() => {
@@ -66,13 +73,13 @@ const ChatComponent = ({ roomId }) => {
         senderId: loginState.email,
         content: message,
         isRead: 0,
-        regDate: new Date().toISOString() // 실시간 표시용 임시 시간
+        regDate: new Date().toISOString(), // 실시간 표시용 임시 시간
       };
 
       stompClient.current.send(
         `/app/chat.sendMessage/${roomId}`,
         {},
-        JSON.stringify(chatMessage)
+        JSON.stringify(chatMessage),
       );
       setMessage("");
     }
@@ -80,19 +87,28 @@ const ChatComponent = ({ roomId }) => {
 
   return (
     <div className="chat-container">
-      <header className="chat-header"><h2>1:1 메시지</h2></header>
+      <header className="chat-header">
+        <h2>{chatRoom.roomName}</h2>
+      </header>
       <div className="message-area" ref={scrollRef}>
         <ul className="message-list">
           {messages.map((msg, index) => {
             // 본인 확인 로직 (senderId로 비교)
             const isMyMessage = msg.senderId === loginState.email;
             return (
-              <li key={index} className={`message-item ${isMyMessage ? "my-message" : "other-message"}`}>
+              <li
+                key={index}
+                className={`message-item ${isMyMessage ? "my-message" : "other-message"}`}
+              >
                 <div className="message-content">
-                  {!isMyMessage && <span className="user-name">{msg.senderId}</span>}
+                  {!isMyMessage && (
+                    <span className="user-name">{msg.senderId}</span>
+                  )}
                   <div className="bubble-wrapper">
                     <p className="text-bubble">{msg.content}</p>
-                    <span className="chat-timestamp">{formatTime(msg.regDate)}</span>
+                    <span className="chat-timestamp">
+                      {formatTime(msg.regDate)}
+                    </span>
                   </div>
                 </div>
               </li>
@@ -101,14 +117,16 @@ const ChatComponent = ({ roomId }) => {
         </ul>
       </div>
       <footer className="input-area">
-        <input 
-          type="text" 
-          value={message} 
-          onChange={(e) => setMessage(e.target.value)} 
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="꿀템 거래 메시지를 입력하세요..."
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          placeholder="꿀템 메시지를 입력하세요..."
         />
-        <button onClick={sendMessage} disabled={!message.trim()}>전송</button>
+        <button onClick={sendMessage} disabled={!message.trim()}>
+          전송
+        </button>
       </footer>
     </div>
   );

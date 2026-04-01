@@ -73,3 +73,19 @@ export const checkNickname = async (nickname) => {
   });
   return res.data;
 };
+
+// 기존 MemberApi.js 하단에 추가
+export const sendVerificationEmail = async (email) => {
+  const formData = new FormData();
+  formData.append("email", email);
+  const res = await axios.post(`${host}/api/mail/send`, formData);
+  return res.data;
+};
+
+export const verifyEmailCode = async (email, code) => {
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("code", code);
+  const res = await axios.post(`${host}/api/mail/verify`, formData);
+  return res.data;
+};

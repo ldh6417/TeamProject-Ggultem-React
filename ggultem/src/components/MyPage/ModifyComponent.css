@@ -180,3 +180,50 @@
     border-radius: 0; /* 모바일에선 꽉 차게 */
   }
 }
+
+.password-modify-container {
+    margin: 10px 0;
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.pw-toggle-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+    transition: 0.3s;
+}
+
+.pw-toggle-btn:hover {
+    background-color: #eee;
+}
+
+.pw-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pw-cancel-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
