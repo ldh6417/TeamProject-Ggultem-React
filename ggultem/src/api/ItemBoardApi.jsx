@@ -39,7 +39,7 @@ export const postAdd = async (formData) => {
 };
 
 export const deleteOne = async (id) => {
-  const res = await axios.get(`${prefix}/delete/${id}`);
+  const res = await axios.get(`${prefix}/remove/${id}`);
 
   return res.data;
 };

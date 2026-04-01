@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getList, API_SERVER_HOST } from "../../api/ItemBoardApi";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import PageComponent from "../common/PageComponent";
 import { getListByGroup } from "../../api/admin/CodeDetailApi";
 import "./ItemBoardListComponent.css";
 import axios from "axios";
@@ -13,29 +12,18 @@ const ItemBoardList = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const page = parseInt(searchParams.get("page")) || 1;
-  const size = parseInt(searchParams.get("size")) || 10;
   const status = searchParams.get("status") || "all";
   const category = searchParams.get("category") || "all";
-  const location = searchParams.get("location") || "all";
   const searchType = searchParams.get("searchType") || "all";
   const keyword = searchParams.get("keyword") || "";
 
   const [categories, setCategories] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [serverData, setServerData] = useState({
-    dtoList: [],
-    totalCount: 0,
-    pageNumList: [],
-    prev: false,
-    next: false,
-  });
-
   const [searchState, setSearchState] = useState({
     type: searchType,
     word: keyword,
   });
 
+  // 카테고리 데이터 로드
   useEffect(() => {
     const pageParam = { page: 1, size: 100 };
     axios
@@ -49,28 +37,10 @@ const ItemBoardList = () => {
               if (data?.dtoList) setCategories(data.dtoList);
             });
           }
-          if (gCode.includes("ITEM_LOCATION") || gCode.includes("ITEM_LOC")) {
-            getListByGroup(pageParam, group.groupCode).then((data) => {
-              if (data?.dtoList) setLocations(data.dtoList);
-            });
-          }
         });
       })
       .catch((err) => console.error("그룹 로드 실패:", err));
   }, []);
-
-  useEffect(() => {
-    getList({ page, size, searchType, keyword, status, category, location })
-      .then((data) => {
-        if (data) setServerData(data);
-      })
-      .catch((err) => console.error("게시글 로드 실패:", err));
-  }, [page, size, searchType, keyword, status, category, location]);
-
-  const getCodeName = (codeList, codeValue) => {
-    const found = codeList.find((item) => item.codeValue === codeValue);
-    return found ? found.codeName : codeValue;
-  };
 
   const handleFilterChange = (type, value) => {
     const params = new URLSearchParams(searchParams);
@@ -90,18 +60,12 @@ const ItemBoardList = () => {
   };
 
   return (
-    <div className="board-list-container">
-      <div className="board-header">
+    <div className="board-list-full-wrapper">
+      <div className="board-header-fixed">
         <h2>🍯 꿀템 매물 목록</h2>
-        <button
-          className="write-btn"
-          onClick={() => navigate("/itemBoard/Register")}
-        >
-          상품 등록
-        </button>
       </div>
 
-      <div className="hero-section">
+      <div className="search-area-center">
         <form className="search-form-wide" onSubmit={handleSearch}>
           <select
             name="type"
@@ -128,6 +92,9 @@ const ItemBoardList = () => {
             검색
           </button>
         </form>
+      </div>
+
+      <div className="map-content-section">
         <KakaoMap
           currentFilters={{
             category,

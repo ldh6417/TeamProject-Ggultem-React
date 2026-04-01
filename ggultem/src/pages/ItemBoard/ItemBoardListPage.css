@@ -10,7 +10,6 @@
 .itemBoardList-main-content {
   flex: 1; /* 푸터를 하단으로 밀어냄 */
   width: 100%;
-  max-width: 1200px; /* 최대 너비 제한 */
   margin: 0 auto; /* 중앙 정렬 */
   padding: 40px 20px;
 }

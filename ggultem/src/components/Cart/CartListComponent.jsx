@@ -110,16 +110,27 @@ const CartList = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    if (!window.confirm("관심 상품에서 삭제하시겠습니까?")) return;
-    deleteOne(id)
-      .then(() => {
+  // 1. 단일 삭제 수정
+  const handleDelete = async (cartId) => {
+    if (window.confirm("찜한 상품을 삭제하시겠습니까?")) {
+      try {
+        // 1. 서버에 삭제 요청
+        await deleteOne(cartId);
+
+        // 2. 화면(State)에서 즉시 제거 (새로고침 없이 반영)
+        setServerData((prev) => ({
+          ...prev,
+          dtoList: prev.dtoList.filter((item) => item.id !== cartId),
+        }));
+
         alert("삭제되었습니다.");
-        navigate("/mypage", { state: { refresh: true } });
-      })
-      .catch(() => alert("삭제 중 오류가 발생했습니다."));
+      } catch (error) {
+        console.error("삭제 실패:", error);
+      }
+    }
   };
 
+  // 2. 선택 삭제 수정
   const handleSelectDelete = async () => {
     if (checkedItems.length === 0) return alert("삭제할 상품을 선택해주세요.");
     if (!window.confirm(`${checkedItems.length}개의 상품을 삭제하시겠습니까?`))
@@ -128,11 +139,23 @@ const CartList = () => {
     try {
       const deletePromises = checkedItems.map((id) => deleteOne(id));
       await Promise.all(deletePromises);
+
       alert("선택한 상품이 모두 삭제되었습니다.");
-      setCheckedItems([]);
-      navigate("/mypage", { state: { refresh: true } });
+
+      // ★ 핵심: 체크된 아이템들을 한꺼번에 화면 데이터에서 제거
+      setServerData((prevData) => ({
+        ...prevData,
+        dtoList: prevData.dtoList.filter(
+          (item) => !checkedItems.includes(item.id),
+        ),
+        totalCount: prevData.totalCount - checkedItems.length,
+      }));
+
+      setCheckedItems([]); // 체크박스 초기화
     } catch (error) {
       alert("일부 상품 삭제에 실패했습니다.");
+      // 실패 시 데이터 정합성을 위해 전체 목록을 다시 불러오는 것이 안전합니다.
+      fetchCartList();
     }
   };
 
