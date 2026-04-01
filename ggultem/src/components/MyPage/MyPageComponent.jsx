@@ -139,9 +139,9 @@ const MyPageMain = ({ email }) => {
               {/* 우측 상단 버튼 추가 */}
               <button
                 className="mp-add-item-btn"
-                onClick={() => navigate("/itemboard/register")}
+                onClick={() => navigate("/itemboard/myPage")}
               >
-                중고거래 등록하기
+                중고거래 리스트
               </button>
             </div>
             {serverData.dtoList && serverData.dtoList.length > 0 ? (
@@ -192,7 +192,7 @@ const MyPageMain = ({ email }) => {
                 className="mp-add-item-btn"
                 onClick={() => navigate("/cart/list")}
               >
-                장바구니 바로가기
+                장바구니 리스트
               </button>
             </div>
             {cartData.dtoList && cartData.dtoList.length > 0 ? (
