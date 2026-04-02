@@ -40,6 +40,20 @@ const RegisterPage = () => {
   const [showVerifyInput, setShowVerifyInput] = useState(false); // 입력창 노출 여부
   const [isEmailSent, setIsEmailSent] = useState(false);
 
+  const [agreements, setAgreements] = useState({
+    terms: false /* 이용약관 (필수) */,
+    privacy: false /* 개인정보 수집 및 이용 (필수) */,
+    marketing: false /* 마케팅 정보 수신 (선택) */,
+  });
+
+  // 모달 열림 상태 (null이면 닫힘, 'terms' 또는 'privacy'면 해당 모달 열림)
+  const [modalType, setModalType] = useState(null);
+
+  // 모달 열기 함수
+  const openModal = (type) => setModalType(type);
+  // 모달 닫기 함수
+  const closeModal = () => setModalType(null);
+
   // 인증번호 발송 핸들러
   const handleSendEmail = () => {
     sendVerificationEmail(member.email)
@@ -65,6 +79,11 @@ const RegisterPage = () => {
         alert(data.message); // "인증번호가 일치하지 않습니다" 등 서버 메시지 출력
       }
     });
+  };
+
+  const handleCheckAgreement = (e) => {
+    const { name, checked } = e.target;
+    setAgreements({ ...agreements, [name]: checked });
   };
 
   // ✨ 비밀번호 유효성 검사 정규식 (영문, 숫자, 특수문자 조합 8~11자)
@@ -201,6 +220,11 @@ const RegisterPage = () => {
       return;
     }
 
+    if (!agreements.terms || !agreements.privacy) {
+      alert("필수 약관에 동의해주세요! 🐝");
+      return;
+    }
+
     const files = uploadRef.current.files;
     const formData = new FormData();
 
@@ -228,9 +252,8 @@ const RegisterPage = () => {
     <div className="register-container">
       <div className="register-card">
         <h2 className="register-title">신규 회원 등록</h2>
-
         <div className="register-form">
-          {/* ✨ 동그란 프로필 이미지 업로드 구역 */}
+          {/* 1. 프로필 이미지 영역 */}
           <div className="profile-upload-section">
             <div className="profile-image-wrapper" onClick={handleClickImage}>
               {imagePreview ? (
@@ -246,7 +269,6 @@ const RegisterPage = () => {
               )}
               <div className="camera-icon">📷</div>
             </div>
-            {/* 실제 input은 숨김 처리 */}
             <input
               type="file"
               ref={uploadRef}
@@ -255,7 +277,8 @@ const RegisterPage = () => {
               accept="image/*"
             />
           </div>
-          {/* 이메일 입력 */}
+
+          {/* 2. 이메일 입력 */}
           <div className="form-group email-group">
             <label>이메일</label>
             <div className="email-input-wrapper">
@@ -265,7 +288,7 @@ const RegisterPage = () => {
                 value={member.email}
                 onChange={handleChangeMember}
                 placeholder="example@honey.com"
-                disabled={isEmailVerified} // ✨ 인증 완료되면 수정 불가
+                disabled={isEmailVerified}
               />
               {!isEmailChecked ? (
                 <button
@@ -287,8 +310,6 @@ const RegisterPage = () => {
                 <span className="verify-badge">인증됨 ✅</span>
               )}
             </div>
-
-            {/* 중복 확인 상태 메시지 */}
             {emailStatus && !isEmailVerified && (
               <span
                 className={`pw-message ${isEmailChecked ? "success" : "error"}`}
@@ -298,8 +319,6 @@ const RegisterPage = () => {
                   : "이미 등록된 이메일입니다. ❌"}
               </span>
             )}
-
-            {/* ✨ 인증번호 입력창 (메일 발송 성공 시에만 노출) */}
             {isEmailSent && !isEmailVerified && (
               <div className="verify-input-wrapper animate-fade-in">
                 <input
@@ -320,7 +339,7 @@ const RegisterPage = () => {
             )}
           </div>
 
-          {/* 비밀번호 입력 */}
+          {/* 3. 비밀번호 입력 */}
           <div className="form-group">
             <label>비밀번호</label>
             <input
@@ -328,13 +347,13 @@ const RegisterPage = () => {
               name="pw"
               value={member.pw}
               onChange={handleChangeMember}
-              placeholder="영문, 숫자, 특수문자를 포함하여 8~11자로 입력"
+              placeholder="영문, 숫자, 특수문자 포함 8~11자"
             />
             {member.pw && (
               <span className={`pw-message ${isPwValid ? "success" : "error"}`}>
                 {isPwValid
                   ? "사용 가능한 비밀번호입니다. ✅"
-                  : "형식에 맞지 않습니다 (8~11자, 특수문자 포함). ❌"}
+                  : "형식 불일치 (8~11자, 특수문자 포함). ❌"}
               </span>
             )}
           </div>
@@ -344,7 +363,7 @@ const RegisterPage = () => {
               type="password"
               value={pwConfirm}
               onChange={handleChangePwConfirm}
-              placeholder="비밀번호를 한 번 더 입력하세요"
+              placeholder="비밀번호 재입력"
             />
             {pwConfirm && (
               <span className={`pw-message ${isPwMatch ? "success" : "error"}`}>
@@ -354,7 +373,8 @@ const RegisterPage = () => {
               </span>
             )}
           </div>
-          {/* 닉네임 입력 */}
+
+          {/* 4. 닉네임 및 전화번호 */}
           <div className="form-group email-group">
             <label>닉네임</label>
             <div className="email-input-wrapper">
@@ -363,7 +383,7 @@ const RegisterPage = () => {
                 name="nickname"
                 value={member.nickname}
                 onChange={handleChangeMember}
-                placeholder="멋진 닉네임을 지어주세요"
+                placeholder="닉네임 입력"
               />
               <button
                 type="button"
@@ -379,15 +399,10 @@ const RegisterPage = () => {
               >
                 {nicknameStatus === "available"
                   ? "사용 가능한 닉네임입니다. ✅"
-                  : nicknameStatus === "duplicate"
-                    ? "이미 등록된 닉네임입니다. ❌"
-                    : nicknameStatus === "checking"
-                      ? "확인 중... 🔍"
-                      : "다시 확인해주세요 ❌"}
+                  : "이미 등록된 닉네임입니다. ❌"}
               </span>
             )}
           </div>
-          {/* 전화번호 입력 */}
           <div className="form-group">
             <label>전화번호</label>
             <input
@@ -395,11 +410,50 @@ const RegisterPage = () => {
               name="phone"
               value={member.phone}
               onChange={handleChangeMember}
-              placeholder="'-'를 제외한 숫자만 입력하세요"
+              placeholder="'-' 제외 숫자만"
             />
           </div>
 
-          {/* 버튼 영역 */}
+          {/* 5. 약관 동의 영역 */}
+          <div className="agreement-section">
+            <div className="agreement-item">
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                checked={agreements.terms}
+                onChange={handleCheckAgreement}
+              />
+              <label htmlFor="terms">
+                (필수){" "}
+                <span className="link-text" onClick={() => openModal("terms")}>
+                  이용약관
+                </span>
+                에 동의합니다.
+              </label>
+            </div>
+            <div className="agreement-item">
+              <input
+                type="checkbox"
+                id="privacy"
+                name="privacy"
+                checked={agreements.privacy}
+                onChange={handleCheckAgreement}
+              />
+              <label htmlFor="privacy">
+                (필수){" "}
+                <span
+                  className="link-text"
+                  onClick={() => openModal("privacy")}
+                >
+                  개인정보처리방침
+                </span>
+                에 동의합니다.
+              </label>
+            </div>
+          </div>
+
+          {/* 6. 하단 버튼 영역 */}
           <div className="register-buttons">
             <button className="btn-cancel" onClick={() => nav(-1)}>
               취소
@@ -408,19 +462,48 @@ const RegisterPage = () => {
               className="btn-submit"
               onClick={handleClickAdd}
               disabled={
-                !isEmailVerified || // 1. 이메일 인증 필수
-                !isEmailChecked || // 2. 이메일 중복 체크 필수
-                !isNicknameChecked || // 3. 닉네임 중복 체크 필수
-                !isPwValid || // 4. 비밀번호 정규식 통과
-                !isPwMatch // 5. 비밀번호 확인 일치
+                !isEmailVerified ||
+                !isEmailChecked ||
+                !isNicknameChecked ||
+                !isPwValid ||
+                !isPwMatch ||
+                !agreements.terms ||
+                !agreements.privacy
               }
             >
               등록하기
             </button>
           </div>
+        </div>{" "}
+        {/* register-form 끝 */}
+      </div>{" "}
+      {/* register-card 끝 */}
+      {/* 🐝 모달 팝업 창 (가장 바깥쪽 레벨에 배치) */}
+      {modalType && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{modalType === "terms" ? "이용약관" : "개인정보처리방침"}</h3>
+              <button className="modal-close-x" onClick={closeModal}>
+                ✕
+              </button>
+            </div>
+            <div className="modal-body">
+              {modalType === "terms" ? (
+                <p>꿀템 서비스 이용약관 내용...</p>
+              ) : (
+                <p>개인정보 처리방침 내용...</p>
+              )}
+            </div>
+            <div className="modal-footer">
+              <button className="btn-confirm" onClick={closeModal}>
+                확인
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </div> // register-container 끝
   );
 };
 

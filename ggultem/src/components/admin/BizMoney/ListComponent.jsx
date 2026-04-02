@@ -3,6 +3,7 @@ import {
   getList,
   API_SERVER_HOST,
   getBizMoneyHistoryAdmin,
+  getBizMoneyTotalHistoryAdmin,
 } from "../../../api/admin/BusinessApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import PageComponent from "../../common/PageComponent";
@@ -38,16 +39,36 @@ const ListComponent = () => {
   const [codeSearchType, setCodeSearchType] = useState("all");
   const [codeKeyword, setCodeKeyword] = useState("");
   const [bizState, setBizState] = useState("all");
+  const [totalSummary, setTotalSummary] = useState(initState);
+  const [isTotal, setIsTotal] = useState(false);
   const navigate = useNavigate();
 
+  const clickIsTotal = () => {
+    setIsTotal(!isTotal);
+  };
+
   useEffect(() => {
-    getBizMoneyHistoryAdmin({ page, size, keyword, searchType, state }).then(
-      (data) => {
-        console.log(data);
-        setServerData(data);
-      },
-    );
-  }, [page, size, keyword, searchType, refresh, state]);
+    if (isTotal) {
+      // 통계 모드일 때만 통계 API 호출
+      getBizMoneyTotalHistoryAdmin({
+        page,
+        size,
+        keyword,
+        searchType,
+        state,
+      }).then((totalData) => {
+        console.log(totalData);
+        setTotalSummary(totalData);
+      });
+    } else {
+      // 일반 모드일 때만 일반 API 호출
+      getBizMoneyHistoryAdmin({ page, size, keyword, searchType, state }).then(
+        (data) => {
+          setServerData(data);
+        },
+      );
+    }
+  }, [page, size, keyword, searchType, refresh, state, isTotal]); // isTotal 추가
 
   const handleReset = () => {
     setCodeKeyword(""); // 입력창 비우기
@@ -75,10 +96,12 @@ const ListComponent = () => {
         <div className="member-header">
           <div className="title-group">
             <h2 className="member-title">
-              <span className="member-title-point">꿀템</span> 비즈머니 관리
+              {isTotal ? " 비즈머니 회원 통계" : " 비즈머니 내역 관리"}
             </h2>
             <p className="member-subtitle">
-              꿀템 사이트의 비즈머니 이용내역 리스트입니다.
+              {isTotal
+                ? "회원별 충전/지출 합계 요약입니다."
+                : "꿀템 사이트의 비즈머니 이용내역 리스트입니다."}
             </p>
           </div>
           <form className="codegroup-search-form" onSubmit={handleSearch}>
@@ -99,7 +122,7 @@ const ListComponent = () => {
               >
                 <option value="all">전체</option>
                 <option value="detail">상세정보</option>
-                <option value="amount">금액</option>
+                <option value="email">회원이메일</option>
               </select>
               <input
                 type="text"
@@ -131,68 +154,120 @@ const ListComponent = () => {
             >
               비즈니스 회원
             </button>
-            <button
-              className="admin-btn add-btn"
-              onClick={() => navigate("/admin/member/register")}
-            >
-              회원 추가
+            <button className="admin-btn add-btn" onClick={clickIsTotal}>
+              {isTotal ? "전체목록" : "회원통계"}
             </button>
           </div>
         </div>
-
-        {/* 테이블 섹션 */}
+        {/* ✨ 테이블 섹션 전환 로직 수정 */}
         <div className="member-table-responsive">
-          <table className="member-table">
-            <thead>
-              <tr>
-                <th>거래 일시</th>
-                <th>유형</th>
-                <th>상세 내용</th>
-                <th>변동 금액</th>
-                <th>잔액</th>
-              </tr>
-            </thead>
-            <tbody>
-              {serverData.dtoList.length > 0 ? (
-                serverData.dtoList.map((item) => (
-                  <tr key={item.hno}>
-                    <td className="date-cell">{item.regDate}</td>
-                    <td>
-                      <span className={`type-badge ${item.type.toLowerCase()}`}>
-                        {item.type === "CHARGE" ? "충전" : "지출"}
-                      </span>
-                    </td>
-                    <td className="detail-cell">{item.detail}</td>
-                    <td
-                      className={`amount-cell ${item.amount > 0 ? "plus" : "minus"}`}
-                    >
-                      {item.amount > 0
-                        ? `+${item.amount.toLocaleString()}`
-                        : item.amount.toLocaleString()}
-                      원
-                    </td>
-                    <td className="balance-cell">
-                      {item.balance.toLocaleString()}원
-                    </td>
+          {!isTotal ? (
+            /* [모드 1] 일반 이용 내역 테이블 */
+            <>
+              <table className="member-table">
+                <thead>
+                  <tr>
+                    <th>회원이메일</th>
+                    <th>거래 일시</th>
+                    <th>유형</th>
+                    <th>상세 내용</th>
+                    <th>변동 금액</th>
+                    <th>잔액</th>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="no-data">
-                    이용 내역이 없습니다. 🐝
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
-          {/* 페이징 */}
-          <div className="member-pagination-wrapper">
-            <PageComponent
-              serverData={serverData}
-              moveToList={moveToAdminBizMoneyList}
-            />
-          </div>
+                </thead>
+                <tbody>
+                  {serverData.dtoList && serverData.dtoList.length > 0 ? (
+                    serverData.dtoList.map((item) => (
+                      <tr key={item.hno}>
+                        <td>{item.email}</td>
+                        <td className="date-cell">{item.regDate}</td>
+                        <td>
+                          <span
+                            className={`type-badge ${item.type.toLowerCase()}`}
+                          >
+                            {item.type === "CHARGE" ? "충전" : "지출"}
+                          </span>
+                        </td>
+                        <td className="detail-cell">{item.detail}</td>
+                        <td
+                          className={`amount-cell ${item.amount > 0 ? "plus" : "minus"}`}
+                        >
+                          {item.amount > 0
+                            ? `+${item.amount.toLocaleString()}`
+                            : item.amount.toLocaleString()}
+                          원
+                        </td>
+                        <td className="balance-cell">
+                          {item.balance.toLocaleString()}원
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="no-data">
+                        내역이 없습니다. 🐝
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              {/* 일반 내역용 페이징 */}
+              <div className="member-pagination-wrapper">
+                <PageComponent
+                  serverData={serverData}
+                  moveToList={moveToAdminBizMoneyList}
+                />
+              </div>
+            </>
+          ) : (
+            /* [모드 2] 회원별 통계 테이블 */
+            <>
+              <table className="member-table">
+                <thead>
+                  <tr>
+                    <th>회원이메일</th>
+                    <th>유형</th>
+                    <th>총 합계 금액</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {totalSummary.dtoList && totalSummary.dtoList.length > 0 ? (
+                    totalSummary.dtoList.map((item, idx) => (
+                      <tr key={`${item.email}-${item.type}-${idx}`}>
+                        <td>{item.email}</td>
+                        <td>
+                          <span
+                            className={`type-badge ${item.type?.toLowerCase()}`}
+                          >
+                            {item.type === "CHARGE" ? "충전" : "지출"}
+                          </span>
+                        </td>
+                        <td
+                          className={`amount-cell ${item.total > 0 ? "plus" : "minus"}`}
+                        >
+                          {(item.total || 0).toLocaleString()}원
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3" className="no-data">
+                        통계 데이터가 없습니다. 🐝
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              {/* 통계 내역용 페이징 */}
+              <div className="member-pagination-wrapper">
+                <PageComponent
+                  serverData={totalSummary}
+                  moveToList={moveToAdminBizMoneyList}
+                />
+              </div>
+            </>
+          )}
+          {/* 👈 여기서 삼항 연산자가 깔끔하게 닫혀야 합니다! */}
         </div>
       </div>
     </div>

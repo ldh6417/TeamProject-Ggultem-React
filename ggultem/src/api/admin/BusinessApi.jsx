@@ -64,3 +64,17 @@ export const getBizMoneyHistoryAdmin = async (pageParam) => {
   });
   return res.data;
 };
+
+export const getBizMoneyTotalHistoryAdmin = async (pageParam) => {
+  const { page, size, keyword, searchType, state } = pageParam;
+  const res = await axios.get(`${host}/businessmember/admin/totalhistory`, {
+    params: {
+      page: page,
+      size: size,
+      keyword: keyword,
+      searchType: searchType,
+      state: state,
+    },
+  });
+  return res.data;
+};

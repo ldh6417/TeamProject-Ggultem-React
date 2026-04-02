@@ -95,14 +95,6 @@ const ReadComponent = ({ email }) => {
               </button>
             )}
             <button
-              className="memberinfo-read-btn modify"
-              onClick={() =>
-                navigate(`/admin/businessmember/modify/${member.email}`)
-              }
-            >
-              수정하기
-            </button>
-            <button
               className="memberinfo-read-btn list"
               onClick={() => navigate(`/admin/businessmember/list`)}
             >

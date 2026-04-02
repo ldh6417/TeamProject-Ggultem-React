@@ -143,6 +143,10 @@ const ReportReadAdmin = lazy(
 // ✅ [추가] 사용자 사기조회 페이지 (FraudSearch)
 const FraudSearch = lazy(() => import("../pages/Report/FraudSearchPage"));
 
+//비즈머니 충전 성공 페이지
+const PaySuccess = lazy(() => import("../pages/Pay/SuccessPage"));
+const PayFail = lazy(() => import("../pages/Pay/FailPage"));
+
 const root = createBrowserRouter([
   /* ===== 관리자 영역 ============================================================================================== */
   /* ===== 메인페이지 연결 영역 ============================================================================================== */
@@ -671,6 +675,22 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <BusinessAdCenter />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/bizmoney/success",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <PaySuccess />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/business/bizmoney/fail",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <PayFail />
       </Suspense>
     ),
   },

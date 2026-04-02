@@ -86,18 +86,6 @@ const AdCenterComponent = () => {
     getTotalClick(loginState.email).then((data) => setTotalClick(data));
   }, [page, size, keyword, searchType, state, refresh, loginState.email]);
 
-  const handleCharge = (email, amount) => {
-    chargeBizMoney(email, amount)
-      .then(() => {
-        alert("충전이 완료되었습니다! 🍯");
-        setShowModal(false); // 충전 성공 시 모달도 닫아주면 베스트!
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("충전에 실패하였습니다.");
-      });
-  };
-
   const handleReset = (e) => {
     e.preventDefault(); // 폼 제출 방지
 
@@ -292,7 +280,7 @@ const AdCenterComponent = () => {
         <ChargeModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
-          onChargeConfirm={handleCharge}
+          member={member}
         />
       )}
     </div>

@@ -265,6 +265,91 @@
     animation: fadeIn 0.4s ease-in-out;
 }
 
+.agreement-section {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.agreement-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.agreement-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.link-text {
+  text-decoration: underline;
+  color: #666;
+  cursor: pointer;
+}
+
+.link-text:hover {
+  color: #FFB800;
+}
+
+/* 모달 배경 (어둡게) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* 헤더보다 높게 */
+}
+
+/* 모달 박스 */
+.modal-content {
+  background: #fff;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 15px;
+  padding: 20px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.modal-body {
+  padding: 20px 0;
+  overflow-y: auto; /* 내용이 길면 스크롤 생성 */
+  line-height: 1.6;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.modal-close-x {
+  font-size: 20px;
+  color: #999;
+}
+
+.btn-confirm {
+  width: 100%;
+  padding: 12px;
+  background: #FFB800;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
