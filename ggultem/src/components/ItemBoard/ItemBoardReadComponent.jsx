@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getOne, deleteOne, API_SERVER_HOST } from "../../api/ItemBoardApi";
-import { getListByGroup } from "../../api/admin/CodeDetailApi"; // 공통 코드 API 추가
+import { getListByGroup } from "../../api/admin/CodeDetailApi";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import ItemBoardReplyComponent from "./ItemBoardReplyComponent";
 import "./ItemBoardReadComponent.css";
@@ -17,17 +17,16 @@ const ItemBoardReadComponent = () => {
   const { loginState } = useCustomLogin();
   const [item, setItem] = useState(null);
   const [fetching, setFetching] = useState(false);
+  const [showShareOptions, setShowShareOptions] = useState(false);
 
-  // ✅ 공통 코드 저장을 위한 상태 추가
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
 
+  // 2. 데이터 및 공통 코드 로드
   useEffect(() => {
     if (id) {
-      // 1. 게시글 상세 정보 가져오기
       getOne(id)
         .then((data) => {
-          console.log(data);
           setItem(data);
           setFetching(false);
         })
@@ -36,7 +35,6 @@ const ItemBoardReadComponent = () => {
           navigate("/itemBoard/list");
         });
 
-      // 2. 공통 코드 목록 가져오기 (카테고리, 지역 한글명을 찾기 위해)
       const pageParam = { page: 1, size: 100 };
       axios
         .get(`${host}/api/codegroup/list`, { params: pageParam })
@@ -59,10 +57,19 @@ const ItemBoardReadComponent = () => {
     }
   }, [id, navigate]);
 
-  // ✅ 코드값을 한글명으로 변환하는 함수
   const getCodeName = (codeList, codeValue) => {
     const found = codeList.find((c) => c.codeValue === codeValue);
     return found ? found.codeName : codeValue;
+  };
+
+  const handleCopyClipBoard = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("URL이 복사되었습니다!");
+      setShowShareOptions(false);
+    } catch (err) {
+      alert("URL 복사에 실패했습니다.");
+    }
   };
 
   const handleClickDelete = () => {
@@ -137,12 +144,33 @@ const ItemBoardReadComponent = () => {
         </div>
 
         <div className="info-section">
-          <div className="info-main">
-            {/* ✅ 수정 포인트: 카테고리 코드를 한글명으로 변환 */}
+          {/* ✅ 카테고리와 공유버튼을 한 줄에 배치 */}
+          <div className="info-top-line">
             <span className="info-category">
               [{getCodeName(categories, item.category)}]
             </span>
 
+            <div className="share-wrapper">
+              <button
+                className="main-share-btn"
+                onClick={() => setShowShareOptions(!showShareOptions)}
+              >
+                <span className="share-icon">공유하기</span>
+              </button>
+              {showShareOptions && (
+                <div className="share-dropdown">
+                  <button
+                    onClick={handleCopyClipBoard}
+                    className="dropdown-item"
+                  >
+                    🔗 URL 복사
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="info-main">
             <span
               className={`status-badge ${isSoldOut ? "sold-out" : "on-sale"}`}
             >
@@ -161,7 +189,6 @@ const ItemBoardReadComponent = () => {
             </div>
             <div className="detail-row">
               <span className="label">거래지역</span>
-              {/* ✅ 수정 포인트: 지역 코드를 한글명으로 변환 */}
               <span className="value">
                 {getCodeName(locations, item.location)}
               </span>

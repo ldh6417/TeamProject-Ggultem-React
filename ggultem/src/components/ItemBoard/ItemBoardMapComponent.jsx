@@ -38,14 +38,18 @@ const KakaoMap = ({
       navigate("/login");
       return;
     }
+    const isSoldOut = item.status === "true";
 
     if (item.email === loginState.email || item.writer === loginState.email) {
       alert("본인이 등록한 상품은 찜할 수 없습니다.");
       return;
     }
+    if (isSoldOut) {
+      alert("판매된 상품입니다.");
+      return;
+    }
 
     try {
-      // item.isFavorite 대신 item.favorite 사용
       if (item.favorite) {
         await removeByItem(item.id, loginState.email);
         setServerData((prevData) => ({
@@ -236,7 +240,6 @@ const KakaoMap = ({
                   setPage(1);
                 }}
               >
-                <option value="all">모든 카테고리</option>
                 <option value="all">모든 카테고리</option>
                 {categories?.map((item) => (
                   <option key={item.codeValue} value={item.codeValue}>

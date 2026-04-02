@@ -25,44 +25,89 @@
 }
 
 /* 검색바 영역 */
-.itemboard-search-area-center {
-  background-color: #f8f9fa;
-  padding: 40px 0;
-  width: 100%;
+/* 검색 영역 중앙 정렬 및 배경 */
+.search-area-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+  background-color: #f9f9f9; /* 연한 배경색으로 검색창 강조 */
   margin-bottom: 20px;
 }
 
-.itemboard-search-form-wide {
+/* 폼 컨테이너 (와이드 스타일) */
+.search-form-wide {
   display: flex;
-  gap: 10px;
-  max-width: 800px;
-  margin: 0 auto;
+  width: 90%;
+  max-width: 800px; /* 너무 퍼지지 않게 최대 폭 제한 */
+  height: 50px;
+  background: #fff;
+  border: 2px solid #ffca28; /* 포인트 컬러 (노란색) */
+  border-radius: 30px; /* 둥근 캡슐 모양 */
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-.itemboard-search-type-select {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-  background: white;
-}
-
-.itemboard-search-input-wide {
-  flex: 1;
-  padding: 12px 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-}
-
-.itemboard-search-btn-wide {
-  padding: 0 30px;
-  background-color: #333;
-  color: white;
-  border-radius: 8px;
+/* 셀렉트 박스 스타일 */
+.search-type-select {
+  width: 160px;
   border: none;
-  cursor: pointer;
+  padding: 0 15px;
+  font-size: 14px;
   font-weight: bold;
+  color: #444;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  border-right: 1px solid #eee; /* 구분선 */
+}
+
+/* 입력창 스타일 */
+.search-input-wide {
+  flex: 1; /* 남은 공간 모두 차지 */
+  border: none;
+  padding: 0 20px;
+  font-size: 16px;
+  outline: none;
+  background: transparent;
+}
+
+.search-input-wide::placeholder {
+  color: #bbb;
+}
+
+/* 검색 버튼 스타일 */
+.search-btn-wide {
+  width: 100px;
+  border: none;
+  background-color: #ffca28; /* 포인트 컬러 */
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-btn-wide:hover {
+  background-color: #fbc02d; /* 호버 시 약간 더 어두운 노란색 */
+}
+
+/* 반응형 (모바일 등 작은 화면 처리) */
+@media (max-width: 600px) {
+  .search-form-wide {
+    height: 45px;
+  }
+  .search-type-select {
+    width: 100px;
+    font-size: 12px;
+  }
+  .search-input-wide {
+    font-size: 14px;
+  }
+  .search-btn-wide {
+    width: 70px;
+    font-size: 14px;
+  }
 }
 
 /* 지도와 리스트가 들어가는 섹션 */
