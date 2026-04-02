@@ -26,7 +26,7 @@ const BoardList = () => {
   const [serverData, setServerData] = useState(initState);
   const navigate = useNavigate();
 
-  //  검색 상태
+  //  검색 상태 (input용)
   const [localKeyword, setLocalKeyword] = useState(keyword || "");
   const [localType, setLocalType] = useState(searchType || "all");
 
@@ -36,17 +36,24 @@ const BoardList = () => {
 
     const cleanKeyword = localKeyword.trim();
 
-    moveToBoardList({
-      page: 1,
-      keyword: cleanKeyword === "" ? null : cleanKeyword,
-      searchType: localType,
-    });
-
+    if (cleanKeyword === "") {
+      moveToBoardList({
+        page: 1,
+        keyword: " ",
+        searchType: "all",
+      });
+    } else {
+      moveToBoardList({
+        page: 1,
+        keyword: cleanKeyword,
+        searchType: localType,
+      });
+    }
 
     setLocalKeyword("");
   };
 
-  //  데이터 조회
+  //  데이터 조회 (핵심)
   useEffect(() => {
 
     const cleanKeyword = keyword?.trim();
@@ -55,7 +62,7 @@ const BoardList = () => {
       page,
       size,
       keyword: cleanKeyword === "" ? null : cleanKeyword,
-      searchType,
+      searchType: cleanKeyword === "" ? null : searchType,
     }).then((data) => {
       setServerData(data);
     });
@@ -73,7 +80,7 @@ const BoardList = () => {
             유용한 정보와 일상을 공유하는 공간입니다.
           </p>
 
-          {/*  검색 */}
+          {/* 검색 */}
           <form className="search-form" onSubmit={handleSearch}>
             <select
               value={localType}
@@ -84,6 +91,7 @@ const BoardList = () => {
               <option value="content">내용</option>
               <option value="writer">작성자</option>
             </select>
+
             <input
               type="text"
               value={localKeyword}
@@ -93,7 +101,6 @@ const BoardList = () => {
 
             <button type="submit">검색</button>
           </form>
-
 
           <div className="board-actions">
             <span className="total-count">
@@ -154,7 +161,7 @@ const BoardList = () => {
               ) : (
                 <tr>
                   <td colSpan="5" className="empty-row">
-                    {keyword
+                    {keyword && keyword.trim()
                       ? "검색 결과가 없습니다."
                       : "등록된 게시글이 없습니다."}
                   </td>
