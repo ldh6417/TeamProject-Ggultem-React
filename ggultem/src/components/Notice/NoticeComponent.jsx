@@ -112,7 +112,10 @@ const NoticeComponent = () => {
         </div>
 
         <div className="pagination-wrapper">
-          <PageComponent serverData={serverData} movePage={moveToNoticeList} />
+          <PageComponent
+            serverData={serverData}
+            moveToList={moveToNoticeList}
+          />
         </div>
       </div>
     </div>
