@@ -4,6 +4,8 @@ import SockJS from "sockjs-client";
 import { getChatMessages, getChatRoom } from "../../api/ChatApi"; // ✨ 과거 내역 API 추가
 import useCustomLogin from "../../hooks/useCustomLogin";
 import "./ChatComponent.css";
+import useReport from "../../hooks/useReport";
+import ReportModal from "../../common/ReportModal";
 
 // 시간 포맷 함수 (서버의 regDate 형식에 맞춰 조정 가능)
 const formatTime = (regDate) => {
@@ -19,6 +21,17 @@ const ChatComponent = ({ roomId }) => {
   const { loginState, moveToLogin } = useCustomLogin();
   const stompClient = useRef(null);
   const scrollRef = useRef();
+
+  const { showModal, setShowModal, sendReport } = useReport();
+
+  const targetData = {
+    targetType: "채팅", // Notice인지 reply인지 등
+    targetNo: roomId, // targetNo에 해당하는 변수명
+    targetMemberId:
+      chatRoom.sellerId === loginState.email
+        ? chatRoom.buyerId
+        : chatRoom.sellerId,
+  };
 
   useEffect(() => {
     getChatRoom(roomId).then((data) => {
@@ -124,10 +137,23 @@ const ChatComponent = ({ roomId }) => {
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           placeholder="꿀템 메시지를 입력하세요..."
         />
-        <button onClick={sendMessage} disabled={!message.trim()}>
+        <button
+          onClick={sendMessage}
+          disabled={!message.trim()}
+          className="btn-send"
+        >
           전송
         </button>
+        <button onClick={() => setShowModal(true)} className="btn-report">
+          신고
+        </button>
       </footer>
+      <ReportModal
+        show={showModal}
+        targetData={targetData}
+        callbackFn={() => setShowModal(false)}
+        submitFn={sendReport}
+      />
     </div>
   );
 };

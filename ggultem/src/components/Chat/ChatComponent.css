@@ -127,7 +127,7 @@
   font-size: 0.9rem;
 }
 
-.input-area button {
+.btn-send {
   background-color: #fee500;
   border: none;
   padding: 8px 15px;
@@ -136,6 +136,18 @@
   cursor: pointer;
   transition: opacity 0.2s;
 }
+
+.btn-report {
+  background-color: #b70000;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  color: white;
+}
+
 
 .input-area button:disabled {
   background-color: #f1f1f1;
