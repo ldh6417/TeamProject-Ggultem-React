@@ -169,7 +169,7 @@ const BoardList = () => {
 
         {/* 페이징 */}
         <div className="pagination-wrapper">
-          <PageComponent serverData={serverData} movePage={moveToBoardList} />
+          <PageComponent serverData={serverData} moveToList={moveToBoardList} />
         </div>
       </div>
     </div>
