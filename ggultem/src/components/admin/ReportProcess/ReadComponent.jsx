@@ -5,6 +5,20 @@ import ProcessComponent from "./ProcessComponent";
 import { useNavigate } from "react-router-dom";
 import "./ReadComponent.css";
 
+// ✅ 공지사항 제외, 게시판/코멘트만 URL 생성
+const getTargetUrl = (targetType, targetNo) => {
+  switch (targetType) {
+    case "게시판":
+      return `/board/read/${targetNo}`;
+    case "코멘트":
+      return `/board/read/${targetNo}`;
+    case "채팅":
+      return `/chat/${targetNo}`;
+    default:
+      return null;
+  }
+};
+
 const ReadComponent = ({ reportId }) => {
   const [report, setReport] = useState(null);
   const [processed, setProcessed] = useState(null);
@@ -78,6 +92,21 @@ const ReadComponent = ({ reportId }) => {
             <div className="reg-date-info">
               신고일: {new Date(report.regDate).toLocaleString()}
             </div>
+
+            {/* ✅ 원본 게시글 링크 — 게시판/코멘트 타입일 때만 노출 */}
+            {getTargetUrl(report.targetType, report.targetNo) && (
+              <div style={{ marginTop: "10px" }}>
+                <a
+                  href={getTargetUrl(report.targetType, report.targetNo)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="white-btn"
+                  style={{ display: "inline-block", marginTop: "8px" }}
+                >
+                  원본 게시글 보기 →
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
@@ -117,10 +146,7 @@ const ReadComponent = ({ reportId }) => {
             <ProcessComponent
               reportId={reportId}
               onComplete={() => {
-                // 1. 먼저 신고 처리가 완료되었음을 알림
                 alert("신고 처리가 완료되었습니다. 🍯");
-
-                // 2. 블랙리스트 등록 여부 확인
                 if (
                   window.confirm(
                     "해당 유저를 블랙리스트에 추가로 등록하시겠습니까?",
