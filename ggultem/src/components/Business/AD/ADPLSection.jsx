@@ -85,9 +85,6 @@ export default function ADSection() {
                   {dto.title}
                 </div>
                 <div className="AD-info-desc">{dto.content}</div>
-                <div className="AD-info-price">
-                  {dto.price.toLocaleString()}원
-                </div>
               </div>
             </div>
           ))

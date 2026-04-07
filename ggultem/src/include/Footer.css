@@ -64,6 +64,15 @@
   font-size: 12px;
 }
 
+.footer-info-right p {
+  text-decoration: none;
+}
+
+.github-logo-img {
+  width: 15px;
+  height: 15px;
+}
+
 /* 모바일 대응 */
 @media (max-width: 768px) {
   .footer-info {

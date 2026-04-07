@@ -19,11 +19,11 @@ const MainPage = () => {
   }, [isLogin, moveToPath]);
 
   return (
-    <div className="main-container">
+    <div className="business-main-container">
       <Header />
 
-      <main className="content-area">
-        <div className="hero-section">
+      <main className="business-content-area">
+        <div className="business-hero-section">
           <div className="business-banner-container">
             {/* 👈 왼쪽: 홍보 문구 영역 */}
             <div className="business-text-section">

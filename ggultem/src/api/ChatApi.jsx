@@ -40,3 +40,12 @@ export const getChatMessages = async (roomId) => {
   const res = await axios.get(`${host}/messages/${roomId}`); 
   return res.data;
 };
+
+// ✅ 읽음 처리 API 호출
+export const updateReadStatus = async (roomId, userId) => {
+  // 백엔드 컨트롤러의 @PutMapping("/{roomId}/read")와 맞춘다고 가정
+  const res = await axios.put(`${host}/${roomId}/read`, null, {
+    params: { userId: userId } 
+  });
+  return res.data;
+};

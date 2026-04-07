@@ -156,9 +156,6 @@ const MyPageList = () => {
     <div className="cart-container">
       <div className="cart-header">
         <h2>내가 등록한 상품 관리</h2>
-        <p className="cart-count">
-          총 <strong>{serverData.totalCount}</strong>개
-        </p>
       </div>
 
       <div className="cart-search-bar">

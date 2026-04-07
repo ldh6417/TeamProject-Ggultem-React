@@ -8,8 +8,7 @@ const RemoveComponent = ({ noticeId }) => {
     if (window.confirm("이 게시글을 삭제 하시겠습니까?")) {
       remove(noticeId)
         .then((data) => {
-          // 서버 응답 오타(SUCESS)까지 꼼꼼하게 챙기셨네요! 👍
-          if (data.RESULT === "SUCCESS" || data.RESULT === "SUCESS") {
+          if (data.RESULT === "SUCCESS") {
             alert("성공적으로 삭제되었습니다. 🍯");
             moveToAdminNoticeList();
           }

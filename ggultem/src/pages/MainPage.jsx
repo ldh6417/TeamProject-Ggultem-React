@@ -62,7 +62,6 @@ const MainPage = () => {
               <option value="itemBoard">중고거래</option>
               <option value="board">커뮤니티</option>
               <option value="notice">공지사항</option>
-              <option value="report">사기조회</option>
             </select>
 
             <input

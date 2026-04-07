@@ -1,4 +1,5 @@
 import logoImg from "../assets/header_logo.png";
+import gitImg from "../assets/github.png";
 import { Link } from "react-router-dom"; // router-dom으로 임포트 확인하세요!
 import "./Footer.css";
 import { useSelector } from "react-redux";
@@ -41,17 +42,30 @@ export default function Footer() {
             <p>
               <strong>팀 :</strong> 꿀템프로젝트
             </p>
-          </div>
-          <div className="footer-info-center">
-            <img src={logoImg} alt="꿀템 로고" className="header-logo-img" />
+                        <p>
+              <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
+              <Link to={"https://github.com/ohjh9701"}> 오지훈(BE/FE) </Link>
+            </p>
+            <p>
+              <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
+              <Link to={"https://github.com/92Ray"}> 위대근(BE/FE) </Link>
+            </p>
+            <p>
+              <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
+              <Link to={"https://github.com/sauce0428"}> 권태현(BE/FE) </Link>
+            </p>
+            <p>
+              <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
+              <Link to={"https://github.com/ldh6417"}> 이도훈(BE/FE) </Link>
+            </p>
+            <p>
+              <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
+              <Link to={"https://github.com/dldydtjr003"}> 이용석(BE/FE) </Link>
+            </p>
           </div>
           <div className="footer-info-right">
-            <p>
-              <strong>전화번호 :</strong> 010-8735-4875
-            </p>
-            <p>
-              <strong>이메일 :</strong> ohjh9701@naver.com
-            </p>
+<img src={logoImg} alt="꿀템 로고" className="header-logo-img" />
+            
             <p className="footer-copyright">
               © 2026 Ggultem Project. All rights reserved.
             </p>
