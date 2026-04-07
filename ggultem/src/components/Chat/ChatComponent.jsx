@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
-import { getChatMessages, getChatRoom } from "../../api/ChatApi"; // ✨ 과거 내역 API 추가
+import { getChatMessages, getChatRoom, updateReadStatus } from "../../api/ChatApi"; // ✨ 과거 내역 API 추가
 import useCustomLogin from "../../hooks/useCustomLogin";
 import "./ChatComponent.css";
 import useReport from "../../hooks/useReport";
@@ -97,6 +97,29 @@ const ChatComponent = ({ roomId }) => {
       setMessage("");
     }
   };
+
+useEffect(() => {
+  if (!roomId || !loginState.email) return;
+
+  const fetchHistoryAndRead = async () => {
+    try {
+      // 1. 과거 내역 가져오기
+      const data = await getChatMessages(roomId);
+      setMessages(data);
+
+      // 2. ✨ 읽음 처리 API 호출! (상대방이 보낸 메시지 0 -> 1)
+      await updateReadStatus(roomId, loginState.email);
+      console.log("읽음 처리 완료! 🐝");
+
+    } catch (err) {
+      console.error("채팅방 로딩 중 에러:", err);
+    }
+  };
+
+  fetchHistoryAndRead();
+
+  // ... (기존 소켓 연결 로직)
+}, [roomId, loginState.email]);
 
   return (
     <div className="chat-container">

@@ -1,86 +1,127 @@
-.chat-list-container {
-  max-width: 1200px;
-  min-height: 45vh;
-  margin: 40px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 20px;
+/* 전체 컨테이너 */
+.sq-chat-list-wrapper {
+    max-width: 1200px;
+    margin: 50px auto;
+    height: 50vh;
+    padding: 0 20px;
+    font-family: 'Pretendard', -apple-system, sans-serif;
 }
 
-.chat-list-header h2 {
-  font-weight: 800;
-  color: #1a1a1a;
-  border-bottom: 2px solid #FF8C00;
-  padding-bottom: 15px;
-  margin-bottom: 20px;
+.sq-chat-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 30px;
+    border-left: 6px solid #ffca28; /* 꿀템 포인트 🍯 */
+    padding-left: 15px;
 }
 
-.chat-room-list {
-  list-style: none;
-  padding: 0;
+/* 채팅 리스트 */
+.sq-chat-room-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 2px solid #333;
 }
 
-.chat-room-item {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid #f0f0f0;
-  cursor: pointer;
-  transition: background 0.2s;
+/* 개별 채팅방 아이템 */
+.sq-chat-room-item {
+    display: flex;
+    align-items: center;
+    padding: 20px 10px;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    gap: 15px; /* 요소 간 간격 */
 }
 
-.chat-room-item:hover {
-  background-color: #fff9f0;
+.sq-chat-room-item:hover {
+    background-color: #fffdf5;
 }
 
-.room-avatar {
-  width: 50px;
-  height: 50px;
-  background-color: #333;
-  color: #fff;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  margin-right: 15px;
+/* 아바타 */
+.sq-room-avatar {
+    width: 55px;
+    height: 55px;
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #ffca28;
+    flex-shrink: 0; /* 크기 고정 🐝 */
+    border: 1px solid #eee;
 }
 
-.room-info {
-  flex: 1;
+/* 정보 영역 */
+.sq-room-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0; /* 말줄임표 작동을 위한 필수 코드! */
 }
 
-.room-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
+.sq-room-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.opponent-name {
-  font-weight: 700;
-  font-size: 1.05rem;
+.sq-opponent-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #333;
 }
 
-.reg-date {
-  font-size: 0.75rem;
-  color: #999;
+.sq-reg-date {
+    font-size: 12px;
+    color: #aaa;
 }
 
-.room-name-tag {
-  color: #FF8C00;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-right: 5px;
+/* 마지막 메시지 (말줄임표 처리 🍯) */
+.sq-last-msg {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.last-msg {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0;
+/* 알림 뱃지 & 화살표 */
+.sq-room-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
-.enter-arrow {
-  color: #ccc;
-  font-size: 1.2rem;
-  margin-left: 10px;
+.sq-unread-badge {
+    background-color: #ff5252;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 4px;
+}
+
+.sq-enter-arrow {
+    color: #ddd;
+    font-size: 16px;
+}
+
+/* 방 없을 때 */
+.sq-no-rooms {
+    text-align: center;
+    padding: 50px 0;
+    color: #999;
 }

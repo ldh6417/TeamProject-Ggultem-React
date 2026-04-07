@@ -44,23 +44,23 @@ export default function Footer() {
             </p>
                         <p>
               <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
-              <Link to={"https://github.com/ohjh9701"}> ohjh9701 </Link>
+              <Link to={"https://github.com/ohjh9701"}> 오지훈(BE/FE) </Link>
             </p>
             <p>
               <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
-              <Link to={"https://github.com/92Ray"}> 92Ray </Link>
+              <Link to={"https://github.com/92Ray"}> 위대근(BE/FE) </Link>
             </p>
             <p>
               <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
-              <Link to={"https://github.com/sauce0428"}> sauce0428 </Link>
+              <Link to={"https://github.com/sauce0428"}> 권태현(BE/FE) </Link>
             </p>
             <p>
               <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
-              <Link to={"https://github.com/ldh6417"}> ldh6417 </Link>
+              <Link to={"https://github.com/ldh6417"}> 이도훈(BE/FE) </Link>
             </p>
             <p>
               <img src={gitImg} alt="깃허브 로고" className="github-logo-img" />
-              <Link to={"https://github.com/dldydtjr003"}> dldydtjr003 </Link>
+              <Link to={"https://github.com/dldydtjr003"}> 이용석(BE/FE) </Link>
             </p>
           </div>
           <div className="footer-info-right">
