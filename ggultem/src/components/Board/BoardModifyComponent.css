@@ -1,90 +1,101 @@
-/* =========================
-   전체 레이아웃
-========================= */
-.board-modify-wrapper {
-  background: #f9f9f9;
-  min-height: 100vh;
-  padding: 40px 0;
+/* 전체 컨테이너: 등록과 수정 공통 🍯 */
+.board-register-wrapper {
+    max-width: 1000px; /* 너무 넓지 않게 조정 */
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* 그림자 조금 더 부드럽게 */
 }
 
-.board-modify-container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+.board-register-wrapper h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 25px;
+    border-left: 6px solid #ffca28; /* 꿀템 시그니처 옐로우! 🐝 */
+    padding-left: 18px;
 }
 
-/* =========================
-   제목
-========================= */
-.board-modify-title {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 800;
-  margin-bottom: 25px;
+/* 제목 입력창 */
+.board-title-input {
+    width: 100%;
+    padding: 18px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
-/* =========================
-   입력
-========================= */
-.board-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 15px;
-  outline: none;
+.board-title-input:focus {
+    outline: none;
+    border-color: #ffca28;
+    box-shadow: 0 0 0 4px rgba(255, 202, 40, 0.15);
 }
 
-.board-input:focus {
-  border-color: #f5a623;
+/* Toast UI Editor 커스텀: 둥글게 🍯 */
+.toastui-editor-defaultUI {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0 !important;
 }
 
-/* =========================
-   에디터
-========================= */
-.editor-wrapper {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 15px;
-}
-
-/* =========================
-   버튼
-========================= */
+/* 버튼 그룹 */
 .board-btn-group {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+    display: flex;
+    justify-content: flex-end; /* 버튼을 오른쪽으로 배치하면 더 전문적여 보여요 🐝 */
+    gap: 12px;
+    margin-top: 35px;
 }
 
 .board-btn {
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
+    padding: 14px 40px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: none;
 }
 
-/* 수정 버튼 */
-.board-btn-primary {
-  background: #f5a623;
-  color: white;
+/* 수정/등록 완료 버튼 */
+.board-register-btn {
+    background-color: #ffca28;
+    color: #333;
 }
 
-.board-btn-primary:hover {
-  background: #ffb84d;
+.board-register-btn:hover {
+    background-color: #f39c12;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
 }
 
 /* 취소 버튼 */
-.board-btn-secondary {
-  background: #eee;
+.board-cancel-btn {
+    background-color: #f5f5f5;
+    color: #777;
 }
 
-.board-btn-secondary:hover {
-  background: #ddd;
+.board-cancel-btn:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* 📱 반응형 (모바일용) */
+@media (max-width: 768px) {
+    .board-register-wrapper {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .board-btn-group {
+        flex-direction: column; /* 모바일에선 버튼을 세로로 꽉 채우기 🍯 */
+    }
+    
+    .board-btn {
+        width: 100%;
+    }
 }
