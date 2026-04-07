@@ -28,9 +28,10 @@ const MyPageMain = ({ email }) => {
   const location = useLocation();
   const { doLogout } = useCustomLogin();
   const { moveToMyPageModify } = useCustomMove();
-  const [itemPage, setItemPage] = useState(1); // 상품용 페이지
-  const [cartPage, setCartPage] = useState(1); // 장바구니용 페이지
+  const [itemPage, setItemPage] = useState(1);
+  const [cartPage, setCartPage] = useState(1);
   const size = 5;
+
   const [serverData, setServerData] = useState({
     dtoList: [],
     totalCount: 0,
@@ -50,67 +51,87 @@ const MyPageMain = ({ email }) => {
   const getAllData = useCallback(() => {
     if (!email) return;
 
-    // 회원 정보 로드
+    // 1. 회원 정보 로드
     getMyInfo(email).then((data) => setMember(data));
 
-    // 내 상품 리스트 로드
+    // 2. 내 상품 리스트 로드 및 프론트엔드 강제 필터링
     getItemList({ page: itemPage, size: size, email: email }).then((data) => {
-      if (data) setServerData(data);
+      if (data && data.dtoList) {
+        // ✨ [강제 필터링] 서버 데이터 중 내 이메일과 일치하는 것만 추출
+        const myItems = data.dtoList.filter((item) => item.email === email);
+
+        // ✨ [페이징 재계산] 내 아이템 개수에 맞는 페이지 번호 생성
+        const myTotalCount = myItems.length;
+        const myPageNumList = [];
+        const totalPages = Math.ceil(myTotalCount / size) || 1; // 최소 1페이지
+
+        for (let i = 1; i <= totalPages; i++) {
+          myPageNumList.push(i);
+        }
+
+        setServerData({
+          ...data,
+          dtoList: myItems, // 내 것만 담기
+          totalCount: myTotalCount, // 내 것 개수만 넣기
+          pageNumList: myPageNumList, // 내 것 전용 페이지 번호
+          next: false, // 프론트 필터링 시 다음 페이지 계산이 어려우므로 일단 비활성
+          prev: false,
+        });
+      }
     });
 
-    // 장바구니 리스트 로드
+    // 3. 장바구니 리스트 로드 (장바구니도 동일한 로직 적용)
     axios
       .get(`${host}/cart/list`, {
         params: { page: cartPage, size: size, email: email },
       })
       .then((res) => {
-        setCartData(res.data);
-      });
-  }, [email, itemPage, cartPage]);
+        const data = res.data;
+        if (data && data.dtoList) {
+          // 장바구니는 itemBoard 안에 email이 있는지 확인해야 함
+          const myCartItems = data.dtoList.filter(
+            (item) => item.email === email || item.itemBoard?.email === email,
+          );
 
-  // 2. 통합 useEffect
+          const cartTotalPages = Math.ceil(myCartItems.length / size) || 1;
+          const cartPageList = [];
+          for (let i = 1; i <= cartTotalPages; i++) cartPageList.push(i);
+
+          setCartData({
+            ...data,
+            dtoList: myCartItems,
+            totalCount: myCartItems.length,
+            pageNumList: cartPageList,
+            next: false,
+            prev: false,
+          });
+        }
+      });
+  }, [email, itemPage, cartPage, size]);
+
   useEffect(() => {
     getAllData();
-
-    // ✨ 핵심: CartList에서 보낸 { refresh: true } 신호가 있으면 데이터를 다시 부름
     if (location.state?.refresh) {
       getAllData();
-
-      // 사용한 신호는 비워줌 (다시 들어왔을 때 무한 리프레시 방지)
       window.history.replaceState({}, document.title);
     }
-
-    // location.key를 넣어 페이지 이동(뒤로가기 포함) 시 매번 체크하도록 설정
   }, [getAllData, location.state?.refresh, location.key]);
 
-  const moveItemPage = (pageParam) => {
-    setItemPage(pageParam.page);
-  };
-
-  // 장바구니 페이지 변경 (필요할 경우)
-  const moveCartPage = (pageParam) => {
-    setCartPage(pageParam.page);
-  };
+  const moveItemPage = (pageParam) => setItemPage(pageParam.page);
+  const moveCartPage = (pageParam) => setCartPage(pageParam.page);
 
   const removeHandler = (email) => {
-    // 1. ✨ confirm을 사용하여 사용자가 '취소'를 누를 수 있게 합니다.
     if (
       !window.confirm(
         "정말 회원 탈퇴를 하시겠습니까?\n탈퇴 시 모든 정보가 삭제되며 복구할 수 없습니다.",
       )
     ) {
-      return; // 취소를 누르면 함수 종료
+      return;
     }
-
-    // 2. 서버 통신 시작
     removeMember(email)
       .then(() => {
         alert("회원 탈퇴에 성공하였습니다. 그동안 이용해 주셔서 감사합니다.");
-
-        // 3. 보안을 위해 로그아웃 함수를 호출하여 상태를 비워줍니다.
         doLogout();
-
-        // 4. 메인으로 이동 (replace: true로 뒤로가기 방지)
         navigate("/", { replace: true });
       })
       .catch((error) => {
@@ -124,9 +145,14 @@ const MyPageMain = ({ email }) => {
       <div className="text-center mt-10">데이터를 불러오는 중입니다...</div>
     );
 
-  // 썸네일 경로 (백엔드에서 default.jpg를 보내주므로 안전함)
-  const thumbnailFile = member.uploadFileNames?.[0] || "default.jpg";
-  const imageSrc = `${host}/mypage/view/${thumbnailFile}`;
+  // ✨ 페이징 번호를 실제 데이터 개수에 맞게 필터링하는 함수
+  const getValidServerData = (data) => {
+    const lastPage = Math.ceil(data.totalCount / size);
+    return {
+      ...data,
+      pageNumList: data.pageNumList.filter((n) => n <= lastPage),
+    };
+  };
 
   return (
     <div className="mp-mypage-wrapper">
@@ -136,7 +162,6 @@ const MyPageMain = ({ email }) => {
           <section className="mp-content-box">
             <div className="mp-section-header">
               <h3 className="mp-section-title">내가 올린 중고거래</h3>
-              {/* 우측 상단 버튼 추가 */}
               <button
                 className="mp-add-item-btn"
                 onClick={() => navigate("/itemboard/myPage")}
@@ -144,60 +169,61 @@ const MyPageMain = ({ email }) => {
                 중고거래 리스트
               </button>
             </div>
-            {serverData.dtoList && serverData.dtoList.length > 0 ? (
-              serverData.dtoList
-                /* ✅ 본인 이메일과 일치하는 상품만 필터링 */
-                .filter((item) => item.email === email)
-                .map((item) => {
-                  const isSoldOut =
-                    item.status === "판매완료" ||
-                    item.status === "true" ||
-                    Number(item.enabled) === 2;
 
-                  return (
-                    <div
-                      key={item.id}
-                      className="mp-item-card"
-                      onClick={() => navigate(`/itemBoard/read/${item.id}`)}
-                    >
-                      <div className="mp-image-container">
-                        {isSoldOut && (
-                          <div className="mp-sold-out-overlay">SOLD OUT</div>
-                        )}
-                        <img
-                          className={`mp-item-img ${isSoldOut ? "mp-img-darken" : ""}`}
-                          src={
-                            item.uploadFileNames &&
-                            item.uploadFileNames.length > 0
-                              ? `${host}/itemBoard/view/s_${item.uploadFileNames[0]}`
-                              : `${host}/itemBoard/view/default.jpg`
-                          }
-                          alt="item"
-                        />
-                      </div>
-                      <div className="mp-item-info">
-                        <span className="mp-item-title">{item.title}</span>
-                        <span className="mp-item-price">
-                          {item.price?.toLocaleString() || 0}원
-                        </span>
-                        <span className="mp-item-date">
-                          추가한 날짜: {item.regDate?.substring(0, 10)}
-                        </span>
-                      </div>
+            {serverData.dtoList && serverData.dtoList.length > 0 ? (
+              serverData.dtoList.map((item) => {
+                const isSoldOut =
+                  item.status === "판매완료" ||
+                  item.status === "true" ||
+                  Number(item.enabled) === 2;
+                return (
+                  <div
+                    key={item.id}
+                    className="mp-item-card"
+                    onClick={() => navigate(`/itemBoard/read/${item.id}`)}
+                  >
+                    <div className="mp-image-container">
+                      {isSoldOut && (
+                        <div className="mp-sold-out-overlay">SOLD OUT</div>
+                      )}
+                      <img
+                        className={`mp-item-img ${isSoldOut ? "mp-img-darken" : ""}`}
+                        src={
+                          item.uploadFileNames &&
+                          item.uploadFileNames.length > 0
+                            ? `${host}/itemBoard/view/s_${item.uploadFileNames[0]}`
+                            : `${host}/itemBoard/view/default.jpg`
+                        }
+                        alt="item"
+                      />
                     </div>
-                  );
-                })
+                    <div className="mp-item-info">
+                      <span className="mp-item-title">{item.title}</span>
+                      <span className="mp-item-price">
+                        {item.price?.toLocaleString() || 0}원
+                      </span>
+                      <span className="mp-item-date">
+                        추가한 날짜: {item.regDate?.substring(0, 10)}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })
             ) : (
               <div className="mp-empty-placeholder">
                 등록된 상품이 없습니다.
               </div>
             )}
-            <div className="mp-pagination-wrapper">
-              <PageComponent
-                moveToList={moveItemPage}
-                serverData={serverData}
-              />
-            </div>
+
+            {/* ✨ 수정: 보정된 페이징 데이터 전달 */}
+            {serverData.totalCount > 0 && (
+              <div className="mp-pagination-wrapper">
+                <PageComponent
+                  moveToList={moveItemPage}
+                  serverData={getValidServerData(serverData)}
+                />
+              </div>
+            )}
           </section>
 
           {/* 2. 장바구니 섹션 */}
@@ -260,26 +286,35 @@ const MyPageMain = ({ email }) => {
                 장바구니가 비어 있습니다.
               </div>
             )}
-            <div className="mp-pagination-wrapper">
-              <PageComponent moveToList={moveCartPage} serverData={cartData} />
-            </div>
+
+            {/* ✨ 수정: 보정된 장바구니 페이징 데이터 전달 */}
+            {cartData.totalCount > 0 && (
+              <div className="mp-pagination-wrapper">
+                <PageComponent
+                  moveToList={moveCartPage}
+                  serverData={getValidServerData(cartData)}
+                />
+              </div>
+            )}
           </section>
         </div>
 
-        {/* 2. 오른쪽 섹션 (회원 정보 카드) - 왼쪽 섹션 밖으로 꺼내야 합니다! */}
+        {/* 2. 오른쪽 섹션 (회원 정보 카드) */}
         <aside className="mp-right-sidebar">
           <div className="mp-profile-summary-card">
             <div className="mp-card-header-gradient"></div>
-
             <div className="mp-profile-info-content">
               <img
-                src={`${host}/mypage/view/${member.uploadFileNames}`}
+                src={
+                  member.uploadFileNames && member.uploadFileNames.length > 0
+                    ? `${host}/mypage/view/${member.uploadFileNames[0]}`
+                    : `${host}/mypage/view/default.jpg`
+                }
                 alt="Profile"
                 className="mp-mini-profile-img"
               />
 
               <div className="mp-name-group">
-                {/* 닉네임이 안 나왔다면 member.nickname 확인 */}
                 <h2 className="mp-user-nickname">
                   {member.nickname || "꿀템유저"}
                 </h2>
@@ -301,7 +336,7 @@ const MyPageMain = ({ email }) => {
                     {member.email === "admin@honey.com"
                       ? "관리자"
                       : member.social
-                        ? `${email.split("_")[0]}`
+                        ? `${member.email.split("_")[0]}`
                         : "일반"}
                   </span>
                 </div>

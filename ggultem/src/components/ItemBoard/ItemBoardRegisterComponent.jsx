@@ -72,7 +72,7 @@ const ItemBoardRegister = () => {
         });
       })
       .catch((err) => console.error("코드 로드 실패:", err));
-  }, [isLogin, moveToLogin]);
+  }, []);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);

@@ -277,7 +277,8 @@ const KakaoMap = ({
                       }
                       alt={item.title}
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/200";
+                        e.target.onerror = null;
+                        e.target.src = "/img/default.jpg";
                       }}
                     />
                     <button
