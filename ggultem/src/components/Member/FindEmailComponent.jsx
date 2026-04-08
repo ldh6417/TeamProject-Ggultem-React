@@ -12,6 +12,7 @@ const FindEmailComponent = () => {
   const [code, setCode] = useState("");
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
+  const [isSending, setIsSending] = useState(false);
 
   const handleCheckEmail = (e) => {
     e.preventDefault();
@@ -36,9 +37,15 @@ const FindEmailComponent = () => {
 
   // 2단계: 이메일 인증번호 발송
   const handleSendCode = () => {
+    if (isSending) return;
+
+    setIsSending(true); // 로딩 시작!
+
     sendVerificationEmail(email).then(() => {
       alert(`${email}로 인증번호가 발송되었습니다.`);
       setStep(3);
+    }).finally(() => {
+      setIsSending(false); // 성공하든 실패하든 로딩 해제!
     });
   };
 
@@ -104,10 +111,11 @@ const FindEmailComponent = () => {
               </p>
               <button
                 type="button"
-                className="login-btn"
+                className={`login-btn ${isSending ? "loading" : ""}`} // 로딩 클래스 추가 가능
                 onClick={handleSendCode}
+                disabled={isSending} // 👈 핵심: 전송 중에는 클릭 금지!
               >
-                이메일 인증하기
+                {isSending ? "인증번호 발송 중..." : "이메일 인증하기"}
               </button>
             </div>
           )}
@@ -131,8 +139,9 @@ const FindEmailComponent = () => {
                 type="button"
                 className="sub-btn"
                 onClick={handleSendCode}
+                disabled={isSending} // 👈 재발송도 중복 클릭 방지!
               >
-                인증번호 재발송
+                {isSending ? "발송 중..." : "인증번호 재발송"}
               </button>
             </div>
           )}

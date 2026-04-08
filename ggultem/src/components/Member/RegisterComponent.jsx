@@ -40,6 +40,8 @@ const RegisterPage = () => {
   const [showVerifyInput, setShowVerifyInput] = useState(false); // 입력창 노출 여부
   const [isEmailSent, setIsEmailSent] = useState(false);
 
+  const [isSending, setIsSending] = useState(false); // 인증요청 시 로딩시간 체크용
+
   const [agreements, setAgreements] = useState({
     terms: false /* 이용약관 (필수) */,
     privacy: false /* 개인정보 수집 및 이용 (필수) */,
@@ -56,6 +58,10 @@ const RegisterPage = () => {
 
   // 인증번호 발송 핸들러
   const handleSendEmail = () => {
+    if (isSending) return;
+
+    setIsSending(true); // 로딩 시작!
+
     sendVerificationEmail(member.email)
       .then((data) => {
         if (data.result === "SUCCESS") {
@@ -65,7 +71,9 @@ const RegisterPage = () => {
       })
       .catch((err) =>
         alert("메일 발송에 실패했습니다. 이메일을 확인해주세요."),
-      );
+      ).finally(() => {
+        setIsSending(false); // 성공하든 실패하든 로딩 해제!
+      });
   };
 
   // 인증번호 검증 핸들러
@@ -132,22 +140,33 @@ const RegisterPage = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!email || !emailRegex.test(email)) {
-      alert("올바른 이메일 형식을 입력해주세요. 🐝");
+      alert("올바른 이메일 형식을 입력해주세요.");
       return;
     }
 
     setEmailStatus("checking");
     checkEmail(email)
       .then((data) => {
-        if (data.result === true) {
-          alert("사용 가능한 이메일입니다! 🍯");
-          setEmailStatus("available");
-          setIsEmailChecked(true); // 통과!
-        } else {
-          alert("이미 등록된 이메일입니다. ❌");
-          setEmailStatus("duplicate");
-          setIsEmailChecked(false);
-        }
+        if (data.result === false) {
+      
+      // 2단계: 등록된 이메일이 소셜 도메인(@kakao, @gmail)을 포함하는지 체크 🍯
+      if (email.includes("@kakao.com") || email.includes("@gmail.com")) {
+        alert("카카오, 구글 계정은 간편 로그인으로 진행해 주세요!");
+        setEmailStatus("social_user"); // 상태값도 별도로 관리하면 좋습니다.
+        setIsEmailChecked(false);
+      } else {
+        // 일반 이메일 중복인 경우
+        alert("이미 등록된 이메일입니다.");
+        setEmailStatus("duplicate");
+        setIsEmailChecked(false);
+      }
+
+    } else {
+      // 3단계: 사용 가능한 경우
+      alert("사용 가능한 이메일입니다!");
+      setEmailStatus("available");
+      setIsEmailChecked(true);
+    }
       })
       .catch(() => {
         alert("서버 통신 오류가 발생했습니다.");
@@ -168,11 +187,11 @@ const RegisterPage = () => {
     checkNickname(nickname)
       .then((data) => {
         if (data.result === true) {
-          alert("사용 가능한 닉네임입니다! 🍯");
+          alert("사용 가능한 닉네임입니다!");
           setNicknameStatus("available");
           setIsNicknameChecked(true); // 통과!
         } else {
-          alert("이미 등록된 닉네임입니다. ❌");
+          alert("이미 등록된 닉네임입니다.");
           setNicknameStatus("duplicate");
           setIsNicknameChecked(false);
         }
@@ -301,10 +320,17 @@ const RegisterPage = () => {
               ) : !isEmailVerified ? (
                 <button
                   type="button"
-                  className="btn-verify-send"
+                  className={`btn-verify-send ${isSending ? "loading" : ""}`} // 👈 로딩 클래스 추가
                   onClick={handleSendEmail}
+                  disabled={isSending} // 👈 로딩 중에는 클릭 불가능하게!
                 >
-                  {isEmailSent ? "재발송" : "인증번호 받기"}
+                  {isSending ? (
+                    <span className="spinner-text">발송 중...</span>
+                  ) : isEmailSent ? (
+                    "재발송"
+                  ) : (
+                    "인증번호 받기"
+                  )}
                 </button>
               ) : (
                 <span className="verify-badge">인증됨 ✅</span>
