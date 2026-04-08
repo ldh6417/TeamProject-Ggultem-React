@@ -3,14 +3,16 @@ import "./Menu.css";
 // 로고 이미지 경로를 프로젝트 구조에 맞게 수정하세요 (예: src/assets/logo.png)
 import logoImg from "../../assets/logo.png";
 import { removeCookie } from "../../util/cookieUtil";
+import useCustomLogin from "../../hooks/useCustomLogin";
 
 export default function Header() {
   const navigate = useNavigate();
+  const {doLogout } = useCustomLogin();
 
   const handleLogout = () => {
-    removeCookie("member");
-    alert("로그아웃 되었습니다. 다음에 또 만나요! 🐝");
-    navigate("/");
+    doLogout();
+    alert("로그아웃 되었습니다. 관리자님 수고하셨습니다.");
+    navigate("/admin/login");
     window.location.reload(); // 상태 반영을 위해 새로고침
   };
 
@@ -19,7 +21,7 @@ export default function Header() {
       <nav className="nav-container">
         {/* 로고 영역 */}
         <div className="nav-top">
-          <Link to="/" className="nav-logo">
+          <Link to="/admin" className="nav-logo">
             <img src={logoImg} alt="꿀템 로고" className="header-logo-img" />
           </Link>
         </div>
