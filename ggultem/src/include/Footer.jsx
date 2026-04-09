@@ -1,4 +1,4 @@
-import logoImg from "../assets/header_logo.png";
+import logoImg from "../assets/header_Logo.png";
 import gitImg from "../assets/github.png";
 import { Link } from "react-router-dom"; // router-dom으로 임포트 확인하세요!
 import "./Footer.css";

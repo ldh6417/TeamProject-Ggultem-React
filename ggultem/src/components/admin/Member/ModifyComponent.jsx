@@ -210,7 +210,7 @@ const ModifyPage = ({ email }) => {
                   </span>
                 ))}
                 <span className="role-notice">
-                  * 권한 변경은 별도 설정에서 가능합니다.
+                  * 권한 변경은 불가능하며, 비즈니스 회원은 비즈니스 회원 관리에서 취소가 가능합니다.
                 </span>
               </div>
             </div>

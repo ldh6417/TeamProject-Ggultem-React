@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import "./Header.css";
 // 로고 이미지 경로를 프로젝트 구조에 맞게 수정하세요 (예: src/assets/logo.png)
-import logoImg from "../assets/header_logo.png";
+import logoImg from "../assets/header_Logo.png";
 import { useSelector } from "react-redux";
 import useCustomLogin from "../hooks/useCustomLogin";
 import { useEffect, useRef } from "react";

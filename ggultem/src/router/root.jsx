@@ -2,7 +2,6 @@
 import React, { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Loading from "../pages/Loading";
-import BoardRegisterPage from "../pages/Board/BoardRegisterPage";
 import AdminBoardListPage from "../pages/admin/Board/AdminBoardListPage";
 import AdminReplyListPage from "../pages/admin/Board/AdminReplyListPage";
 
@@ -134,7 +133,7 @@ const ItemBoardModify = lazy(
 );
 //* 장바구니 페이지 */
 const CartList = lazy(() => import("../pages/Cart/CartListPage"));
-const MyPageList = lazy(() => import("../pages/itemBoard/MyPageList"));
+const MyPageList = lazy(() => import("../pages/ItemBoard/MyPageList"));
 // ✅ 신고 관리 페이지 추가
 const ReportListAdmin = lazy(
   () => import("../pages/admin/ReportProcess/ListPage"),

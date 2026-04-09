@@ -180,11 +180,11 @@ const FraudSearchPage = () => {
                         <td>{searchResult.email}</td>
                       </tr>
                       <tr>
-                        <th>차단 사유</th>
+                        <th>블랙리스트 등록 사유</th>
                         <td>{searchResult.reason}</td>
                       </tr>
                       <tr>
-                        <th>차단 기간</th>
+                        <th>블랙리스트 등록 기간</th>
                         <td>
                           {searchResult.startDate?.split("T")[0]} ~{" "}
                           {searchResult.endDate?.split("T")[0] || "영구"}
@@ -211,17 +211,17 @@ const FraudSearchPage = () => {
                         <td>{lastInput}</td>
                       </tr>
                       <tr>
-                        <th>차단 사유</th>
+                        <th>블랙리스트 등록 사유</th>
                         <td>해당 없음 (깨끗한 상태)</td>
                       </tr>
                       <tr>
-                        <th>상태</th>
+                        <th>현재 상태</th>
                         <td className="status-highlight-green">정상</td>
                       </tr>
                     </tbody>
                   </table>
                   <p className="safe-notice">
-                    * 해당 사용자는 현재 어떠한 차단 기록도 발견되지 않았습니다.
+                    * 해당 사용자는 현재 어떠한 블랙리스트 등록 기록도 발견되지 않았습니다.
                   </p>
                 </div>
               )}
@@ -231,19 +231,19 @@ const FraudSearchPage = () => {
           <aside className="fraud-sidebar">
             <div className="stat-cards-group">
               <div className="stat-card">
-                <span className="stat-label">누적 신고수</span>
+                <span className="stat-label">누적 등록수</span>
                 <span className="stat-value">
                   {stats.totalCount.toLocaleString()}
                 </span>
               </div>
               <div className="stat-card">
-                <span className="stat-label">주간 신고수</span>
+                <span className="stat-label">주간 등록수</span>
                 <span className="stat-value">
                   {stats.weeklyCount.toLocaleString()}
                 </span>
               </div>
               <div className="stat-card highlight-card">
-                <span className="stat-label">오늘 신고수</span>
+                <span className="stat-label">오늘 등록수</span>
                 <span className="stat-value">
                   {stats.dailyCount.toLocaleString()}
                 </span>
@@ -251,7 +251,7 @@ const FraudSearchPage = () => {
             </div>
 
             <div className="fraud-chart-section">
-              <h4 className="chart-title">신고 발생 트렌드 (최근 5일)</h4>
+              <h4 className="chart-title">블랙리스트 발생 트렌드 (최근 5일)</h4>
               <div className="bar-chart-visual">
                 {stats.chartData.map((count, idx) => (
                   <div key={idx} className="bar-container">
@@ -265,7 +265,7 @@ const FraudSearchPage = () => {
                 ))}
               </div>
               <p className="chart-footer">
-                실시간 신고 데이터가 반영되었습니다.
+                실시간 블랙리스트 데이터가 반영되었습니다.
               </p>
             </div>
           </aside>

@@ -83,7 +83,10 @@ const ListComponent = () => {
               >
                 <option value="all">계정상태</option>
                 <option value="1">활성 계정</option>
-                <option value="0">비활성 계정</option>
+                <option value="2">정지(7) 계정</option>
+                <option value="3">정지(30) 계정</option>
+                <option value="4">영구정지 계정</option>
+                <option value="0">탈퇴 계정</option>
               </select>
               <select
                 className="admin-search"
@@ -162,18 +165,20 @@ const ListComponent = () => {
                         <span className="social-badge admin">Admin</span>
                       ) : member.social ? (
                         <span className="social-badge kakao">Social</span>
+                      ) : member.roleNames.includes("BUSINESS") ? (
+                        <span className="social-badge business">BUSINESS</span>
                       ) : (
                         <span className="social-badge general">General</span>
-                      )}
+                      ) }
                     </td>
                     <td className="member-td-date">
                       {member.regDate ? member.regDate.split("T")[0] : "-"}
                     </td>
                     <td className="member-td-status">
                       <span
-                        className={`status-dot ${member.claims.enabled === 0 ? "inactive" : "active"}`}
+                        className={`status-dot ${member.claims.enabled === 1 ? "active" : "inactive"}`}
                       ></span>
-                      {member.claims.enabled === 0 ? "비활성" : "활성"}
+                      {member.claims.enabled === 1 ? "활성" : "비활성"}
                     </td>
                   </tr>
                 ))

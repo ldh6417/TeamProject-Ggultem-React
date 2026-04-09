@@ -118,7 +118,8 @@ const ReadPage = ({ email }) => {
                   ? "관리자"
                   : member.social
                     ? "소셜 회원"
-                    : "일반 회원"}
+                    : member.roleNames.includes("BUSINESS") ? "비즈니스 회원" : 
+                    "일반 회원"}
               </span>
             </div>
             <div className="memberinfo-row">

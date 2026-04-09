@@ -43,7 +43,7 @@ const ItemBoardRegister = () => {
       return;
     }
 
-    // 필터링 했을때 1페이지에 몰아서 보이게
+    // 필터링 했을때 1페이지에 몰아서 보이게 (필터링 했을때 검색)
     const pageParam = { page: 1, size: 100 };
 
     axios

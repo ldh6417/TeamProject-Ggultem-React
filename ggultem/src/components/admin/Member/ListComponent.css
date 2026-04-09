@@ -119,6 +119,7 @@
 .social-badge.admin { background: #fe0000; color: #ffffff; }
 .social-badge.kakao { background: #fee500; color: #3c1e1e; }
 .social-badge.general { background: #e0e0e0; color: #666; }
+.social-badge.business { background: #00004a; color: #ffffff; }
 
 .status-dot {
     display: inline-block;

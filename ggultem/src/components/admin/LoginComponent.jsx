@@ -10,7 +10,7 @@ const initState = {
 
 const LoginComponent = () => {
   const [loginParam, setLoginParam] = useState({ ...initState });
-  const { doLogin, moveToPath } = useCustomLogin();
+  const { doLogin, moveToPath, doLogout } = useCustomLogin();
   // 입력값 변경 핸들러
   const handleChange = (e) => {
     setLoginParam({ ...loginParam, [e.target.name]: e.target.value });
@@ -24,9 +24,13 @@ const LoginComponent = () => {
       .then((data) => {
         if (data.error) {
           alert("이메일 또는 비밀번호를 확인해주세요.");
-        } else {
+        } else if(data.email === 'admin@honey.com') {
           alert(`${data.nickname}님, 관리자 페이지에 오신 걸 환영해요! 🍯`);
           moveToPath("/admin");
+        } else {
+          alert("관리자 계정이 아닌 회원은 접근할 수 없습니다.");
+          doLogout();
+          moveToPath("/admin/login");
         }
       })
       .catch((err) => {
@@ -51,7 +55,7 @@ const LoginComponent = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <div className="login-logo">🍯 꿀템-관리자</div>
+        <div className="login-logo">GGULTEM-ADMIN</div>
         <h2 className="login-title">로그인</h2>
         <p className="login-subtitle">관리자님 로그인을 해주세요.</p>
 

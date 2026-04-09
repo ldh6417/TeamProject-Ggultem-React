@@ -323,3 +323,9 @@ input:disabled {
   cursor: pointer;
   margin-top: 10px;
 }
+
+.login-btn:disabled, .sub-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.5); /* 꿀 색깔을 살짝 뺌 */
+}
