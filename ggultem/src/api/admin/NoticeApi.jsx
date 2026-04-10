@@ -1,7 +1,6 @@
 import axios from "axios";
-
 import { API_SERVER_HOST } from "../config";
-
+export { API_SERVER_HOST };
 const prefix = `${API_SERVER_HOST}/admin/notice`;
 
 // 등록

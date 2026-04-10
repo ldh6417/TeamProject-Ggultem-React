@@ -1,7 +1,6 @@
 import axios from "axios";
-
-//서버 주소
-export const API_SERVER_HOST = "http://localhost:8080";
+import { API_SERVER_HOST } from "../config";
+export { API_SERVER_HOST };
 const prefix = `${API_SERVER_HOST}/admin/itemBoard`;
 
 export const getOne = async (id) => {

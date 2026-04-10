@@ -1,6 +1,8 @@
 import axios from "axios";
+import { API_SERVER_HOST } from "./config";
 
-export const API_SERVER_HOST = "http://localhost:8080";
+export { API_SERVER_HOST };
+
 const host = `${API_SERVER_HOST}/chatroom`;
 
 // 1. 채팅방 목록 가져오기 (검색 및 페이징 포함)

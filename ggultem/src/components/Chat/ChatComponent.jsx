@@ -61,7 +61,7 @@ const ChatComponent = ({ roomId }) => {
     fetchHistory();
 
     // 2. 소켓 연결 및 구독
-    const socket = new SockJS("http://localhost:8080/ws");
+    const socket = new SockJS("https://api.ggultem.shop/ws");
     const client = Stomp.over(socket);
     client.debug = null; // 콘솔 로그 숨기기 (선택)
 

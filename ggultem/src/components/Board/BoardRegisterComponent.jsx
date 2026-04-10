@@ -63,7 +63,7 @@ const BoardRegisterComponent = () => {
             formData.append("file", blob);
 
             try {
-              const res = await fetch("http://localhost:8080/board/upload", {
+              const res = await fetch("https://api.ggultem.shop/board/upload", {
                 method: "POST",
                 body: formData,
               });

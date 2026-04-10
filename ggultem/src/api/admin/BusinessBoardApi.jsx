@@ -1,7 +1,6 @@
 import axios from "axios";
-
-//서버 주소
-export const API_SERVER_HOST = "http://localhost:8080";
+import { API_SERVER_HOST } from "../config";
+export { API_SERVER_HOST };
 const host = `${API_SERVER_HOST}/admin/businessboard`;
 
 export const getOne = async (no) => {

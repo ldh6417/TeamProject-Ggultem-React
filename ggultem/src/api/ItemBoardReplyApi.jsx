@@ -1,6 +1,6 @@
 import axios from "axios";
-import { API_SERVER_HOST } from "./ItemBoardApi";
-
+import { API_SERVER_HOST } from "./config";
+export { API_SERVER_HOST };
 const prefix = `${API_SERVER_HOST}/itemBoard/reply`;
 
 // 댓글 리스트 조회

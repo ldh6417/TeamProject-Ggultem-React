@@ -1,7 +1,7 @@
 import axios from "axios";
+import { API_SERVER_HOST } from "./config";
 
-// 백엔드 서버 주소
-export const API_SERVER_HOST = "http://localhost:8080";
+export { API_SERVER_HOST };
 const host = `${API_SERVER_HOST}`;
 
 export const getOne = async (no) => {

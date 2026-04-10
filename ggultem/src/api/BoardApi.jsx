@@ -1,8 +1,7 @@
 import axios from "axios";
+import { API_SERVER_HOST } from "./config";
 
-// 서버 주소
-export const API_SERVER_HOST = "http://localhost:8080";
-
+export { API_SERVER_HOST };
 const prefix = `${API_SERVER_HOST}/board`;
 const adminPrefix = `${API_SERVER_HOST}/admin/board`;
 

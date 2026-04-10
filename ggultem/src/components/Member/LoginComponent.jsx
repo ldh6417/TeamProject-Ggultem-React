@@ -26,7 +26,7 @@ const LoginComponent = () => {
   // 1. 구글 클라이언트 ID와 리디렉션 URI를 변수로 따로 빼두면 관리가 편해요!
   const Google_Client_ID =
     "609985158917-cv8r77jfiqs9p5fejnmpprq6ktn8vr7c.apps.googleusercontent.com";
-  const Google_Redirect_URI = "http://localhost:5173/member/google";
+  const Google_Redirect_URI = "https://ggultem.shop/member/google";
 
   // 2. 주소 구성 (문자열 안에 변수를 넣을 때는 `(백틱)과 ${}를 사용합니다)
   const googleAddr = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${Google_Client_ID}&redirect_uri=${Google_Redirect_URI}&response_type=code&scope=email%20profile`;

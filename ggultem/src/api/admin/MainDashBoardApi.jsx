@@ -1,6 +1,7 @@
 import axios from "axios";
-
-const host = "http://localhost:8080/admin/dashboard";
+import { API_SERVER_HOST } from "../config";
+export { API_SERVER_HOST };
+const host = `${API_SERVER_HOST}/admin/dashboard`;
 
 // 대쉬보드 종합 통계 데이터 가져오기
 export const getDashboardStats = async () => {

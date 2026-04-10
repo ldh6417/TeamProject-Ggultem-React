@@ -20,7 +20,7 @@ export function SuccessPage() {
 
     axios
       .post(
-        "http://localhost:8080/businessmember/admin/charge/confirm",
+        "https://api.ggultem.shop/businessmember/admin/charge/confirm",
         requestData,
       )
       .then((res) => {

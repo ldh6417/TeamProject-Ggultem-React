@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_SERVER_HOST } from "../config";
-
+export { API_SERVER_HOST };
 // 1. host 자체를 export 합니다. (빨간 줄 방지 + 주소 공유)
 export const host = `${API_SERVER_HOST}/admin/report`;
 

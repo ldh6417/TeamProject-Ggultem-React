@@ -33,7 +33,7 @@ const ModifyComponent = ({ no }) => {
       if (data.uploadFileNames && data.uploadFileNames.length > 0) {
         const serverPreviews = data.uploadFileNames.map((fileName) => ({
           file: null, // 기존 파일은 File 객체가 없음
-          url: `http://localhost:8080/business/board/view/${fileName}`, // 서버 이미지 경로
+          url: `https://api.ggultem.shop/business/board/view/${fileName}`, // 서버 이미지 경로
           isServerFile: true, // 기존 파일임을 표시 (삭제 시 활용 가능)
           fileName: fileName, // 파일명 저장
         }));

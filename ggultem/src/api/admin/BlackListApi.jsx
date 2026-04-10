@@ -1,6 +1,6 @@
 import axios from "axios";
-
-export const API_SERVER_HOST = "http://localhost:8080";
+import { API_SERVER_HOST } from "../config";
+export { API_SERVER_HOST };
 const prefix = `${API_SERVER_HOST}/api/admin/blacklist`;
 
 export const checkMemberByEmail = async (email) => {

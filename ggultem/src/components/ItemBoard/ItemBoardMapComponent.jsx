@@ -88,7 +88,7 @@ const KakaoMap = ({
         selectedRegion && selectedRegion !== "all" ? selectedRegion : "";
       try {
         const response = await axios.get(
-          `http://localhost:8080/itemBoard/list`,
+          `https://api.ggultem.shop/itemBoard/list`,
           {
             params: {
               location: locationParam,
@@ -272,8 +272,8 @@ const KakaoMap = ({
                       className="item-img"
                       src={
                         item.uploadFileNames?.length > 0
-                          ? `http://localhost:8080/itemBoard/view/s_${item.uploadFileNames[0]}`
-                          : `http://localhost:8080/itemBoard/view/default.jpg`
+                          ? `https://api.ggultem.shop/itemBoard/view/s_${item.uploadFileNames[0]}`
+                          : `https://api.ggultem.shop/itemBoard/view/default.jpg`
                       }
                       alt={item.title}
                       onError={(e) => {

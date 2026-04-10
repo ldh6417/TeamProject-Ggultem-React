@@ -1,8 +1,10 @@
 import axios from "axios";
 
-//서버 주소
-export const API_SERVER_HOST = "http://localhost:8080";
-const host = `${API_SERVER_HOST}`;
+import { API_SERVER_HOST } from "./config";
+
+export { API_SERVER_HOST };
+
+const host = API_SERVER_HOST;
 
 //비즈니스 광고 게시글
 export const postItemBoardAdd = async (formData) => {
